@@ -1,0 +1,17 @@
+###
+# ECLIPSE IDE project files
+##
+.project
+.cache
+.cache/*
+.settings
+.settings/*
+
+###
+# CakePHP tmp content
+###
+*/tmp/cache/*
+*/tmp/logs/*
+*/tmp/sessions/*
+*/tmp/tests/*
+
