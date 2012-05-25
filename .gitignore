@@ -11,8 +11,8 @@
 ###
 # CakePHP tmp content
 ###
-#*/tmp/cache/*
-#*/tmp/logs/*
-#*/tmp/sessions/*
-#*/tmp/tests/*
+*/tmp/cache/*
+*/tmp/logs/*
+*/tmp/sessions/*
+*/tmp/tests/*
 
