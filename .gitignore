@@ -1,6 +1,7 @@
 ###
 # ECLIPSE IDE project files
 ##
+.buildpath
 .project
 .cache
 .cache/*
