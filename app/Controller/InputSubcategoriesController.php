@@ -8,13 +8,6 @@ App::uses('AppController', 'Controller');
 class InputSubcategoriesController extends AppController {
 
 /**
- * Helpers
- *
- * @var array
- */
-	public $helpers = array('Ajax');
-
-/**
  * index method
  *
  * @return void
