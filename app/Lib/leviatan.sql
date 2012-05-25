@@ -19,7 +19,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Banco de Dados: `leviatan`
 --
 
-CREATE DATABASE IF NOT EXISTS leviatan
+CREATE DATABASE IF NOT EXISTS leviatan;
 
 -- --------------------------------------------------------
 
@@ -27,7 +27,7 @@ CREATE DATABASE IF NOT EXISTS leviatan
 -- Estrutura da tabela `expense_groups`
 --
 
-CREATE TABLE IF NOT EXISTS `expense_groups` (
+CREATE TABLE IF NOT EXISTS `leviatan`.`expense_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `expense_groups` (
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------
@@ -44,14 +44,14 @@ CREATE TABLE IF NOT EXISTS `expense_groups` (
 -- Estrutura da tabela `functional_units`
 --
 
-CREATE TABLE IF NOT EXISTS `functional_units` (
+CREATE TABLE IF NOT EXISTS `leviatan`.`functional_units` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------
@@ -60,13 +60,13 @@ CREATE TABLE IF NOT EXISTS `functional_units` (
 -- Estrutura da tabela `group_types`
 --
 
-CREATE TABLE IF NOT EXISTS `group_types` (
+CREATE TABLE IF NOT EXISTS `leviatan`.`group_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------
@@ -75,14 +75,14 @@ CREATE TABLE IF NOT EXISTS `group_types` (
 -- Estrutura da tabela `input_categories`
 --
 
-CREATE TABLE IF NOT EXISTS `input_categories` (
+CREATE TABLE IF NOT EXISTS `leviatan`.`input_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `input_categories` (
 -- Estrutura da tabela `input_subcategories`
 --
 
-CREATE TABLE IF NOT EXISTS `input_subcategories` (
+CREATE TABLE IF NOT EXISTS `leviatan`.`input_subcategories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `input_category_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -112,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `input_subcategories` (
 -- Estrutura da tabela `items`
 --
 
-CREATE TABLE IF NOT EXISTS `items` (
+CREATE TABLE IF NOT EXISTS `leviatan`.`items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `item_class_id` int(11) NOT NULL,
   `pngc_code_id` int(11) NOT NULL,
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS `items` (
 -- Estrutura da tabela `item_classes`
 --
 
-CREATE TABLE IF NOT EXISTS `item_classes` (
+CREATE TABLE IF NOT EXISTS `leviatan`.`item_classes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `item_group_id` int(11) NOT NULL,
   `keycode` int(11) NOT NULL,
@@ -143,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `item_classes` (
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `item_group_id` (`item_group_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=569 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
 -- --------------------------------------------------------
@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `item_classes` (
 -- Estrutura da tabela `item_groups`
 --
 
-CREATE TABLE IF NOT EXISTS `item_groups` (
+CREATE TABLE IF NOT EXISTS `leviatan`.`item_groups` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `group_type_id` int(11) NOT NULL,
   `key` int(11) NOT NULL,
@@ -161,7 +161,7 @@ CREATE TABLE IF NOT EXISTS `item_groups` (
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `group_type_id` (`group_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=80 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -169,14 +169,14 @@ CREATE TABLE IF NOT EXISTS `item_groups` (
 -- Estrutura da tabela `measure_types`
 --
 
-CREATE TABLE IF NOT EXISTS `measure_types` (
+CREATE TABLE IF NOT EXISTS `leviatan`.`measure_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=46 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -184,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `measure_types` (
 -- Estrutura da tabela `pngc_codes`
 --
 
-CREATE TABLE IF NOT EXISTS `pngc_codes` (
+CREATE TABLE IF NOT EXISTS `leviatan`.`pngc_codes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `keycode` varchar(255) NOT NULL,
   `expense_group_id` int(11) NOT NULL,
