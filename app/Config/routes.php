@@ -27,6 +27,16 @@
  */
 	//Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
 	Router::connect('/', array('controller' => 'pngc_codes', 'action' => 'index'));
+	
+	Router::connect('/admin/acl', 
+		array(
+			'plugin' => 'acl', 
+			'controller' => 'acl', 
+			'action' => 'index', 
+			'admin' => true
+		)
+	);
+	
 /**
  * ...and connect the rest of 'Pages' controller's urls.
  */

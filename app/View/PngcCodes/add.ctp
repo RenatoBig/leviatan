@@ -6,8 +6,8 @@
 		echo $this->Form->input('keycode', array('label'=>'Código'));
 		echo $this->Form->input('expense_group_id', array('label'=>'Grupo de gastos'));
 		echo $this->Form->input('functional_unit_id', array('label'=>'Unidade funcional'));
-		echo $this->Form->input('input_category_id', array('label'=>'Grupo de insumos'));
-		echo $this->Form->input('input_subcategory_id', array('label'=>'Subgrupo de insumos'));
+		echo $this->Form->input('input_category_id', array('label'=>'Grupo de itens'));
+		echo $this->Form->input('input_subcategory_id', array('label'=>'Subgrupo de itens'));
 		echo $this->Form->input('measure_type_id', array('label'=>'Unidade de medida'));
 	?>
 	</fieldset>

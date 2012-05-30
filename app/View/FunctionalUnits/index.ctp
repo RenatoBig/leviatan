@@ -12,7 +12,7 @@
 	<tr>
 		<td><?php echo h($functionalUnit['FunctionalUnit']['id']); ?>&nbsp;</td>
 		<td><?php echo h($functionalUnit['FunctionalUnit']['name']); ?>&nbsp;</td>
-		<td><?php echo h($functionalUnit['FunctionalUnit']['descripption']); ?>&nbsp;</td>
+		<td><?php echo h($functionalUnit['FunctionalUnit']['description']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $functionalUnit['FunctionalUnit']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $functionalUnit['FunctionalUnit']['id'])); ?>

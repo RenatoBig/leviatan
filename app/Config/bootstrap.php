@@ -129,3 +129,12 @@ Cache::config('default', array('engine' => 'File'));
  * CakePlugin::load('DebugKit'); //Loads a single plugin named DebugKit
  *
  */
+
+CakePlugin::load('AclExtras');
+
+CakePlugin::load('Acl', array('bootstrap' => true));
+
+/*
+ * The model name used for the user role (typically 'Role' or 'Group')
+ */
+Configure :: write('acl.aro.role.model', 'Group');

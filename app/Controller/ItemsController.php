@@ -47,8 +47,13 @@ class ItemsController extends AppController {
 				$this->Session->setFlash(__('The item could not be saved. Please, try again.'));
 			}
 		}
-		$itemClasses = $this->Item->ItemClass->find('list');
-		$pngcCodes = $this->Item->PngcCode->find('list');
+		$itemClasses = $this->Item->ItemClass->find('list', 
+			array('order'=>array('ItemClass.name ASC'))
+		);
+		$pngcCodes = $this->Item->PngcCode->find('list', 
+			array('fields'=>array('PngcCode.id', 'PngcCode.keycode'))
+		);
+		
 		$this->set(compact('itemClasses', 'pngcCodes'));
 	}
 
