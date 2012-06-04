@@ -97,4 +97,28 @@ class ItemGroupsController extends AppController {
 		$this->Session->setFlash(__('Item group was not deleted'));
 		$this->redirect(array('action' => 'index'));
 	}
+	
+/**
+ * 
+ * Enter description here ...
+ */
+	public function getByCategory() {
+		
+		if($this->request->is('ajax')) {
+			$this->layout = 'ajax';
+			$idTypeGroup = $this->request->data['Item']['GroupType'];
+			
+			$inicial = array('0'=>'Selecione um item');
+			$itemGroups = $this->ItemGroup->find('list', array(
+				'conditions' => array('ItemGroup.group_type_id' => $idTypeGroup),
+				'order'=>array('ItemGroup.name ASC'),
+				'recursive' => -1
+			));
+			
+			//Concatena o array inicial com os dados vindos do banco de dados
+			$itemGroups = $inicial+$itemGroups;
+			
+			$this->set(compact('itemGroups'));
+		}
+	}
 }
