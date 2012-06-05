@@ -6,9 +6,6 @@ App::uses('AppController', 'Controller');
  * @property Item $Item
  */
 class ItemsController extends AppController {
-	
-	public $helpers = array('Js');
-	public $components = array('RequestHandler');
 
 
 /**
@@ -50,20 +47,9 @@ class ItemsController extends AppController {
 				$this->Session->setFlash(__('The item could not be saved. Please, try again.'));
 			}
 		}
-		
-		$inicial = array('0'=>'Selecione um item');
-		
-		$groupTypes = $this->Item->ItemClass->ItemGroup->GroupType->find('list', array('order'=>array('GroupType.name ASC')));						
-		
-		$pngcCodes = $this->Item->PngcCode->find('list', 
-			array('fields'=>array('PngcCode.id', 'PngcCode.keycode'))
-		);
-		
-		//Adiciona o valor '0' aos arrays já existentes
-		$groupTypes = $inicial + $groupTypes;
-		$pngcCodes = $inicial + $pngcCodes;
-		
-		$this->set(compact('groupTypes', 'pngcCodes'));
+		$itemClasses = $this->Item->ItemClass->find('list');
+		$pngcCodes = $this->Item->PngcCode->find('list');
+		$this->set(compact('itemClasses', 'pngcCodes'));
 	}
 
 /**

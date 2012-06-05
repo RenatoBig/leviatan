@@ -6,19 +6,29 @@
 			<?php echo h($itemGroup['ItemGroup']['id']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Group Type'); ?></dt>
+		<dt><?php echo __('Keycode'); ?></dt>
 		<dd>
-			<?php echo $this->Html->link($itemGroup['GroupType']['name'], array('controller' => 'group_types', 'action' => 'view', $itemGroup['GroupType']['id'])); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Key'); ?></dt>
-		<dd>
-			<?php echo h($itemGroup['ItemGroup']['key']); ?>
+			<?php echo h($itemGroup['ItemGroup']['keycode']); ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Name'); ?></dt>
 		<dd>
 			<?php echo h($itemGroup['ItemGroup']['name']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Group Type'); ?></dt>
+		<dd>
+			<?php echo $this->Html->link($itemGroup['GroupType']['name'], array('controller' => 'group_types', 'action' => 'view', $itemGroup['GroupType']['id'])); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Created'); ?></dt>
+		<dd>
+			<?php echo h($itemGroup['ItemGroup']['created']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Modified'); ?></dt>
+		<dd>
+			<?php echo h($itemGroup['ItemGroup']['modified']); ?>
 			&nbsp;
 		</dd>
 	</dl>

@@ -21,19 +21,24 @@
 			<?php echo $this->Html->link($pngcCode['FunctionalUnit']['name'], array('controller' => 'functional_units', 'action' => 'view', $pngcCode['FunctionalUnit']['id'])); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Input Category'); ?></dt>
+		<dt><?php echo __('Input Id'); ?></dt>
 		<dd>
-			<?php echo $this->Html->link($pngcCode['InputCategory']['name'], array('controller' => 'input_categories', 'action' => 'view', $pngcCode['InputCategory']['id'])); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Input Subcategory'); ?></dt>
-		<dd>
-			<?php echo $this->Html->link($pngcCode['InputSubcategory']['name'], array('controller' => 'input_subcategories', 'action' => 'view', $pngcCode['InputSubcategory']['id'])); ?>
+			<?php echo h($pngcCode['PngcCode']['input_id']); ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Measure Type'); ?></dt>
 		<dd>
 			<?php echo $this->Html->link($pngcCode['MeasureType']['name'], array('controller' => 'measure_types', 'action' => 'view', $pngcCode['MeasureType']['id'])); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Created'); ?></dt>
+		<dd>
+			<?php echo h($pngcCode['PngcCode']['created']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Modified'); ?></dt>
+		<dd>
+			<?php echo h($pngcCode['PngcCode']['modified']); ?>
 			&nbsp;
 		</dd>
 	</dl>
@@ -69,6 +74,9 @@
 		<th><?php echo __('Pngc Code Id'); ?></th>
 		<th><?php echo __('Name'); ?></th>
 		<th><?php echo __('Description'); ?></th>
+		<th><?php echo __('Image Path'); ?></th>
+		<th><?php echo __('Created'); ?></th>
+		<th><?php echo __('Modified'); ?></th>
 		<th class="actions"><?php echo __('Actions');?></th>
 	</tr>
 	<?php
@@ -80,6 +88,9 @@
 			<td><?php echo $item['pngc_code_id'];?></td>
 			<td><?php echo $item['name'];?></td>
 			<td><?php echo $item['description'];?></td>
+			<td><?php echo $item['image_path'];?></td>
+			<td><?php echo $item['created'];?></td>
+			<td><?php echo $item['modified'];?></td>
 			<td class="actions">
 				<?php echo $this->Html->link(__('View'), array('controller' => 'items', 'action' => 'view', $item['id'])); ?>
 				<?php echo $this->Html->link(__('Edit'), array('controller' => 'items', 'action' => 'edit', $item['id'])); ?>

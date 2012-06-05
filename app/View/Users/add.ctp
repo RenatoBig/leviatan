@@ -1,14 +1,14 @@
 <div class="users form">
 <?php echo $this->Form->create('User');?>
 	<fieldset>
-		<legend><?php echo __('Add User'); ?></legend>
+		<legend><?php echo __('Adicionar usuário'); ?></legend>
 	<?php
-		echo $this->Form->input('username');
-		echo $this->Form->input('password');
-		echo $this->Form->input('group_id');
+		echo $this->Form->input('group_id', array('label'=>'Grupo'));
+		echo $this->Form->input('employee_id', array('label'=>'Funcionário'));
+		echo $this->Form->input('password', array('label'=>'Senha'));		
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit'));?>
+<?php echo $this->Form->end(__('Cadastrar'));?>
 </div>
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>

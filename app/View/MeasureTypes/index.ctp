@@ -5,6 +5,8 @@
 			<th><?php echo $this->Paginator->sort('id');?></th>
 			<th><?php echo $this->Paginator->sort('name');?></th>
 			<th><?php echo $this->Paginator->sort('description');?></th>
+			<th><?php echo $this->Paginator->sort('created');?></th>
+			<th><?php echo $this->Paginator->sort('modified');?></th>
 			<th class="actions"><?php echo __('Actions');?></th>
 	</tr>
 	<?php
@@ -13,6 +15,8 @@
 		<td><?php echo h($measureType['MeasureType']['id']); ?>&nbsp;</td>
 		<td><?php echo h($measureType['MeasureType']['name']); ?>&nbsp;</td>
 		<td><?php echo h($measureType['MeasureType']['description']); ?>&nbsp;</td>
+		<td><?php echo h($measureType['MeasureType']['created']); ?>&nbsp;</td>
+		<td><?php echo h($measureType['MeasureType']['modified']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $measureType['MeasureType']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $measureType['MeasureType']['id'])); ?>

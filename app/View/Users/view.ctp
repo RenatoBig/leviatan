@@ -6,6 +6,11 @@
 			<?php echo h($user['User']['id']); ?>
 			&nbsp;
 		</dd>
+		<dt><?php echo __('Employee Id'); ?></dt>
+		<dd>
+			<?php echo h($user['User']['employee_id']); ?>
+			&nbsp;
+		</dd>
 		<dt><?php echo __('Username'); ?></dt>
 		<dd>
 			<?php echo h($user['User']['username']); ?>

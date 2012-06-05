@@ -97,27 +97,4 @@ class ItemClassesController extends AppController {
 		$this->Session->setFlash(__('Item class was not deleted'));
 		$this->redirect(array('action' => 'index'));
 	}
-	
-/**
- * 
- * Enter description here ...
- */
-	public function getByCategory() {
-		
-		if($this->request->is('ajax')) {
-			$this->layout = 'ajax';
-			$idItemGroup = $this->request->data['Item']['ItemGroup'];
-			
-			$inicial = array('0'=>'Selecione um item');
-			$itemClasses = $this->ItemClass->find('list', array(
-				'conditions' => array('ItemClass.item_group_id' => $idItemGroup),
-				'recursive' => -1
-			));
-			
-			//Concatena o array inicial com os dados vindos do banco de dados
-			$itemClasses= $inicial+$itemClasses;
-			
-			$this->set(compact('itemClasses'));
-		}
-	}
 }

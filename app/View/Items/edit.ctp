@@ -8,6 +8,7 @@
 		echo $this->Form->input('pngc_code_id');
 		echo $this->Form->input('name');
 		echo $this->Form->input('description');
+		echo $this->Form->input('image_path');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit'));?>

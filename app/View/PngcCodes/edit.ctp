@@ -7,8 +7,7 @@
 		echo $this->Form->input('keycode');
 		echo $this->Form->input('expense_group_id');
 		echo $this->Form->input('functional_unit_id');
-		echo $this->Form->input('input_category_id');
-		echo $this->Form->input('input_subcategory_id');
+		echo $this->Form->input('input_id');
 		echo $this->Form->input('measure_type_id');
 	?>
 	</fieldset>

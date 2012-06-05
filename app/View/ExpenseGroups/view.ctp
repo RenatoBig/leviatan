@@ -16,6 +16,16 @@
 			<?php echo h($expenseGroup['ExpenseGroup']['description']); ?>
 			&nbsp;
 		</dd>
+		<dt><?php echo __('Created'); ?></dt>
+		<dd>
+			<?php echo h($expenseGroup['ExpenseGroup']['created']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Modified'); ?></dt>
+		<dd>
+			<?php echo h($expenseGroup['ExpenseGroup']['modified']); ?>
+			&nbsp;
+		</dd>
 	</dl>
 </div>
 <div class="actions">
@@ -38,9 +48,10 @@
 		<th><?php echo __('Keycode'); ?></th>
 		<th><?php echo __('Expense Group Id'); ?></th>
 		<th><?php echo __('Functional Unit Id'); ?></th>
-		<th><?php echo __('Input Category Id'); ?></th>
-		<th><?php echo __('Input Subcategory Id'); ?></th>
+		<th><?php echo __('Input Id'); ?></th>
 		<th><?php echo __('Measure Type Id'); ?></th>
+		<th><?php echo __('Created'); ?></th>
+		<th><?php echo __('Modified'); ?></th>
 		<th class="actions"><?php echo __('Actions');?></th>
 	</tr>
 	<?php
@@ -51,9 +62,10 @@
 			<td><?php echo $pngcCode['keycode'];?></td>
 			<td><?php echo $pngcCode['expense_group_id'];?></td>
 			<td><?php echo $pngcCode['functional_unit_id'];?></td>
-			<td><?php echo $pngcCode['input_category_id'];?></td>
-			<td><?php echo $pngcCode['input_subcategory_id'];?></td>
+			<td><?php echo $pngcCode['input_id'];?></td>
 			<td><?php echo $pngcCode['measure_type_id'];?></td>
+			<td><?php echo $pngcCode['created'];?></td>
+			<td><?php echo $pngcCode['modified'];?></td>
 			<td class="actions">
 				<?php echo $this->Html->link(__('View'), array('controller' => 'pngc_codes', 'action' => 'view', $pngcCode['id'])); ?>
 				<?php echo $this->Html->link(__('Edit'), array('controller' => 'pngc_codes', 'action' => 'edit', $pngcCode['id'])); ?>

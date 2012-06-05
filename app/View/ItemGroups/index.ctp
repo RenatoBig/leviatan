@@ -3,20 +3,24 @@
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('group_type_id');?></th>
-			<th><?php echo $this->Paginator->sort('key');?></th>
+			<th><?php echo $this->Paginator->sort('keycode');?></th>
 			<th><?php echo $this->Paginator->sort('name');?></th>
+			<th><?php echo $this->Paginator->sort('group_type_id');?></th>
+			<th><?php echo $this->Paginator->sort('created');?></th>
+			<th><?php echo $this->Paginator->sort('modified');?></th>
 			<th class="actions"><?php echo __('Actions');?></th>
 	</tr>
 	<?php
 	foreach ($itemGroups as $itemGroup): ?>
 	<tr>
 		<td><?php echo h($itemGroup['ItemGroup']['id']); ?>&nbsp;</td>
+		<td><?php echo h($itemGroup['ItemGroup']['keycode']); ?>&nbsp;</td>
+		<td><?php echo h($itemGroup['ItemGroup']['name']); ?>&nbsp;</td>
 		<td>
 			<?php echo $this->Html->link($itemGroup['GroupType']['name'], array('controller' => 'group_types', 'action' => 'view', $itemGroup['GroupType']['id'])); ?>
 		</td>
-		<td><?php echo h($itemGroup['ItemGroup']['key']); ?>&nbsp;</td>
-		<td><?php echo h($itemGroup['ItemGroup']['name']); ?>&nbsp;</td>
+		<td><?php echo h($itemGroup['ItemGroup']['created']); ?>&nbsp;</td>
+		<td><?php echo h($itemGroup['ItemGroup']['modified']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $itemGroup['ItemGroup']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $itemGroup['ItemGroup']['id'])); ?>

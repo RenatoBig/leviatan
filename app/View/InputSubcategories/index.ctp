@@ -3,20 +3,20 @@
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('input_category_id');?></th>
 			<th><?php echo $this->Paginator->sort('name');?></th>
 			<th><?php echo $this->Paginator->sort('description');?></th>
+			<th><?php echo $this->Paginator->sort('created');?></th>
+			<th><?php echo $this->Paginator->sort('modified');?></th>
 			<th class="actions"><?php echo __('Actions');?></th>
 	</tr>
 	<?php
 	foreach ($inputSubcategories as $inputSubcategory): ?>
 	<tr>
 		<td><?php echo h($inputSubcategory['InputSubcategory']['id']); ?>&nbsp;</td>
-		<td>
-			<?php echo $this->Html->link($inputSubcategory['InputCategory']['name'], array('controller' => 'input_categories', 'action' => 'view', $inputSubcategory['InputCategory']['id'])); ?>
-		</td>
 		<td><?php echo h($inputSubcategory['InputSubcategory']['name']); ?>&nbsp;</td>
 		<td><?php echo h($inputSubcategory['InputSubcategory']['description']); ?>&nbsp;</td>
+		<td><?php echo h($inputSubcategory['InputSubcategory']['created']); ?>&nbsp;</td>
+		<td><?php echo h($inputSubcategory['InputSubcategory']['modified']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $inputSubcategory['InputSubcategory']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $inputSubcategory['InputSubcategory']['id'])); ?>
@@ -44,9 +44,7 @@
 	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
 		<li><?php echo $this->Html->link(__('New Input Subcategory'), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Input Categories'), array('controller' => 'input_categories', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Input Category'), array('controller' => 'input_categories', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Pngc Codes'), array('controller' => 'pngc_codes', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Pngc Code'), array('controller' => 'pngc_codes', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Inputs'), array('controller' => 'inputs', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Input'), array('controller' => 'inputs', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

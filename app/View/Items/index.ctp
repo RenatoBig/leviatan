@@ -7,6 +7,9 @@
 			<th><?php echo $this->Paginator->sort('pngc_code_id');?></th>
 			<th><?php echo $this->Paginator->sort('name');?></th>
 			<th><?php echo $this->Paginator->sort('description');?></th>
+			<th><?php echo $this->Paginator->sort('image_path');?></th>
+			<th><?php echo $this->Paginator->sort('created');?></th>
+			<th><?php echo $this->Paginator->sort('modified');?></th>
 			<th class="actions"><?php echo __('Actions');?></th>
 	</tr>
 	<?php
@@ -21,6 +24,9 @@
 		</td>
 		<td><?php echo h($item['Item']['name']); ?>&nbsp;</td>
 		<td><?php echo h($item['Item']['description']); ?>&nbsp;</td>
+		<td><?php echo h($item['Item']['image_path']); ?>&nbsp;</td>
+		<td><?php echo h($item['Item']['created']); ?>&nbsp;</td>
+		<td><?php echo h($item['Item']['modified']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $item['Item']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $item['Item']['id'])); ?>

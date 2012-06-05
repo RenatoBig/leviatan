@@ -7,6 +7,7 @@ App::uses('AppController', 'Controller');
  */
 class UsersController extends AppController {
 
+
 /**
  * index method
  *
@@ -38,16 +39,31 @@ class UsersController extends AppController {
  */
 	public function add() {
 		if ($this->request->is('post')) {
-			$this->User->create();
+			//Pega o id do funcionario que vem do formulário
+			$id = $this->request->data['User']['employee_id'];
+			//Faz a consulta no banco de dados   
+			$registration = $this->User->Employee->find('first', array(
+					'conditions'=>array('Employee.id'=>$id),
+					'fields'=>array('Employee.registration'),
+					'recursive'=>'-1'
+				)
+			);
+			//Pega apenas a matrícula do funcionário
+			$registration = $registration['Employee']['registration'];
+			//Atribui a matrícula ao nome de usuário para ser salvo na tabela de usuários			
+			$this->request->data['User']['username'] = $registration;
+			
+			$this->User->create();			
 			if ($this->User->save($this->request->data)) {
-				$this->Session->setFlash(__('The user has been saved'));
+				$this->Session->setFlash(__('O usuário foi cadastrado com sucesso.'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('O usuário não pode ser cadastrado. Por favor tente novamente.'));
 			}
 		}
+		$employees = $this->User->Employee->find('list');
 		$groups = $this->User->Group->find('list');
-		$this->set(compact('groups'));
+		$this->set(compact('employees', 'groups'));
 	}
 
 /**
@@ -98,14 +114,21 @@ class UsersController extends AppController {
 	}
 	
 /**
+ * (non-PHPdoc)
+ * @see lib/Cake/Controller/Controller::beforeFilter()
+ */
+	public function beforeFilter() {
+    	parent::beforeFilter();
+    	$this->Auth->allow('*');
+	}
+	
+/**
  * 
  * Enter description here ...
  */
 	public function login() {
 	    if ($this->request->is('post')) {
 	        if ($this->Auth->login()) {
-	        	
-	        	//$this->Session->wirte('group_id', );
 	            $this->redirect($this->Auth->redirect());
 	        } else {
 	            $this->Session->setFlash('Your username or password was incorrect.');
@@ -118,17 +141,8 @@ class UsersController extends AppController {
  * Enter description here ...
  */
 	public function logout() {
-		$this->Session->setFlash('Good-bye');
+	    //Leave empty for now.
+	    $this->Session->setFlash('Good-Bye');
 		$this->redirect($this->Auth->logout());
 	}
-	
-/**
- * (non-PHPdoc)
- * @see lib/Cake/Controller/Controller::beforeFilter()
- */
-	public function beforeFilter() {
-	    parent::beforeFilter();
-	    $this->Auth->allow('*');
-	}
-	
 }

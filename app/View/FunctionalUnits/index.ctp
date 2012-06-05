@@ -4,7 +4,9 @@
 	<tr>
 			<th><?php echo $this->Paginator->sort('id');?></th>
 			<th><?php echo $this->Paginator->sort('name');?></th>
-			<th><?php echo $this->Paginator->sort('descripption');?></th>
+			<th><?php echo $this->Paginator->sort('description');?></th>
+			<th><?php echo $this->Paginator->sort('created');?></th>
+			<th><?php echo $this->Paginator->sort('modified');?></th>
 			<th class="actions"><?php echo __('Actions');?></th>
 	</tr>
 	<?php
@@ -13,6 +15,8 @@
 		<td><?php echo h($functionalUnit['FunctionalUnit']['id']); ?>&nbsp;</td>
 		<td><?php echo h($functionalUnit['FunctionalUnit']['name']); ?>&nbsp;</td>
 		<td><?php echo h($functionalUnit['FunctionalUnit']['description']); ?>&nbsp;</td>
+		<td><?php echo h($functionalUnit['FunctionalUnit']['created']); ?>&nbsp;</td>
+		<td><?php echo h($functionalUnit['FunctionalUnit']['modified']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $functionalUnit['FunctionalUnit']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $functionalUnit['FunctionalUnit']['id'])); ?>

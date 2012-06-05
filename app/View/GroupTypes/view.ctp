@@ -11,6 +11,16 @@
 			<?php echo h($groupType['GroupType']['name']); ?>
 			&nbsp;
 		</dd>
+		<dt><?php echo __('Created'); ?></dt>
+		<dd>
+			<?php echo h($groupType['GroupType']['created']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Modified'); ?></dt>
+		<dd>
+			<?php echo h($groupType['GroupType']['modified']); ?>
+			&nbsp;
+		</dd>
 	</dl>
 </div>
 <div class="actions">
@@ -30,9 +40,11 @@
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
 		<th><?php echo __('Id'); ?></th>
-		<th><?php echo __('Group Type Id'); ?></th>
-		<th><?php echo __('Key'); ?></th>
+		<th><?php echo __('Keycode'); ?></th>
 		<th><?php echo __('Name'); ?></th>
+		<th><?php echo __('Group Type Id'); ?></th>
+		<th><?php echo __('Created'); ?></th>
+		<th><?php echo __('Modified'); ?></th>
 		<th class="actions"><?php echo __('Actions');?></th>
 	</tr>
 	<?php
@@ -40,9 +52,11 @@
 		foreach ($groupType['ItemGroup'] as $itemGroup): ?>
 		<tr>
 			<td><?php echo $itemGroup['id'];?></td>
-			<td><?php echo $itemGroup['group_type_id'];?></td>
-			<td><?php echo $itemGroup['key'];?></td>
+			<td><?php echo $itemGroup['keycode'];?></td>
 			<td><?php echo $itemGroup['name'];?></td>
+			<td><?php echo $itemGroup['group_type_id'];?></td>
+			<td><?php echo $itemGroup['created'];?></td>
+			<td><?php echo $itemGroup['modified'];?></td>
 			<td class="actions">
 				<?php echo $this->Html->link(__('View'), array('controller' => 'item_groups', 'action' => 'view', $itemGroup['id'])); ?>
 				<?php echo $this->Html->link(__('Edit'), array('controller' => 'item_groups', 'action' => 'edit', $itemGroup['id'])); ?>

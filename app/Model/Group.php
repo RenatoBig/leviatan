@@ -37,12 +37,12 @@ class Group extends AppModel {
 	);
 	
 	public $actsAs = array('Acl' => array('type' => 'requester'));
-	
+
 /**
  * 
  * Enter description here ...
  */
-	public function parentNode() {
+    public function parentNode() {
         return null;
     }
 

@@ -1,14 +1,13 @@
 <div class="pngcCodes form">
 <?php echo $this->Form->create('PngcCode');?>
 	<fieldset>
-		<legend><?php echo __('Adicionar Código PNGC'); ?></legend>
+		<legend><?php echo __('Add Pngc Code'); ?></legend>
 	<?php
-		echo $this->Form->input('keycode', array('label'=>'Código'));
-		echo $this->Form->input('expense_group_id', array('label'=>'Grupo de gastos'));
-		echo $this->Form->input('functional_unit_id', array('label'=>'Unidade funcional'));
-		echo $this->Form->input('input_category_id', array('label'=>'Grupo de itens'));
-		echo $this->Form->input('input_subcategory_id', array('label'=>'Subgrupo de itens'));
-		echo $this->Form->input('measure_type_id', array('label'=>'Unidade de medida'));
+		echo $this->Form->input('keycode');
+		echo $this->Form->input('expense_group_id');
+		echo $this->Form->input('functional_unit_id');
+		echo $this->Form->input('input_id');
+		echo $this->Form->input('measure_type_id');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit'));?>

@@ -3,6 +3,7 @@
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('id');?></th>
+			<th><?php echo $this->Paginator->sort('employee_id');?></th>
 			<th><?php echo $this->Paginator->sort('username');?></th>
 			<th><?php echo $this->Paginator->sort('password');?></th>
 			<th><?php echo $this->Paginator->sort('group_id');?></th>
@@ -14,6 +15,7 @@
 	foreach ($users as $user): ?>
 	<tr>
 		<td><?php echo h($user['User']['id']); ?>&nbsp;</td>
+		<td><?php echo h($user['User']['employee_id']); ?>&nbsp;</td>
 		<td><?php echo h($user['User']['username']); ?>&nbsp;</td>
 		<td><?php echo h($user['User']['password']); ?>&nbsp;</td>
 		<td>

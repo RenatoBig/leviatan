@@ -3,8 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * InputSubcategory Model
  *
- * @property InputCategory $InputCategory
- * @property PngcCode $PngcCode
+ * @property Input $Input
  */
 class InputSubcategory extends AppModel {
 /**
@@ -17,28 +16,13 @@ class InputSubcategory extends AppModel {
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
- * belongsTo associations
- *
- * @var array
- */
-	public $belongsTo = array(
-		'InputCategory' => array(
-			'className' => 'InputCategory',
-			'foreignKey' => 'input_category_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		)
-	);
-
-/**
  * hasMany associations
  *
  * @var array
  */
 	public $hasMany = array(
-		'PngcCode' => array(
-			'className' => 'PngcCode',
+		'Input' => array(
+			'className' => 'Input',
 			'foreignKey' => 'input_subcategory_id',
 			'dependent' => false,
 			'conditions' => '',

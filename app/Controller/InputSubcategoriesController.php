@@ -7,6 +7,7 @@ App::uses('AppController', 'Controller');
  */
 class InputSubcategoriesController extends AppController {
 
+
 /**
  * index method
  *
@@ -46,8 +47,6 @@ class InputSubcategoriesController extends AppController {
 				$this->Session->setFlash(__('The input subcategory could not be saved. Please, try again.'));
 			}
 		}
-		$inputCategories = $this->InputSubcategory->InputCategory->find('list');
-		$this->set(compact('inputCategories'));
 	}
 
 /**
@@ -71,8 +70,6 @@ class InputSubcategoriesController extends AppController {
 		} else {
 			$this->request->data = $this->InputSubcategory->read(null, $id);
 		}
-		$inputCategories = $this->InputSubcategory->InputCategory->find('list');
-		$this->set(compact('inputCategories'));
 	}
 
 /**

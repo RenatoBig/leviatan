@@ -3,7 +3,9 @@ App::uses('AppModel', 'Model');
 /**
  * User Model
  *
+ * @property Employee $Employee
  * @property Group $Group
+ * @property Order $Order
  */
 class User extends AppModel {
 
@@ -15,12 +17,40 @@ class User extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
+		'Employee' => array(
+			'className' => 'Employee',
+			'foreignKey' => 'employee_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
 		'Group' => array(
 			'className' => 'Group',
 			'foreignKey' => 'group_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		)
+	);
+
+/**
+ * hasMany associations
+ *
+ * @var array
+ */
+	public $hasMany = array(
+		'Order' => array(
+			'className' => 'Order',
+			'foreignKey' => 'user_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
 		)
 	);
 	
@@ -36,7 +66,7 @@ class User extends AppModel {
     }
     
 /**
- *
+ * 
  * Enter description here ...
  */
 	public function parentNode() {
@@ -54,6 +84,5 @@ class User extends AppModel {
             return array('Group' => array('id' => $groupId));
         }
     }
-    
-    
+
 }

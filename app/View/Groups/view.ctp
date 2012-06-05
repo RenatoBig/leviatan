@@ -40,6 +40,7 @@
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
 		<th><?php echo __('Id'); ?></th>
+		<th><?php echo __('Employee Id'); ?></th>
 		<th><?php echo __('Username'); ?></th>
 		<th><?php echo __('Password'); ?></th>
 		<th><?php echo __('Group Id'); ?></th>
@@ -52,6 +53,7 @@
 		foreach ($group['User'] as $user): ?>
 		<tr>
 			<td><?php echo $user['id'];?></td>
+			<td><?php echo $user['employee_id'];?></td>
 			<td><?php echo $user['username'];?></td>
 			<td><?php echo $user['password'];?></td>
 			<td><?php echo $user['group_id'];?></td>

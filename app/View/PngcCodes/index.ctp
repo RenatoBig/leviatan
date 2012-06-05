@@ -6,9 +6,10 @@
 			<th><?php echo $this->Paginator->sort('keycode');?></th>
 			<th><?php echo $this->Paginator->sort('expense_group_id');?></th>
 			<th><?php echo $this->Paginator->sort('functional_unit_id');?></th>
-			<th><?php echo $this->Paginator->sort('input_category_id');?></th>
-			<th><?php echo $this->Paginator->sort('input_subcategory_id');?></th>
+			<th><?php echo $this->Paginator->sort('input_id');?></th>
 			<th><?php echo $this->Paginator->sort('measure_type_id');?></th>
+			<th><?php echo $this->Paginator->sort('created');?></th>
+			<th><?php echo $this->Paginator->sort('modified');?></th>
 			<th class="actions"><?php echo __('Actions');?></th>
 	</tr>
 	<?php
@@ -22,15 +23,12 @@
 		<td>
 			<?php echo $this->Html->link($pngcCode['FunctionalUnit']['name'], array('controller' => 'functional_units', 'action' => 'view', $pngcCode['FunctionalUnit']['id'])); ?>
 		</td>
-		<td>
-			<?php echo $this->Html->link($pngcCode['InputCategory']['name'], array('controller' => 'input_categories', 'action' => 'view', $pngcCode['InputCategory']['id'])); ?>
-		</td>
-		<td>
-			<?php echo $this->Html->link($pngcCode['InputSubcategory']['name'], array('controller' => 'input_subcategories', 'action' => 'view', $pngcCode['InputSubcategory']['id'])); ?>
-		</td>
+		<td><?php echo h($pngcCode['PngcCode']['input_id']); ?>&nbsp;</td>
 		<td>
 			<?php echo $this->Html->link($pngcCode['MeasureType']['name'], array('controller' => 'measure_types', 'action' => 'view', $pngcCode['MeasureType']['id'])); ?>
 		</td>
+		<td><?php echo h($pngcCode['PngcCode']['created']); ?>&nbsp;</td>
+		<td><?php echo h($pngcCode['PngcCode']['modified']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $pngcCode['PngcCode']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $pngcCode['PngcCode']['id'])); ?>

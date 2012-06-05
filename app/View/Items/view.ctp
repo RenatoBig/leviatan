@@ -26,6 +26,21 @@
 			<?php echo h($item['Item']['description']); ?>
 			&nbsp;
 		</dd>
+		<dt><?php echo __('Image Path'); ?></dt>
+		<dd>
+			<?php echo h($item['Item']['image_path']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Created'); ?></dt>
+		<dd>
+			<?php echo h($item['Item']['created']); ?>
+			&nbsp;
+		</dd>
+		<dt><?php echo __('Modified'); ?></dt>
+		<dd>
+			<?php echo h($item['Item']['modified']); ?>
+			&nbsp;
+		</dd>
 	</dl>
 </div>
 <div class="actions">

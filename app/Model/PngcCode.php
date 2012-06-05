@@ -5,8 +5,7 @@ App::uses('AppModel', 'Model');
  *
  * @property ExpenseGroup $ExpenseGroup
  * @property FunctionalUnit $FunctionalUnit
- * @property InputCategory $InputCategory
- * @property InputSubcategory $InputSubcategory
+ * @property Input $Input
  * @property MeasureType $MeasureType
  * @property Item $Item
  */
@@ -34,16 +33,9 @@ class PngcCode extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'InputCategory' => array(
-			'className' => 'InputCategory',
-			'foreignKey' => 'input_category_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),
-		'InputSubcategory' => array(
-			'className' => 'InputSubcategory',
-			'foreignKey' => 'input_subcategory_id',
+		'Input' => array(
+			'className' => 'Input',
+			'foreignKey' => 'input_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''

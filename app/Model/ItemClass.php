@@ -4,6 +4,7 @@ App::uses('AppModel', 'Model');
  * ItemClass Model
  *
  * @property ItemGroup $ItemGroup
+ * @property Item $Item
  */
 class ItemClass extends AppModel {
 /**
@@ -29,4 +30,26 @@ class ItemClass extends AppModel {
 			'order' => ''
 		)
 	);
+
+/**
+ * hasMany associations
+ *
+ * @var array
+ */
+	public $hasMany = array(
+		'Item' => array(
+			'className' => 'Item',
+			'foreignKey' => 'item_class_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		)
+	);
+
 }

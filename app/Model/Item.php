@@ -5,6 +5,7 @@ App::uses('AppModel', 'Model');
  *
  * @property ItemClass $ItemClass
  * @property PngcCode $PngcCode
+ * @property OrderItem $OrderItem
  */
 class Item extends AppModel {
 /**
@@ -37,4 +38,26 @@ class Item extends AppModel {
 			'order' => ''
 		)
 	);
+
+/**
+ * hasMany associations
+ *
+ * @var array
+ */
+	public $hasMany = array(
+		'OrderItem' => array(
+			'className' => 'OrderItem',
+			'foreignKey' => 'item_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		)
+	);
+
 }

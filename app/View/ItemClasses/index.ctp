@@ -6,6 +6,8 @@
 			<th><?php echo $this->Paginator->sort('item_group_id');?></th>
 			<th><?php echo $this->Paginator->sort('keycode');?></th>
 			<th><?php echo $this->Paginator->sort('name');?></th>
+			<th><?php echo $this->Paginator->sort('created');?></th>
+			<th><?php echo $this->Paginator->sort('modified');?></th>
 			<th class="actions"><?php echo __('Actions');?></th>
 	</tr>
 	<?php
@@ -17,6 +19,8 @@
 		</td>
 		<td><?php echo h($itemClass['ItemClass']['keycode']); ?>&nbsp;</td>
 		<td><?php echo h($itemClass['ItemClass']['name']); ?>&nbsp;</td>
+		<td><?php echo h($itemClass['ItemClass']['created']); ?>&nbsp;</td>
+		<td><?php echo h($itemClass['ItemClass']['modified']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $itemClass['ItemClass']['id'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $itemClass['ItemClass']['id'])); ?>
@@ -46,5 +50,7 @@
 		<li><?php echo $this->Html->link(__('New Item Class'), array('action' => 'add')); ?></li>
 		<li><?php echo $this->Html->link(__('List Item Groups'), array('controller' => 'item_groups', 'action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Item Group'), array('controller' => 'item_groups', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Items'), array('controller' => 'items', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Item'), array('controller' => 'items', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

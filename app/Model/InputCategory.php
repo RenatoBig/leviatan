@@ -3,8 +3,7 @@ App::uses('AppModel', 'Model');
 /**
  * InputCategory Model
  *
- * @property InputSubcategory $InputSubcategory
- * @property PngcCode $PngcCode
+ * @property Input $Input
  */
 class InputCategory extends AppModel {
 /**
@@ -22,21 +21,8 @@ class InputCategory extends AppModel {
  * @var array
  */
 	public $hasMany = array(
-		'InputSubcategory' => array(
-			'className' => 'InputSubcategory',
-			'foreignKey' => 'input_category_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
-		'PngcCode' => array(
-			'className' => 'PngcCode',
+		'Input' => array(
+			'className' => 'Input',
 			'foreignKey' => 'input_category_id',
 			'dependent' => false,
 			'conditions' => '',

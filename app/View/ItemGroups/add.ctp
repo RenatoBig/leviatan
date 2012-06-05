@@ -3,9 +3,9 @@
 	<fieldset>
 		<legend><?php echo __('Add Item Group'); ?></legend>
 	<?php
-		echo $this->Form->input('group_type_id');
-		echo $this->Form->input('key');
+		echo $this->Form->input('keycode');
 		echo $this->Form->input('name');
+		echo $this->Form->input('group_type_id');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit'));?>
