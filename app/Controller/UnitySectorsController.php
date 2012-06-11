@@ -111,7 +111,6 @@ class UnitySectorsController extends AppController {
 			//id da unidade			
 			$unity_id = $this->request->data['Employee']['Unity'];
 			//Recupera os setores de acordo com a unidade escolhida
-			$inicial = array('0'=>'Selecione um item');
 			$sectors = $this->UnitySector->find('all', 
 				array(
 					'conditions' => array(
@@ -122,8 +121,10 @@ class UnitySectorsController extends AppController {
 					'fields' => array('UnitySector.id', 'Sector.name')
 				)
 			);
+			
 			// organiza o array para colocar no value o id do UnitySector
 			// e coloca no text o nome do setor
+			$newSectors[''] = "Selecione um item";
 			foreach($sectors as $value):
 				$newSectors[$value['UnitySector']['id']] = $value['Sector']['name']; 
 			endforeach;

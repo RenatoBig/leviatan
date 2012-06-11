@@ -1,22 +1,22 @@
 <div class="employees view">
 <h2><?php  echo __('Employee');?></h2>
 	<dl>
-		<dt><?php echo __('Id'); ?></dt>
+		<dt><?php echo __('ID'); ?></dt>
 		<dd>
 			<?php echo h($employee['Employee']['id']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Registration'); ?></dt>
+		<dt><?php echo __('matrícula'); ?></dt>
 		<dd>
 			<?php echo h($employee['Employee']['registration']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Name'); ?></dt>
+		<dt><?php echo __('Nome'); ?></dt>
 		<dd>
 			<?php echo h($employee['Employee']['name']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Birth Date'); ?></dt>
+		<dt><?php echo __('Data de aniversário'); ?></dt>
 		<dd>
 			<?php echo h($employee['Employee']['birth_date']); ?>
 			&nbsp;
@@ -26,57 +26,57 @@
 			<?php echo h($employee['Employee']['email']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Phone'); ?></dt>
+		<dt><?php echo __('Telefone'); ?></dt>
 		<dd>
 			<?php echo h($employee['Employee']['phone']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Rg'); ?></dt>
+		<dt><?php echo __('RG'); ?></dt>
 		<dd>
 			<?php echo h($employee['Employee']['rg']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Cpf'); ?></dt>
+		<dt><?php echo __('CPF'); ?></dt>
 		<dd>
 			<?php echo h($employee['Employee']['cpf']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Voter Card'); ?></dt>
+		<dt><?php echo __('Título eleitoral'); ?></dt>
 		<dd>
 			<?php echo h($employee['Employee']['voter_card']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Ctps'); ?></dt>
+		<dt><?php echo __('Cateira de traballho'); ?></dt>
 		<dd>
 			<?php echo h($employee['Employee']['ctps']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Reservist'); ?></dt>
+		<dt><?php echo __('Reservista'); ?></dt>
 		<dd>
 			<?php echo h($employee['Employee']['reservist']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Agency'); ?></dt>
+		<dt><?php echo __('Agência'); ?></dt>
 		<dd>
 			<?php echo h($employee['Employee']['agency']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Account'); ?></dt>
+		<dt><?php echo __('Conta'); ?></dt>
 		<dd>
 			<?php echo h($employee['Employee']['account']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Unity Sector'); ?></dt>
+		<dt><?php echo __('Unidade_Setor'); ?></dt>
 		<dd>
 			<?php echo $this->Html->link($employee['UnitySector']['id'], array('controller' => 'unity_sectors', 'action' => 'view', $employee['UnitySector']['id'])); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Created'); ?></dt>
+		<dt><?php echo __('Criado'); ?></dt>
 		<dd>
 			<?php echo h($employee['Employee']['created']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Modified'); ?></dt>
+		<dt><?php echo __('Modificado'); ?></dt>
 		<dd>
 			<?php echo h($employee['Employee']['modified']); ?>
 			&nbsp;
@@ -84,10 +84,10 @@
 	</dl>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
+	<h3><?php echo __('Ações'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('Edit Employee'), array('action' => 'edit', $employee['Employee']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete Employee'), array('action' => 'delete', $employee['Employee']['id']), null, __('Are you sure you want to delete # %s?', $employee['Employee']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(__('Editar funcionário'), array('action' => 'edit', $employee['Employee']['id'])); ?> </li>
+		<li><?php echo $this->Form->postLink(__('Deletar funcionário'), array('action' => 'delete', $this->Form->value('Employee.id')), null, __('Você tem certeza que quer deletar o funcionário # %s?', $this->Form->value('Employee.name'))); ?></li>
 		<li><?php echo $this->Html->link(__('List Employees'), array('action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Employee'), array('action' => 'add')); ?> </li>
 		<li><?php echo $this->Html->link(__('List Unity Sectors'), array('controller' => 'unity_sectors', 'action' => 'index')); ?> </li>

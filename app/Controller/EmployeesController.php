@@ -46,11 +46,11 @@ class EmployeesController extends AppController {
 				$this->Session->setFlash(__('O funcionário foi cadastrado com sucesso.'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O usuário não pode ser cadastrado. Por favor tente novamente.'));
+				$this->Session->setFlash(__('O funcionário não pode ser cadastrado. Por favor tente novamente.'));
 			}
 		}
 		
-		$inicial = array('0'=>'Selecione um item');
+		$inicial = array(''=>'Selecione um item');
 		$unities = $this->Employee->UnitySector->Unity->find('list');
 		
 		$unities = $inicial + $unities;
@@ -67,20 +67,53 @@ class EmployeesController extends AppController {
 	public function edit($id = null) {
 		$this->Employee->id = $id;
 		if (!$this->Employee->exists()) {
-			throw new NotFoundException(__('Invalid employee'));
+			throw new NotFoundException(__('Funcionário inválido.'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Employee->save($this->request->data)) {
-				$this->Session->setFlash(__('The employee has been saved'));
+				$this->Session->setFlash(__('O funcionário foi alterado com sucesso.'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The employee could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('O funcionário não pode ser cadastrado. Por favor tente novamente.'));
 			}
 		} else {
+			//Recupera o registro do funcionário para edição
 			$this->request->data = $this->Employee->read(null, $id);
+			$this->__getInformationEdit($id);
 		}
-		$unitySectors = $this->Employee->UnitySector->find('list');
-		$this->set(compact('unitySectors'));
+		
+	}
+	
+	/**
+	 * 
+	 * Recupera informações para popular o formulário de edição de um funcionário
+	 * @param int $id  identificador do funcionário
+	 */
+	private function __getInformationEdit($id) {
+		
+		$inicial = array(''=>'Selecione um item');
+		//recupera as unidades
+		$unities = $this->Employee->UnitySector->Unity->find('list');
+		//Recupera os setores da unidade associados ao funcuinário selecionado
+		$sectorsUnity = $this->Employee->UnitySector->find('all', 
+			array(
+				'conditions'=>array(
+						'UnitySector.unity_id' => $this->request->data['UnitySector']['unity_id'],
+						'UnitySector.sector_id = Sector.id'
+				)
+			)
+		);
+		
+		$sectors[''] = "Selecione um item";
+		//Organiza o array de setores
+		foreach($sectorsUnity as $value):
+			$sectors[$value['UnitySector']['id']] = $value['Sector']['name']; 
+		endforeach;
+
+		$unities = $inicial + $unities;
+		
+		$this->set(compact('unities', 'sectors'));
+		
 	}
 
 /**
@@ -95,13 +128,13 @@ class EmployeesController extends AppController {
 		}
 		$this->Employee->id = $id;
 		if (!$this->Employee->exists()) {
-			throw new NotFoundException(__('Invalid employee'));
+			throw new NotFoundException(__('Funcionário inválido.'));
 		}
 		if ($this->Employee->delete()) {
-			$this->Session->setFlash(__('Employee deleted'));
+			$this->Session->setFlash(__('Funcionário deletado.'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Employee was not deleted'));
+		$this->Session->setFlash(__('Não foi possível deletar o funcionário.'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

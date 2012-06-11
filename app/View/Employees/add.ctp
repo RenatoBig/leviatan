@@ -1,3 +1,58 @@
+<script>
+$(document).ready(function() {
+
+	//Combobox
+	$('#sector').parent().hide();
+	
+	$('#unity_id').change(function() {
+		if($(this).val() == 0) {
+			$('#sector').parent().hide('slow');
+		}else {
+			$('#sector').parent().show('slow');
+		}
+	});	
+
+	//validação de formulário
+	$("#EmployeeAddForm").validate({ 
+    	rules: { 
+			'data[Employee][registration]':{
+				required: true,
+				number: true,
+				minlength: 6
+			},
+			'data[Employee][Unity]':{
+				required: true
+			},
+			'data[Employee][unity_sector_id]':{
+				required: true
+			},
+			'data[Employee][name]':{
+				required: true,
+				minlength: 3
+			}
+		},
+		messages: {
+			'data[Employee][registration]':{
+				required: "Este campo é obrigatório.",
+				minlength: "Quantidade mínima de dígitos é 6.",
+				number: "Apenas números são permitidos."					
+			},
+			'data[Employee][Unity]':{
+				required: "Selecione uma unidade."
+			},
+			'data[Employee][unity_sector_id]':{
+				required: "Selecione um setor"
+			},
+			'data[Employee][name]':{
+				required: "Este campo é obrigatório.",
+				minlength: "Nome muito pequeno."
+			}
+		}
+	}); 
+	
+});
+</script>
+
 <div class="employees form">
 <?php echo $this->Form->create('Employee');?>
 	<fieldset>

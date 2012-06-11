@@ -51,5 +51,40 @@ class Employee extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+	
+	var $validate = array(
+		'registration' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio o número da matrícula.',
+			),
+			'registrationRule2' => array(
+				'rule' => 'numeric',
+				'message' => 'Apenas números são permitidos.',				
+			),
+			'registrationRule3' => array(
+				'rule' => array('minLength', 6),
+				'message' => 'Número mínimo de caracteres é 6.'
+			)
+			
+		),
+		'name' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio o nome do funcionário.',
+			)
+		),
+		'Unity' => array(
+			'validateUnity' => array(
+    			'rule' => 'notEmpty',
+    			'message' => 'É obrigatório a escolha de uma unidade.'),
+		),
+		'unity_sector_id' => array(
+			'validateSector' => array(
+				'rule' => 'notEmpty',
+				'message' => 'É obrigatório a escolha de um setor.'
+			)
+		)
+	);
 
 }
