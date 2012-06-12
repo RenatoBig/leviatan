@@ -27,7 +27,7 @@ class HealthDistrictsController extends AppController {
 	public function view($id = null) {
 		$this->HealthDistrict->id = $id;
 		if (!$this->HealthDistrict->exists()) {
-			throw new NotFoundException(__('Invalid health district'));
+			throw new NotFoundException(__('Distrito sanitário inválido'));
 		}
 		$this->set('healthDistrict', $this->HealthDistrict->read(null, $id));
 	}
@@ -41,10 +41,10 @@ class HealthDistrictsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->HealthDistrict->create();
 			if ($this->HealthDistrict->save($this->request->data)) {
-				$this->Session->setFlash(__('The health district has been saved'));
+				$this->Session->setFlash(__('O distrito sanitário foi cadastrado'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The health district could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('O distrito sanitário não pode ser cadastrado. Por favor, tente novamente.'));
 			}
 		}
 	}
@@ -58,14 +58,14 @@ class HealthDistrictsController extends AppController {
 	public function edit($id = null) {
 		$this->HealthDistrict->id = $id;
 		if (!$this->HealthDistrict->exists()) {
-			throw new NotFoundException(__('Invalid health district'));
+			throw new NotFoundException(__('Distrito sanitário inválido'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->HealthDistrict->save($this->request->data)) {
-				$this->Session->setFlash(__('The health district has been saved'));
+				$this->Session->setFlash(__('O distrito sanitário não pode ser alterado'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The health district could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('o distrito sanitário não foi alterado. por favor, tente novamente.'));
 			}
 		} else {
 			$this->request->data = $this->HealthDistrict->read(null, $id);
@@ -84,13 +84,13 @@ class HealthDistrictsController extends AppController {
 		}
 		$this->HealthDistrict->id = $id;
 		if (!$this->HealthDistrict->exists()) {
-			throw new NotFoundException(__('Invalid health district'));
+			throw new NotFoundException(__('Distrito sanitário inválido'));
 		}
 		if ($this->HealthDistrict->delete()) {
-			$this->Session->setFlash(__('Health district deleted'));
+			$this->Session->setFlash(__('O distrito sanitário foi deletado'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Health district was not deleted'));
+		$this->Session->setFlash(__('O distrito sanitário não pode ser deletado'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

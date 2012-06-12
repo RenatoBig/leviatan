@@ -27,7 +27,7 @@ class SectorsController extends AppController {
 	public function view($id = null) {
 		$this->Sector->id = $id;
 		if (!$this->Sector->exists()) {
-			throw new NotFoundException(__('Invalid sector'));
+			throw new NotFoundException(__('Setor inválido'));
 		}
 		$this->set('sector', $this->Sector->read(null, $id));
 	}
@@ -41,10 +41,10 @@ class SectorsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Sector->create();
 			if ($this->Sector->save($this->request->data)) {
-				$this->Session->setFlash(__('The sector has been saved'));
+				$this->Session->setFlash(__('O setor foi cadastrado'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The sector could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('O setor não pode ser cadastrado. Por favor, tente novamente.'));
 			}
 		}
 	}
@@ -58,14 +58,14 @@ class SectorsController extends AppController {
 	public function edit($id = null) {
 		$this->Sector->id = $id;
 		if (!$this->Sector->exists()) {
-			throw new NotFoundException(__('Invalid sector'));
+			throw new NotFoundException(__('Setor inválido'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Sector->save($this->request->data)) {
-				$this->Session->setFlash(__('The sector has been saved'));
+				$this->Session->setFlash(__('O setor foi alterado'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The sector could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('O setor não foi alterado. Por favor, tente novamente.'));
 			}
 		} else {
 			$this->request->data = $this->Sector->read(null, $id);
@@ -84,13 +84,13 @@ class SectorsController extends AppController {
 		}
 		$this->Sector->id = $id;
 		if (!$this->Sector->exists()) {
-			throw new NotFoundException(__('Invalid sector'));
+			throw new NotFoundException(__('Setor inválido'));
 		}
 		if ($this->Sector->delete()) {
-			$this->Session->setFlash(__('Sector deleted'));
+			$this->Session->setFlash(__('Setor deletado'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Sector was not deleted'));
+		$this->Session->setFlash(__('O setor não foi deletado'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

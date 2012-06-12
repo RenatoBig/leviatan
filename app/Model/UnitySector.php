@@ -53,5 +53,25 @@ class UnitySector extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+	
+/**
+ * 
+ * Validação dos campos
+ * @var unknown_type
+ */
+	var $validate = array(
+		'unity_id' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio escolher uma unidade.',
+			)			
+		),
+		'sector_id' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio escolher um setor.',
+			)
+		)
+	);
 
 }

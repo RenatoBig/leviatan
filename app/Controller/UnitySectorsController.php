@@ -27,7 +27,7 @@ class UnitySectorsController extends AppController {
 	public function view($id = null) {
 		$this->UnitySector->id = $id;
 		if (!$this->UnitySector->exists()) {
-			throw new NotFoundException(__('Invalid unity sector'));
+			throw new NotFoundException(__('Unidade_setor inválido'));
 		}
 		$this->set('unitySector', $this->UnitySector->read(null, $id));
 	}
@@ -41,16 +41,19 @@ class UnitySectorsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->UnitySector->create();
 			if ($this->UnitySector->save($this->request->data)) {
-				$this->Session->setFlash(__('The unity sector has been saved'));
+				$this->Session->setFlash(__('A unidade_setor foi cadastrada'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The unity sector could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('A unidade_setor não pode ser cadastrada. por favor, tente novamente.'));
 			}
 		}
 		
-		
+		$inicio = array(''=>'Selecione um item');
 		$unities = $this->UnitySector->Unity->find('list');
 		$sectors = $this->UnitySector->Sector->find('list');
+		//--------------
+		$unities = $inicio + $unities;
+		$sectors = $inicio + $sectors;
 		$this->set(compact('unities', 'sectors'));
 	}
 
@@ -75,8 +78,13 @@ class UnitySectorsController extends AppController {
 		} else {
 			$this->request->data = $this->UnitySector->read(null, $id);
 		}
+		
+		$inicio = array(''=>'Selecione um item');
 		$unities = $this->UnitySector->Unity->find('list');
 		$sectors = $this->UnitySector->Sector->find('list');
+		//--------------
+		$unities = $inicio + $unities;
+		$sectors = $inicio + $sectors;
 		$this->set(compact('unities', 'sectors'));
 	}
 

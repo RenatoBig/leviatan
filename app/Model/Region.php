@@ -53,5 +53,25 @@ class Region extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+	
+	/**
+	 * 
+	 * Validação dos campos
+	 * @var unknown_type
+	 */
+	var $validate = array(
+		'city_id' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio escolher uma cidade.',
+			)			
+		),
+		'area_id' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio escolher uma área.',
+			)
+		)
+	);
 
 }

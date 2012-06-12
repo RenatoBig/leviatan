@@ -49,8 +49,8 @@ class PngcCodesController extends AppController {
 		}
 		$expenseGroups = $this->PngcCode->ExpenseGroup->find('list');
 		$functionalUnits = $this->PngcCode->FunctionalUnit->find('list');
-		$inputCategories = $this->PngcCode->InputCategory->find('list');
-		$inputSubcategories = $this->PngcCode->InputSubcategory->find('list');
+		$inputCategories = $this->PngcCode->Input->InputCategory->find('list');
+		$inputSubcategories = $this->PngcCode->Input->InputSubcategory->find('list');
 		$measureTypes = $this->PngcCode->MeasureType->find('list');
 		$this->set(compact('expenseGroups', 'functionalUnits', 'inputCategories', 'inputSubcategories', 'measureTypes'));
 	}

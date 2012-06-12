@@ -1,12 +1,12 @@
 <div class="sectors index">
-	<h2><?php echo __('Sectors');?></h2>
+	<h2><?php echo __('Setores');?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('name');?></th>
-			<th><?php echo $this->Paginator->sort('created');?></th>
-			<th><?php echo $this->Paginator->sort('modified');?></th>
-			<th class="actions"><?php echo __('Actions');?></th>
+			<th><?php echo $this->Paginator->sort('id', 'ID');?></th>
+			<th><?php echo $this->Paginator->sort('name', 'Nome');?></th>
+			<th><?php echo $this->Paginator->sort('created', 'Criado');?></th>
+			<th><?php echo $this->Paginator->sort('modified', 'Modificado');?></th>
+			<th class="actions"><?php echo __('Ações');?></th>
 	</tr>
 	<?php
 	foreach ($sectors as $sector): ?>
@@ -16,9 +16,9 @@
 		<td><?php echo h($sector['Sector']['created']); ?>&nbsp;</td>
 		<td><?php echo h($sector['Sector']['modified']); ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $sector['Sector']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $sector['Sector']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $sector['Sector']['id']), null, __('Are you sure you want to delete # %s?', $sector['Sector']['id'])); ?>
+			<?php echo $this->Html->link(__('Visualizar'), array('action' => 'view', $sector['Sector']['id'])); ?>
+			<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $sector['Sector']['id'])); ?>
+			<?php echo $this->Form->postLink(__('Deletar'), array('action' => 'delete', $sector['Sector']['id']), null, __('Deseja realmente deletar o setor #%s?', $sector['Sector']['name'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -32,17 +32,17 @@
 
 	<div class="paging">
 	<?php
-		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
+		echo $this->Paginator->prev('< ' . __('anterior'), array(), null, array('class' => 'prev disabled'));
 		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+		echo $this->Paginator->next(__('próximo') . ' >', array(), null, array('class' => 'next disabled'));
 	?>
 	</div>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
+	<h3><?php echo __('Ações'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('New Sector'), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Unity Sectors'), array('controller' => 'unity_sectors', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Unity Sector'), array('controller' => 'unity_sectors', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Novo setor'), array('action' => 'add')); ?></li>
+		<li><?php echo $this->Html->link(__('Listar unidades_setores'), array('controller' => 'unity_sectors', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Novo unidade_setor'), array('controller' => 'unity_sectors', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

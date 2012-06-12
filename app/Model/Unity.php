@@ -67,5 +67,54 @@ class Unity extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+	
+/**
+ * 
+ * Validação dos campos
+ * @var unknown_type
+ */
+	var $validate = array(
+		'cnes' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio o número da CNES.',
+			)			
+		),
+		'cnpj' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio o número do CNPJ.',
+			)
+		),
+		'name' => array(
+			'validateUnity' => array(
+    			'rule' => 'notEmpty',
+    			'message' => 'É obrigatório o nome da unidade.'),
+		),
+		'city_id' => array(
+			'validateCity' => array(
+				'rule' => 'notEmpty',
+				'message' => 'É obrigatório a escolha de uma cidade.'
+			)
+		),
+		'region_id' => array(
+			'validateRegion' => array(
+				'rule' => 'notEmpty',
+				'message' => 'É obrigatório a escolha de uma área.'
+			)
+		),
+		'health_district_id' => array(
+			'validateHealthDistrict' => array(
+				'rule' => 'notEmpty',
+				'message' => 'É obrigatório a escolha de um distrito sanitário.'
+			)
+		),
+		'unity_type_id' => array(
+			'validateUnityType' => array(
+				'rule' => 'notEmpty',
+				'message' => 'É obrigatório a escolha de um tipo da unidade.'
+			)
+		)
+	);
 
 }

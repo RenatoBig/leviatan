@@ -79,7 +79,7 @@ class EmployeesController extends AppController {
 		} else {
 			//Recupera o registro do funcionário para edição
 			$this->request->data = $this->Employee->read(null, $id);
-			$this->__getInformationEdit($id);
+			$this->__getInformationEdit();
 		}
 		
 	}
@@ -87,9 +87,9 @@ class EmployeesController extends AppController {
 	/**
 	 * 
 	 * Recupera informações para popular o formulário de edição de um funcionário
-	 * @param int $id  identificador do funcionário
+	 * 
 	 */
-	private function __getInformationEdit($id) {
+	private function __getInformationEdit() {
 		
 		$inicial = array(''=>'Selecione um item');
 		//recupera as unidades

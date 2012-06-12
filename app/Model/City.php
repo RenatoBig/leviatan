@@ -35,5 +35,34 @@ class City extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+	
+	/**
+	 * 
+	 * Validação dos campos
+	 * @var unknown_type
+	 */
+	var $validate = array(
+		'keycode' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio o código da cidade.',
+			),
+			'registrationRule2' => array(
+				'rule' => 'numeric',
+				'message' => 'Apenas números são permitidos.',				
+			),
+			'registrationRule3' => array(
+				'rule' => array('minLength', 6),
+				'message' => 'Número mínimo de caracteres é 6.'
+			)
+			
+		),
+		'name' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio o nome da cidade.',
+			)
+		)
+	);
 
 }

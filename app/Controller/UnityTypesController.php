@@ -27,7 +27,7 @@ class UnityTypesController extends AppController {
 	public function view($id = null) {
 		$this->UnityType->id = $id;
 		if (!$this->UnityType->exists()) {
-			throw new NotFoundException(__('Invalid unity type'));
+			throw new NotFoundException(__('Inválido tipo da unidade.'));
 		}
 		$this->set('unityType', $this->UnityType->read(null, $id));
 	}
@@ -41,10 +41,10 @@ class UnityTypesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->UnityType->create();
 			if ($this->UnityType->save($this->request->data)) {
-				$this->Session->setFlash(__('The unity type has been saved'));
+				$this->Session->setFlash(__('O tipo da unidade foi cadastrado'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The unity type could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('O tipo da unidade não pode ser cadastrado. Por favor, tente novamente.'));
 			}
 		}
 	}
@@ -58,14 +58,14 @@ class UnityTypesController extends AppController {
 	public function edit($id = null) {
 		$this->UnityType->id = $id;
 		if (!$this->UnityType->exists()) {
-			throw new NotFoundException(__('Invalid unity type'));
+			throw new NotFoundException(__('tipo da unidade inválido'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->UnityType->save($this->request->data)) {
-				$this->Session->setFlash(__('The unity type has been saved'));
+				$this->Session->setFlash(__('O tipo da unidade foi alterado'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The unity type could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('O tipo da unidade não foi alterado. Por favor, tente novamente.'));
 			}
 		} else {
 			$this->request->data = $this->UnityType->read(null, $id);
@@ -84,13 +84,13 @@ class UnityTypesController extends AppController {
 		}
 		$this->UnityType->id = $id;
 		if (!$this->UnityType->exists()) {
-			throw new NotFoundException(__('Invalid unity type'));
+			throw new NotFoundException(__('tipo da unidade inválida'));
 		}
 		if ($this->UnityType->delete()) {
-			$this->Session->setFlash(__('Unity type deleted'));
+			$this->Session->setFlash(__('tipo da unidade deletado'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Unity type was not deleted'));
+		$this->Session->setFlash(__('O tipo da unidade não pode ser deletado'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

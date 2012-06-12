@@ -1,23 +1,23 @@
 <div class="unities index">
-	<h2><?php echo __('Unities');?></h2>
+	<h2><?php echo __('Unidades');?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('cnes');?></th>
-			<th><?php echo $this->Paginator->sort('cnpj');?></th>
-			<th><?php echo $this->Paginator->sort('name');?></th>
-			<th><?php echo $this->Paginator->sort('trade_name');?></th>
-			<th><?php echo $this->Paginator->sort('address');?></th>
-			<th><?php echo $this->Paginator->sort('number');?></th>
-			<th><?php echo $this->Paginator->sort('cep');?></th>
-			<th><?php echo $this->Paginator->sort('phone');?></th>
-			<th><?php echo $this->Paginator->sort('fax');?></th>
-			<th><?php echo $this->Paginator->sort('region_id');?></th>
-			<th><?php echo $this->Paginator->sort('health_district_id');?></th>
-			<th><?php echo $this->Paginator->sort('unity_type_id');?></th>
-			<th><?php echo $this->Paginator->sort('created');?></th>
-			<th><?php echo $this->Paginator->sort('modified');?></th>
-			<th class="actions"><?php echo __('Actions');?></th>
+			<th><?php echo $this->Paginator->sort('id', 'ID');?></th>
+			<th><?php echo $this->Paginator->sort('cnes', 'CNES');?></th>
+			<th><?php echo $this->Paginator->sort('cnpj', 'CNPJ');?></th>
+			<th><?php echo $this->Paginator->sort('name', 'Nome');?></th>
+			<th><?php echo $this->Paginator->sort('trade_name', 'Nome fantasia');?></th>
+			<th><?php echo $this->Paginator->sort('address', 'Endereço');?></th>
+			<th><?php echo $this->Paginator->sort('number', 'Número');?></th>
+			<th><?php echo $this->Paginator->sort('cep', 'CEP');?></th>
+			<th><?php echo $this->Paginator->sort('phone', 'Telefone');?></th>
+			<th><?php echo $this->Paginator->sort('fax', 'FAX');?></th>
+			<th><?php echo $this->Paginator->sort('region_id', 'Região');?></th>
+			<th><?php echo $this->Paginator->sort('health_district_id', 'Distrito sanitário');?></th>
+			<th><?php echo $this->Paginator->sort('unity_type_id', 'Tipo da unidade');?></th>
+			<th><?php echo $this->Paginator->sort('created', 'Criado');?></th>
+			<th><?php echo $this->Paginator->sort('modified', 'Modificado');?></th>
+			<th class="actions"><?php echo __('Ações');?></th>
 	</tr>
 	<?php
 	foreach ($unities as $unity): ?>
@@ -44,9 +44,9 @@
 		<td><?php echo h($unity['Unity']['created']); ?>&nbsp;</td>
 		<td><?php echo h($unity['Unity']['modified']); ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $unity['Unity']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $unity['Unity']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $unity['Unity']['id']), null, __('Are you sure you want to delete # %s?', $unity['Unity']['id'])); ?>
+			<?php echo $this->Html->link(__('Visualizar'), array('action' => 'view', $unity['Unity']['id'])); ?>
+			<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $unity['Unity']['id'])); ?>
+			<?php echo $this->Form->postLink(__('Deletar'), array('action' => 'delete', $unity['Unity']['id']), null, __('Deseja realmente deletar a unidade #%s?', $unity['Unity']['id'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -60,23 +60,23 @@
 
 	<div class="paging">
 	<?php
-		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
+		echo $this->Paginator->prev('< ' . __('anterior'), array(), null, array('class' => 'prev disabled'));
 		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+		echo $this->Paginator->next(__('próximo') . ' >', array(), null, array('class' => 'next disabled'));
 	?>
 	</div>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
+	<h3><?php echo __('Ações'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('New Unity'), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Regions'), array('controller' => 'regions', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Region'), array('controller' => 'regions', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Health Districts'), array('controller' => 'health_districts', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Health District'), array('controller' => 'health_districts', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Unity Types'), array('controller' => 'unity_types', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Unity Type'), array('controller' => 'unity_types', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Unity Sectors'), array('controller' => 'unity_sectors', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Unity Sector'), array('controller' => 'unity_sectors', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Nova unidade'), array('action' => 'add')); ?></li>
+		<li><?php echo $this->Html->link(__('Listar regiões'), array('controller' => 'regions', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Nova região'), array('controller' => 'regions', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Listar distritos sanitários'), array('controller' => 'health_districts', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Novo distrito sanitário'), array('controller' => 'health_districts', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Listar tipos das unidades'), array('controller' => 'unity_types', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Novo tipo da unidade'), array('controller' => 'unity_types', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Listar unidades_setores'), array('controller' => 'unity_sectors', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Novo unidade_setor'), array('controller' => 'unity_sectors', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

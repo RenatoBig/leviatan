@@ -6,7 +6,7 @@
 			<?php echo h($employee['Employee']['id']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('matrícula'); ?></dt>
+		<dt><?php echo __('Matrícula'); ?></dt>
 		<dd>
 			<?php echo h($employee['Employee']['registration']); ?>
 			&nbsp;

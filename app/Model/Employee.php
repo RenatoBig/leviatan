@@ -52,6 +52,11 @@ class Employee extends AppModel {
 		)
 	);
 	
+	/**
+	 * 
+	 * Validação dos campos
+	 * @var unknown_type
+	 */
 	var $validate = array(
 		'registration' => array(
 			'registrationRule1' => array(
