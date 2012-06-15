@@ -7,7 +7,6 @@ App::uses('AppController', 'Controller');
  */
 class UnitiesController extends AppController {
 
-	public $helpers = array('Js');
 	
 /**
  * index method

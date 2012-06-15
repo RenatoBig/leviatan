@@ -53,5 +53,25 @@ class Input extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+	
+	/**
+	 * 
+	 * Validação dos campos
+	 * @var unknown_type
+	 */
+	var $validate = array(
+		'input_category_id' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio escolher uma categoria.',
+			)
+		),
+		'input_subcategory_id' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio escolher uma subcategoria.',
+			)
+		)		
+	);
 
 }

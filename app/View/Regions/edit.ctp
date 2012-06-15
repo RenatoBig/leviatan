@@ -1,5 +1,28 @@
 <script>
 $(document).ready(function() {
+
+	$('#RegionCityId').change(function() {		
+		if($(this).val() == 0) {
+			$('#RegionAreaId').parent().hide('slow');
+		}else {
+			$('#RegionAreaId').parent().show('slow');
+		}
+	});
+	
+	//Função que retira o nome da área atual quando clica no select da área
+	$('#RegionAreaId').click(function() {
+		var cidade = '<?php echo $this->request->data['City']['id']?>';
+		var area = '<?php echo $this->request->data['Area']['id']?>';
+
+		var citySelect = document.getElementById("RegionCityId");
+		var areaSelect = document.getElementById("RegionAreaId");
+		
+		if(areaSelect.value == area && citySelect.value == cidade) {
+			areaSelect.remove(areaSelect.selectedIndex);
+		}		
+	});
+	
+	
 	//validação de formulário
 	$("#RegionEditForm").validate({ 
     	rules: {
@@ -27,6 +50,30 @@ $(document).ready(function() {
 	<fieldset>
 		<legend><?php echo __('Editar Região'); ?></legend>
 	<?php
+		//requisição feita quando se muda a cidade. Como resposta ele popula o select
+		//das regiões com as que ainda não foram cadastradas 
+		//-------------------
+		$this->Js->get('#RegionCityId')->event('change', 
+			$this->Js->request(
+				array(
+					'controller'=>'Areas',
+					'action'=>'getAreas'
+				), 
+				array(
+					'update'=>'#RegionAreaId',
+					'async' => true,
+					'method' => 'post',
+					'dataExpression'=>true,
+					'data'=> $this->Js->serializeForm(
+						array(
+							'isForm' => true,
+							'inline' => true
+						)
+					)
+				)
+			)
+		);		
+		//----------------------
 		echo $this->Form->input('id');
 		echo $this->Form->input('city_id', array('label'=>__('Cidade')));
 		echo $this->Form->input('area_id', array('label'=>__('Área')));

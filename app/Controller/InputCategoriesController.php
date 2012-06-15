@@ -27,7 +27,7 @@ class InputCategoriesController extends AppController {
 	public function view($id = null) {
 		$this->InputCategory->id = $id;
 		if (!$this->InputCategory->exists()) {
-			throw new NotFoundException(__('Invalid input category'));
+			throw new NotFoundException(__('Categoria inválida'));
 		}
 		$this->set('inputCategory', $this->InputCategory->read(null, $id));
 	}
@@ -41,10 +41,10 @@ class InputCategoriesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->InputCategory->create();
 			if ($this->InputCategory->save($this->request->data)) {
-				$this->Session->setFlash(__('The input category has been saved'));
+				$this->Session->setFlash(__('A categoria foi cadastrada'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The input category could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('A categoria não pode ser cadastrada. Por favor, tente novamente.'));
 			}
 		}
 	}
@@ -58,14 +58,14 @@ class InputCategoriesController extends AppController {
 	public function edit($id = null) {
 		$this->InputCategory->id = $id;
 		if (!$this->InputCategory->exists()) {
-			throw new NotFoundException(__('Invalid input category'));
+			throw new NotFoundException(__('Categoria inválida'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->InputCategory->save($this->request->data)) {
-				$this->Session->setFlash(__('The input category has been saved'));
+				$this->Session->setFlash(__('A categoria foi alterada'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The input category could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('A categoria não pode ser alterada. Por favor, tente novamente.'));
 			}
 		} else {
 			$this->request->data = $this->InputCategory->read(null, $id);
@@ -84,13 +84,13 @@ class InputCategoriesController extends AppController {
 		}
 		$this->InputCategory->id = $id;
 		if (!$this->InputCategory->exists()) {
-			throw new NotFoundException(__('Invalid input category'));
+			throw new NotFoundException(__('Categoria inválida'));
 		}
 		if ($this->InputCategory->delete()) {
-			$this->Session->setFlash(__('Input category deleted'));
+			$this->Session->setFlash(__('Categoria deletada'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Input category was not deleted'));
+		$this->Session->setFlash(__('A categoria não pode ser deletada'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

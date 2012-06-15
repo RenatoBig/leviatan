@@ -98,17 +98,17 @@ $(document).ready(function() {
 		echo $this->Form->input('account', array('label'=>__('Conta corrente')));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Editar'));?>
+<?php echo $this->Form->end(__('Alterar'));?>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
+	<h3><?php echo __('Ações'); ?></h3>
 	<ul>
 
 		<li><?php echo $this->Form->postLink(__('Deletar funcionário'), array('action' => 'delete', $this->Form->value('Employee.id')), null, __('Você tem certeza que quer deletar o funcionário # %s?', $this->Form->value('Employee.name'))); ?></li>
-		<li><?php echo $this->Html->link(__('List Employees'), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('List Unity Sectors'), array('controller' => 'unity_sectors', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Unity Sector'), array('controller' => 'unity_sectors', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Users'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New User'), array('controller' => 'users', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Listar funcionários'), array('action' => 'index'));?></li>
+		<li><?php echo $this->Html->link(__('Listar unidades_setores'), array('controller' => 'unity_sectors', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Novo unidade_setor'), array('controller' => 'unity_sectors', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Listar usuários'), array('controller' => 'users', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Novo usuário'), array('controller' => 'users', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

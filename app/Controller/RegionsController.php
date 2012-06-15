@@ -7,6 +7,7 @@ App::uses('AppController', 'Controller');
  */
 class RegionsController extends AppController {
 
+	var $uses = array('Region', 'Area');
 
 /**
  * index method
@@ -82,8 +83,56 @@ class RegionsController extends AppController {
 		$areas = $this->Region->Area->find('list');
 		//---------------------
 		$cities = $inicio + $cities;
-		$areas = $inicio + $areas;
+		$areas = array($this->request->data['Area']['id']=>$this->request->data['Area']['name']);
+		$areas = $areas + $this->__getAreas();
+		
 		$this->set(compact('cities', 'areas'));
+	}
+	
+	/**
+	 * 
+	 * Recupera as áreas que ainda não foram cadastradas na região
+	 * @param unknown_type $cityId
+	 */
+	private function __getAreas() {
+		//id da unidade			
+		$cityId = $this->request->data['Region']['city_id'];
+
+		if($cityId == "") {
+			exit;
+		}
+
+		$db = $this->Region->getDataSource();			
+		$subQuery = $db->buildStatement(
+		    array(
+		        'fields'     => array(' * '),
+		        'table'      => $db->fullTableName($this->Region),
+		        'alias'      => 'Region',
+		        'limit'      => null,
+		        'offset'     => null,
+		        'joins'      => array(),
+		        'conditions' => array(
+		    		'Area.id = Region.area_id',
+		  			'Region.city_id'=>$cityId
+		    	),
+		        'order'      => null,
+		        'group'      => null
+		    ),
+		    $this->Region
+		);
+		$subQuery = ' NOT EXISTS (' . $subQuery . ') ';
+		$subQueryExpression = $db->expression($subQuery);
+		$conditions[] = $subQueryExpression;
+		$areas = $this->Area->find('list', compact('conditions'));
+		
+		if(empty($areas)) {
+			$inicio = array(''=>'Não existem áreas ou foram todas cadastradas');	
+		}else {
+			$inicio = array(''=>'Selecione um item');
+		}
+		$areas = $inicio + $areas;
+		
+		return $areas;
 	}
 
 /**

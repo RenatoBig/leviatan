@@ -6,8 +6,7 @@ App::uses('AppController', 'Controller');
  * @property User $User
  */
 class UsersController extends AppController {
-
-
+	
 /**
  * index method
  *
@@ -27,7 +26,7 @@ class UsersController extends AppController {
 	public function view($id = null) {
 		$this->User->id = $id;
 		if (!$this->User->exists()) {
-			throw new NotFoundException(__('Invalid user'));
+			throw new NotFoundException(__('Usuário inválido'));
 		}
 		$this->set('user', $this->User->read(null, $id));
 	}
@@ -55,14 +54,18 @@ class UsersController extends AppController {
 			
 			$this->User->create();			
 			if ($this->User->save($this->request->data)) {
-				$this->Session->setFlash(__('O usuário foi cadastrado com sucesso.'));
+				$this->Session->setFlash(__('O usuário foi cadastrado.'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O usuário não pode ser cadastrado. Por favor tente novamente.'));
+				$this->Session->setFlash(__('O usuário não pode ser cadastrado. Por favor, tente novamente.'));
 			}
 		}
+		$inicio = array(''=>'Selecione um item');
 		$employees = $this->User->Employee->find('list');
 		$groups = $this->User->Group->find('list');
+		//-------
+		$employees = $inicio + $employees;
+		$groups = $inicio + $groups;
 		$this->set(compact('employees', 'groups'));
 	}
 
@@ -75,20 +78,26 @@ class UsersController extends AppController {
 	public function edit($id = null) {
 		$this->User->id = $id;
 		if (!$this->User->exists()) {
-			throw new NotFoundException(__('Invalid user'));
+			throw new NotFoundException(__('Usuário inválido'));
 		}
-		if ($this->request->is('post') || $this->request->is('put')) {
-			if ($this->User->save($this->request->data)) {
-				$this->Session->setFlash(__('The user has been saved'));
+		if ($this->request->is('post') || $this->request->is('put')) {			
+			if ($this->User->save($this->request->data)) {				
+				$this->Session->setFlash(__('o usuário foi alterado'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('O usuário não pode ser alterado. por favor, tente novamente.'));
 			}
 		} else {
 			$this->request->data = $this->User->read(null, $id);
-		}
+			unset($this->request->data['User']['password']);
+		}	
+		$inicio = array(''=>'Selecione um item');	
+		$employees = $this->User->Employee->find('list');
 		$groups = $this->User->Group->find('list');
-		$this->set(compact('groups'));
+		//-------
+		$employees = $inicio + $employees;
+		$groups = $inicio + $groups;
+		$this->set(compact('employees', 'groups'));
 	}
 
 /**
@@ -103,23 +112,14 @@ class UsersController extends AppController {
 		}
 		$this->User->id = $id;
 		if (!$this->User->exists()) {
-			throw new NotFoundException(__('Invalid user'));
+			throw new NotFoundException(__('Usuário inválido'));
 		}
 		if ($this->User->delete()) {
-			$this->Session->setFlash(__('User deleted'));
+			$this->Session->setFlash(__('Usuário deletado'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('User was not deleted'));
+		$this->Session->setFlash(__('O usuário não pode ser deletado'));
 		$this->redirect(array('action' => 'index'));
-	}
-	
-/**
- * (non-PHPdoc)
- * @see lib/Cake/Controller/Controller::beforeFilter()
- */
-	public function beforeFilter() {
-    	parent::beforeFilter();
-    	$this->Auth->allow('*');
 	}
 	
 /**
@@ -131,7 +131,7 @@ class UsersController extends AppController {
 	        if ($this->Auth->login()) {
 	            $this->redirect($this->Auth->redirect());
 	        } else {
-	            $this->Session->setFlash('Your username or password was incorrect.');
+	            $this->Session->setFlash('Usuário ou senha incorretos.');
 	        }
 	    }
 	}
@@ -142,7 +142,7 @@ class UsersController extends AppController {
  */
 	public function logout() {
 	    //Leave empty for now.
-	    $this->Session->setFlash('Good-Bye');
+	    $this->Session->setFlash('Adeus');
 		$this->redirect($this->Auth->logout());
 	}
 }

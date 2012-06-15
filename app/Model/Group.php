@@ -45,5 +45,19 @@ class Group extends AppModel {
     public function parentNode() {
         return null;
     }
+    
+    /**
+	 * 
+	 * Validação dos campos
+	 * @var unknown_type
+	 */
+	var $validate = array(
+		'name' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio o nome do grupo.',
+			)
+		)
+	);
 
 }

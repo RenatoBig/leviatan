@@ -84,5 +84,37 @@ class User extends AppModel {
             return array('Group' => array('id' => $groupId));
         }
     }
+    
+    /**
+	 * 
+	 * Validação dos campos
+	 * @var unknown_type
+	 */
+	var $validate = array(
+		'group_id' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio escolher um grupo.',
+			)
+		),
+		'employee_id' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio escolher um funcionário.',
+			)
+		),
+		'password' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio a senha.',
+			)
+		),
+		'confirm_password' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio confirmar a senha.',
+			)
+		)
+	);
 
 }

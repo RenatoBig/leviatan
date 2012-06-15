@@ -6,8 +6,6 @@ App::uses('AppController', 'Controller');
  * @property Employee $Employee
  */
 class EmployeesController extends AppController {
-	
-	public $helpers = array('Js');
 
 /**
  * index method
@@ -28,7 +26,7 @@ class EmployeesController extends AppController {
 	public function view($id = null) {
 		$this->Employee->id = $id;
 		if (!$this->Employee->exists()) {
-			throw new NotFoundException(__('Invalid employee'));
+			throw new NotFoundException(__('Funcionário inválido'));
 		}
 		$this->set('employee', $this->Employee->read(null, $id));
 	}
@@ -43,10 +41,10 @@ class EmployeesController extends AppController {
 			
 			$this->Employee->create();
 			if ($this->Employee->save($this->request->data)) {
-				$this->Session->setFlash(__('O funcionário foi cadastrado com sucesso.'));
+				$this->Session->setFlash(__('O funcionário foi cadastrado.'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O funcionário não pode ser cadastrado. Por favor tente novamente.'));
+				$this->Session->setFlash(__('O funcionário não pode ser cadastrado. Por favor, tente novamente.'));
 			}
 		}
 		
@@ -71,10 +69,10 @@ class EmployeesController extends AppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Employee->save($this->request->data)) {
-				$this->Session->setFlash(__('O funcionário foi alterado com sucesso.'));
+				$this->Session->setFlash(__('O funcionário foi alterado.'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O funcionário não pode ser cadastrado. Por favor tente novamente.'));
+				$this->Session->setFlash(__('O funcionário não pode ser cadastrado. Por favor, tente novamente.'));
 			}
 		} else {
 			//Recupera o registro do funcionário para edição

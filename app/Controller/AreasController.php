@@ -6,7 +6,8 @@ App::uses('AppController', 'Controller');
  * @property Area $Area
  */
 class AreasController extends AppController {
-
+	
+	public $uses = array('Area', 'Region');
 
 /**
  * index method
@@ -92,6 +93,56 @@ class AreasController extends AppController {
 		}
 		$this->Session->setFlash(__('A área não pode ser alterada'));
 		$this->redirect(array('action' => 'index'));
+	}
+	
+	
+/**
+ * 
+ * Função que retorna as áreas que ainda não estão 
+ * cadastradas na tabela de regiões
+ */
+	public function getAreas() {
+		if($this->request->is('ajax')) {
+			//id da unidade			
+			$cityId = $this->request->data['Region']['city_id'];
+
+			if($cityId == "") {
+				exit;
+			}
+
+			$db = $this->Region->getDataSource();			
+			$subQuery = $db->buildStatement(
+			    array(
+			        'fields'     => array(' * '),
+			        'table'      => $db->fullTableName($this->Region),
+			        'alias'      => 'Region',
+			        'limit'      => null,
+			        'offset'     => null,
+			        'joins'      => array(),
+			        'conditions' => array(
+			    		'Area.id = Region.area_id',
+			  			'Region.city_id'=>$cityId
+			    	),
+			        'order'      => null,
+			        'group'      => null
+			    ),
+			    $this->Region
+			);
+			$subQuery = ' NOT EXISTS (' . $subQuery . ') ';
+			$subQueryExpression = $db->expression($subQuery);
+			$conditions[] = $subQueryExpression;
+			$areas = $this->Area->find('list', compact('conditions'));
+			
+			if(empty($areas)) {
+				$inicio = array(''=>'Não existem áreas ou foram todas cadastradas');	
+			}else {
+				$inicio = array(''=>'Selecione um item');
+			}
+			$areas = $inicio + $areas;
+			
+			$this->set(compact('areas'));
+			$this->layout = 'ajax';
+		}		
 	}
 
 }
