@@ -27,7 +27,7 @@ class ItemGroupsController extends AppController {
 	public function view($id = null) {
 		$this->ItemGroup->id = $id;
 		if (!$this->ItemGroup->exists()) {
-			throw new NotFoundException(__('Invalid item group'));
+			throw new NotFoundException(__('Item do grupo inválido'));
 		}
 		$this->set('itemGroup', $this->ItemGroup->read(null, $id));
 	}
@@ -41,13 +41,16 @@ class ItemGroupsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->ItemGroup->create();
 			if ($this->ItemGroup->save($this->request->data)) {
-				$this->Session->setFlash(__('The item group has been saved'));
+				$this->Session->setFlash(__('O item do grupo foi cadastrado'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The item group could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('O item do grupo foi cadastrado. Por favor, tente novamente.'));
 			}
 		}
+		$inicio = array(''=>'Selecione um item');
 		$groupTypes = $this->ItemGroup->GroupType->find('list');
+		
+		$groupTypes = $inicio + $groupTypes;
 		$this->set(compact('groupTypes'));
 	}
 
@@ -60,19 +63,21 @@ class ItemGroupsController extends AppController {
 	public function edit($id = null) {
 		$this->ItemGroup->id = $id;
 		if (!$this->ItemGroup->exists()) {
-			throw new NotFoundException(__('Invalid item group'));
+			throw new NotFoundException(__('Item do grupo inválido'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->ItemGroup->save($this->request->data)) {
-				$this->Session->setFlash(__('The item group has been saved'));
+				$this->Session->setFlash(__('O item do grupo foi alterado'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The item group could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('O item do grupo não pode ser alterado. Por favor, tente novamente.'));
 			}
 		} else {
 			$this->request->data = $this->ItemGroup->read(null, $id);
 		}
+		$inicio = array(''=>'Selecione um item');
 		$groupTypes = $this->ItemGroup->GroupType->find('list');
+		$groupTypes = $inicio + $groupTypes;
 		$this->set(compact('groupTypes'));
 	}
 
@@ -88,13 +93,13 @@ class ItemGroupsController extends AppController {
 		}
 		$this->ItemGroup->id = $id;
 		if (!$this->ItemGroup->exists()) {
-			throw new NotFoundException(__('Invalid item group'));
+			throw new NotFoundException(__('Item do grupo inválido'));
 		}
 		if ($this->ItemGroup->delete()) {
-			$this->Session->setFlash(__('Item group deleted'));
+			$this->Session->setFlash(__('Item do grupo deletado'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Item group was not deleted'));
+		$this->Session->setFlash(__('Item do grupo não foi deletado'));
 		$this->redirect(array('action' => 'index'));
 	}
 	
@@ -122,3 +127,4 @@ class ItemGroupsController extends AppController {
 		}
 	}
 }
+ 

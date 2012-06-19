@@ -27,7 +27,7 @@ class GroupTypesController extends AppController {
 	public function view($id = null) {
 		$this->GroupType->id = $id;
 		if (!$this->GroupType->exists()) {
-			throw new NotFoundException(__('Invalid group type'));
+			throw new NotFoundException(__('Tipo do grupo inválido'));
 		}
 		$this->set('groupType', $this->GroupType->read(null, $id));
 	}
@@ -41,10 +41,10 @@ class GroupTypesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->GroupType->create();
 			if ($this->GroupType->save($this->request->data)) {
-				$this->Session->setFlash(__('The group type has been saved'));
+				$this->Session->setFlash(__('O tipo de grupo foi cadastrado'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The group type could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('O tipo de grupo não pode ser cadastrado. Por favor, tente novamente.'));
 			}
 		}
 	}
@@ -58,14 +58,14 @@ class GroupTypesController extends AppController {
 	public function edit($id = null) {
 		$this->GroupType->id = $id;
 		if (!$this->GroupType->exists()) {
-			throw new NotFoundException(__('Invalid group type'));
+			throw new NotFoundException(__('Tipo do grupo inválido'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->GroupType->save($this->request->data)) {
-				$this->Session->setFlash(__('The group type has been saved'));
+				$this->Session->setFlash(__('O tipo do grupo foi alterado'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The group type could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('O tipo do grupo não pode ser alterado. Por favor, tente novamente.'));
 			}
 		} else {
 			$this->request->data = $this->GroupType->read(null, $id);
@@ -84,13 +84,13 @@ class GroupTypesController extends AppController {
 		}
 		$this->GroupType->id = $id;
 		if (!$this->GroupType->exists()) {
-			throw new NotFoundException(__('Invalid group type'));
+			throw new NotFoundException(__('Tipo do grupo inválido'));
 		}
 		if ($this->GroupType->delete()) {
-			$this->Session->setFlash(__('Group type deleted'));
+			$this->Session->setFlash(__('Tipo do grupo deletado'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Group type was not deleted'));
+		$this->Session->setFlash(__('Tipo do grupo não pode ser deletado'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

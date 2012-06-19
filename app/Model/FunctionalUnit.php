@@ -35,5 +35,25 @@ class FunctionalUnit extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+	
+	/**
+	 * 
+	 * Validação dos campos
+	 * @var unknown_type
+	 */
+	var $validate = array(
+		'name' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio o nome da unidade funcional.',
+			)
+		),
+		'description' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio a descrição da unidade funcional.',
+			)
+		)
+	);
 
 }

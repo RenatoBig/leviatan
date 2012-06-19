@@ -1,14 +1,14 @@
 <div class="itemClasses index">
-	<h2><?php echo __('Item Classes');?></h2>
+	<h2><?php echo __('Itens das Classes');?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('item_group_id');?></th>
-			<th><?php echo $this->Paginator->sort('keycode');?></th>
-			<th><?php echo $this->Paginator->sort('name');?></th>
-			<th><?php echo $this->Paginator->sort('created');?></th>
-			<th><?php echo $this->Paginator->sort('modified');?></th>
-			<th class="actions"><?php echo __('Actions');?></th>
+			<th><?php echo $this->Paginator->sort('id', 'ID');?></th>
+			<th><?php echo $this->Paginator->sort('item_group_id', 'Grupos dos itens');?></th>
+			<th><?php echo $this->Paginator->sort('keycode', 'Código');?></th>
+			<th><?php echo $this->Paginator->sort('name', 'Nome');?></th>
+			<th><?php echo $this->Paginator->sort('created', 'Criado');?></th>
+			<th><?php echo $this->Paginator->sort('modified', 'Modificado');?></th>
+			<th class="actions"><?php echo __('Ações');?></th>
 	</tr>
 	<?php
 	foreach ($itemClasses as $itemClass): ?>
@@ -22,9 +22,9 @@
 		<td><?php echo h($itemClass['ItemClass']['created']); ?>&nbsp;</td>
 		<td><?php echo h($itemClass['ItemClass']['modified']); ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $itemClass['ItemClass']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $itemClass['ItemClass']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $itemClass['ItemClass']['id']), null, __('Are you sure you want to delete # %s?', $itemClass['ItemClass']['id'])); ?>
+			<?php echo $this->Html->link(__('Visualizar'), array('action' => 'view', $itemClass['ItemClass']['id'])); ?>
+			<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $itemClass['ItemClass']['id'])); ?>
+			<?php echo $this->Form->postLink(__('Deletar'), array('action' => 'delete', $itemClass['ItemClass']['id']), null, __('Deseja realmente delear o item da classe #%s?', $itemClass['ItemClass']['name'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -38,19 +38,19 @@
 
 	<div class="paging">
 	<?php
-		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
+		echo $this->Paginator->prev('< ' . __('anterior'), array(), null, array('class' => 'prev disabled'));
 		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+		echo $this->Paginator->next(__('próxima') . ' >', array(), null, array('class' => 'next disabled'));
 	?>
 	</div>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
+	<h3><?php echo __('Ações'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('New Item Class'), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Item Groups'), array('controller' => 'item_groups', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Item Group'), array('controller' => 'item_groups', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Items'), array('controller' => 'items', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Item'), array('controller' => 'items', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Novo item da classe'), array('action' => 'add')); ?></li>
+		<li><?php echo $this->Html->link(__('Listar grupos dos itens'), array('controller' => 'item_groups', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Novo item do grupo'), array('controller' => 'item_groups', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Listar itens'), array('controller' => 'items', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Novo item'), array('controller' => 'items', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

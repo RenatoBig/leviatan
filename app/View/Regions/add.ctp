@@ -57,13 +57,14 @@ $(document).ready(function() {
 							'isForm' => true,
 							'inline' => true
 						)
-					)
+					),
 				)
 			)
 		);		
 		//----------------------
 		
 		echo $this->Form->input('city_id', array('label'=>__('Cidade')));
+		echo '<div id="loading">Loading...</div>';		
 		echo $this->Form->input('area_id', array('label'=>__('Área')));
 	?>
 	</fieldset>

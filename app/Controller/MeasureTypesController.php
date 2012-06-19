@@ -27,7 +27,7 @@ class MeasureTypesController extends AppController {
 	public function view($id = null) {
 		$this->MeasureType->id = $id;
 		if (!$this->MeasureType->exists()) {
-			throw new NotFoundException(__('Invalid measure type'));
+			throw new NotFoundException(__('Inválido tipo de medida'));
 		}
 		$this->set('measureType', $this->MeasureType->read(null, $id));
 	}
@@ -41,10 +41,10 @@ class MeasureTypesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->MeasureType->create();
 			if ($this->MeasureType->save($this->request->data)) {
-				$this->Session->setFlash(__('The measure type has been saved'));
+				$this->Session->setFlash(__('O tipo de medida foi cadastrado'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The measure type could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('o tipo de medida não pode ser cadastrado. Por favor, tente novamente.'));
 			}
 		}
 	}
@@ -58,14 +58,14 @@ class MeasureTypesController extends AppController {
 	public function edit($id = null) {
 		$this->MeasureType->id = $id;
 		if (!$this->MeasureType->exists()) {
-			throw new NotFoundException(__('Invalid measure type'));
+			throw new NotFoundException(__('Inválido tipo de medida'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->MeasureType->save($this->request->data)) {
-				$this->Session->setFlash(__('The measure type has been saved'));
+				$this->Session->setFlash(__('o tipo de medida foi alterado'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The measure type could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('O tipo de medida não pode ser alterado. Por favor, tente novamente.'));
 			}
 		} else {
 			$this->request->data = $this->MeasureType->read(null, $id);
@@ -84,13 +84,13 @@ class MeasureTypesController extends AppController {
 		}
 		$this->MeasureType->id = $id;
 		if (!$this->MeasureType->exists()) {
-			throw new NotFoundException(__('Invalid measure type'));
+			throw new NotFoundException(__('Inválido tipo de medida'));
 		}
 		if ($this->MeasureType->delete()) {
-			$this->Session->setFlash(__('Measure type deleted'));
+			$this->Session->setFlash(__('Tipo de medida deletado'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Measure type was not deleted'));
+		$this->Session->setFlash(__('O tipo de medida nçao pode ser deletado'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

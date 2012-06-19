@@ -737,3 +737,10 @@ pre {
 #url-rewriting-warning {
 	display:none;
 }
+
+#loading {
+  float: right;
+  font-size: 10px;
+  margin-right: 10px;
+  display:none;
+}

@@ -1,13 +1,13 @@
 <div class="functionalUnits index">
-	<h2><?php echo __('Functional Units');?></h2>
+	<h2><?php echo __('Unidades funcionais');?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('name');?></th>
-			<th><?php echo $this->Paginator->sort('description');?></th>
-			<th><?php echo $this->Paginator->sort('created');?></th>
-			<th><?php echo $this->Paginator->sort('modified');?></th>
-			<th class="actions"><?php echo __('Actions');?></th>
+			<th><?php echo $this->Paginator->sort('id', 'ID');?></th>
+			<th><?php echo $this->Paginator->sort('name', 'Nome');?></th>
+			<th><?php echo $this->Paginator->sort('description', 'Descrição');?></th>
+			<th><?php echo $this->Paginator->sort('created', 'Criado');?></th>
+			<th><?php echo $this->Paginator->sort('modified', 'Modificado');?></th>
+			<th class="actions"><?php echo __('Ações');?></th>
 	</tr>
 	<?php
 	foreach ($functionalUnits as $functionalUnit): ?>
@@ -18,9 +18,9 @@
 		<td><?php echo h($functionalUnit['FunctionalUnit']['created']); ?>&nbsp;</td>
 		<td><?php echo h($functionalUnit['FunctionalUnit']['modified']); ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $functionalUnit['FunctionalUnit']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $functionalUnit['FunctionalUnit']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $functionalUnit['FunctionalUnit']['id']), null, __('Are you sure you want to delete # %s?', $functionalUnit['FunctionalUnit']['id'])); ?>
+			<?php echo $this->Html->link(__('Visualizar'), array('action' => 'view', $functionalUnit['FunctionalUnit']['id'])); ?>
+			<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $functionalUnit['FunctionalUnit']['id'])); ?>
+			<?php echo $this->Form->postLink(__('Deletar'), array('action' => 'delete', $functionalUnit['FunctionalUnit']['id']), null, __('Deseja realmente deletar a unidade funcional #%s?', $functionalUnit['FunctionalUnit']['name'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -34,17 +34,17 @@
 
 	<div class="paging">
 	<?php
-		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
+		echo $this->Paginator->prev('< ' . __('anterior'), array(), null, array('class' => 'prev disabled'));
 		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+		echo $this->Paginator->next(__('próximo') . ' >', array(), null, array('class' => 'next disabled'));
 	?>
 	</div>
 </div>
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('New Functional Unit'), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Pngc Codes'), array('controller' => 'pngc_codes', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Pngc Code'), array('controller' => 'pngc_codes', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Nova unidade funcional'), array('action' => 'add')); ?></li>
+		<li><?php echo $this->Html->link(__('Listar PNGC'), array('controller' => 'pngc_codes', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Novo PNGC'), array('controller' => 'pngc_codes', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

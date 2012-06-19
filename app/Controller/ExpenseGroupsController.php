@@ -27,7 +27,7 @@ class ExpenseGroupsController extends AppController {
 	public function view($id = null) {
 		$this->ExpenseGroup->id = $id;
 		if (!$this->ExpenseGroup->exists()) {
-			throw new NotFoundException(__('Invalid expense group'));
+			throw new NotFoundException(__('Grupo de gastos inválido'));
 		}
 		$this->set('expenseGroup', $this->ExpenseGroup->read(null, $id));
 	}
@@ -41,10 +41,10 @@ class ExpenseGroupsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->ExpenseGroup->create();
 			if ($this->ExpenseGroup->save($this->request->data)) {
-				$this->Session->setFlash(__('The expense group has been saved'));
+				$this->Session->setFlash(__('O grupo de gastos foi cadastrado'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The expense group could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('O grupo de gastos não pode ser cadastrado. Por favor, tente novamente.'));
 			}
 		}
 	}
@@ -62,10 +62,10 @@ class ExpenseGroupsController extends AppController {
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->ExpenseGroup->save($this->request->data)) {
-				$this->Session->setFlash(__('The expense group has been saved'));
+				$this->Session->setFlash(__('O grupo de gastos foi alterado.'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The expense group could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('O grupo de gastos não pode ser alterado. Por favor, tente novamente.'));
 			}
 		} else {
 			$this->request->data = $this->ExpenseGroup->read(null, $id);
@@ -84,13 +84,13 @@ class ExpenseGroupsController extends AppController {
 		}
 		$this->ExpenseGroup->id = $id;
 		if (!$this->ExpenseGroup->exists()) {
-			throw new NotFoundException(__('Invalid expense group'));
+			throw new NotFoundException(__('Grupo de gastos inválido'));
 		}
 		if ($this->ExpenseGroup->delete()) {
-			$this->Session->setFlash(__('Expense group deleted'));
+			$this->Session->setFlash(__('Grupo de gastos deletado'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Expense group was not deleted'));
+		$this->Session->setFlash(__('O grupo de gastos não pode ser deletado'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

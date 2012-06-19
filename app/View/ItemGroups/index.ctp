@@ -1,13 +1,13 @@
 <div class="itemGroups index">
-	<h2><?php echo __('Item Groups');?></h2>
+	<h2><?php echo __('Itens dos grupos');?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('keycode');?></th>
-			<th><?php echo $this->Paginator->sort('name');?></th>
-			<th><?php echo $this->Paginator->sort('group_type_id');?></th>
-			<th><?php echo $this->Paginator->sort('created');?></th>
-			<th><?php echo $this->Paginator->sort('modified');?></th>
+			<th><?php echo $this->Paginator->sort('id', 'ID');?></th>
+			<th><?php echo $this->Paginator->sort('group_type_id', 'Tipo do grupo');?></th>
+			<th><?php echo $this->Paginator->sort('keycode', 'Código');?></th>
+			<th><?php echo $this->Paginator->sort('name', 'Nome');?></th>			
+			<th><?php echo $this->Paginator->sort('created', 'Criado');?></th>
+			<th><?php echo $this->Paginator->sort('modified', 'Modificado');?></th>
 			<th class="actions"><?php echo __('Actions');?></th>
 	</tr>
 	<?php
@@ -22,9 +22,9 @@
 		<td><?php echo h($itemGroup['ItemGroup']['created']); ?>&nbsp;</td>
 		<td><?php echo h($itemGroup['ItemGroup']['modified']); ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $itemGroup['ItemGroup']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $itemGroup['ItemGroup']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $itemGroup['ItemGroup']['id']), null, __('Are you sure you want to delete # %s?', $itemGroup['ItemGroup']['id'])); ?>
+			<?php echo $this->Html->link(__('Visualizar'), array('action' => 'view', $itemGroup['ItemGroup']['id'])); ?>
+			<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $itemGroup['ItemGroup']['id'])); ?>
+			<?php echo $this->Form->postLink(__('Deletar'), array('action' => 'delete', $itemGroup['ItemGroup']['id']), null, __('Deseja realmente deletar o item do grupo #%s?', $itemGroup['ItemGroup']['name'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -38,17 +38,17 @@
 
 	<div class="paging">
 	<?php
-		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
+		echo $this->Paginator->prev('< ' . __('anterior'), array(), null, array('class' => 'prev disabled'));
 		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+		echo $this->Paginator->next(__('próximo') . ' >', array(), null, array('class' => 'next disabled'));
 	?>
 	</div>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
+	<h3><?php echo __('Ações'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('New Item Group'), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Group Types'), array('controller' => 'group_types', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Group Type'), array('controller' => 'group_types', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Novo item do grupo'), array('action' => 'add')); ?></li>
+		<li><?php echo $this->Html->link(__('Listar tipos dos grupos'), array('controller' => 'group_types', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Novo tipo do grupo'), array('controller' => 'group_types', 'action' => 'add')); ?> </li>
 	</ul>
 </div>
