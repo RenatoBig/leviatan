@@ -24,7 +24,7 @@ $(document).ready(function() {
 });
 </script>
 <div id="login">
-	<?php echo $this->Form->create('User', array('action'=>'login'));?>
+	<?php echo $this->Form->create('User', array('action'=>'login', 'class'=>'well'));?>
 		<fieldset>
 			<legend><?php echo __('Login'); ?></legend>
 		<?php

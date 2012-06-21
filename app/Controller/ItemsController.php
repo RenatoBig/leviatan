@@ -41,8 +41,7 @@ class ItemsController extends AppController {
 	public function add() {
 		if ($this->request->is('post')) {
 			$this->Item->create();
-			
-			if($this->request->data['Item']['image_path']['name'] != '') {
+			if(!empty($this->request->data['Item']['image_path']['name'])) {
 				$imagem = $this->__uploadImage($this->data['Item']['image_path']);
 				if($imagem) {
 					$this->request->data['Item']['image_path'] = $imagem;
@@ -53,8 +52,9 @@ class ItemsController extends AppController {
 				}
 			}else {
 				$imagem = '';
+				$this->request->data['Item']['image_path'] = '';
 			}
-		
+
 			if ($this->Item->save($this->request->data)) {				
 				$this->Session->setFlash(__('O item foi cadastrado'));
 				$this->redirect(array('action' => 'index'));
@@ -100,7 +100,7 @@ class ItemsController extends AppController {
 			$item = $this->Item->read(null, $this->request->data['Item']['id']);
 			$imagemAnterior = $item['Item']['image_path'];
 
-			if($this->request->data['Item']['image_path']['name'] == '') {				
+			if(empty($this->request->data['Item']['image_path']['name'])) {				
 				$this->request->data['Item']['image_path'] = $item['Item']['image_path'];
 			}else {
 				$imagem = $this->__uploadImage($this->data['Item']['image_path']);
@@ -108,7 +108,7 @@ class ItemsController extends AppController {
 					$this->request->data['Item']['image_path'] = $imagem;					
 					$this->__removeImage($imagemAnterior);					
 				}else {
-					$this->Session->setFlash('Erro ao fazer upload da imagem.');
+					$this->Session->setFlash(__('Erro ao fazer upload da imagem.'));
 					$this->__getInformationForm();
 					$this->request->data['Item']['image_path'] = $item['Item']['image_path'];					
 					return;
