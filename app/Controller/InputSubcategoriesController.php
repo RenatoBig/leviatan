@@ -146,4 +146,53 @@ class InputSubcategoriesController extends AppController {
 		}		
 	}
 	
+/**
+ * 
+ * Enter description here ...
+ */
+	public function getSubcategoriesPngcCode() {
+		if($this->request->is('ajax')) {
+			//id da unidade			
+			$inputCategoryId = $this->request->data['PngcCode']['input_category_id'];
+			
+			if($inputCategoryId == "") {
+				exit;
+			}
+
+			$db = $this->Input->getDataSource();			
+			$subQuery = $db->buildStatement(
+			    array(
+			        'fields'     => array(' * '),
+			        'table'      => $db->fullTableName($this->Input),
+			        'alias'      => 'Input',
+			        'limit'      => null,
+			        'offset'     => null,
+			        'joins'      => array(),
+			        'conditions' => array(
+			    		'InputSubcategory.id = Input.input_subcategory_id',
+			  			'Input.input_category_id'=>$inputCategoryId
+			    	),
+			        'order'      => null,
+			        'group'      => null
+			    ),
+			    $this->Input
+			);
+
+			$subQuery = ' EXISTS (' . $subQuery . ') ';
+			$subQueryExpression = $db->expression($subQuery);			
+			$conditions[] = $subQueryExpression;
+			$subcategories = $this->InputSubcategory->find('list', compact('conditions'));
+			
+			if(empty($subcategories)) {
+				$inicio = array(''=>'Não existem subcategorias ou foram todas cadastradas');	
+			}else {
+				$inicio = array(''=>'Selecione um item');
+			}
+			$subcategories = $inicio + $subcategories;
+
+			$this->set(compact('subcategories'));
+			$this->render('getSubcategories', 'ajax');
+		}		
+	}
+	
 }

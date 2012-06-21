@@ -76,7 +76,7 @@ $(document).ready(function() {
 		$this->Js->get('#UnityCityId')->event('change', 
 			$this->Js->request(
 				array(
-					'controller'=>'Regions',
+					'controller'=>'regions',
 					'action'=>'getAreas'
 				), 
 				array(

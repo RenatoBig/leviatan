@@ -69,5 +69,48 @@ class PngcCode extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+	
+/**
+ * 
+ * Validação dos campos
+ * @var unknown_type
+ */
+	var $validate = array(
+		'keycode' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio o número do código.',
+			)			
+		),
+		'expense_group_id' => array(
+			'registrationExpenseGroup' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio a escolha de um grupo de gastos.',
+			)
+		),
+		'functional_unit_id' => array(
+			'validateFunctionalUnity' => array(
+    			'rule' => 'notEmpty',
+    			'message' => 'É obrigatório a escolha de uma unidade.'),
+		),
+		'measure_type_id' => array(
+			'validateMeasureType' => array(
+				'rule' => 'notEmpty',
+				'message' => 'É obrigatório a escolha de um tipo de medida.'
+			)
+		),
+		'input_category_id' => array(
+			'validateInputCategory' => array(
+				'rule' => 'notEmpty',
+				'message' => 'É obrigatório a escolha de uma categoria.'
+			)
+		),
+		'input_subcategory_id' => array(
+			'validateInputSubcateory' => array(
+				'rule' => 'notEmpty',
+				'message' => 'É obrigatório a escolha de uma subcategoria.'
+			)
+		)
+	);
 
 }

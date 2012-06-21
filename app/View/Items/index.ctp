@@ -1,16 +1,16 @@
 <div class="items index">
-	<h2><?php echo __('Items');?></h2>
+	<h2><?php echo __('Itens');?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort('id');?></th>
-			<th><?php echo $this->Paginator->sort('item_class_id');?></th>
-			<th><?php echo $this->Paginator->sort('pngc_code_id');?></th>
-			<th><?php echo $this->Paginator->sort('name');?></th>
-			<th><?php echo $this->Paginator->sort('description');?></th>
-			<th><?php echo $this->Paginator->sort('image_path');?></th>
-			<th><?php echo $this->Paginator->sort('created');?></th>
-			<th><?php echo $this->Paginator->sort('modified');?></th>
-			<th class="actions"><?php echo __('Actions');?></th>
+			<th><?php echo $this->Paginator->sort('id', 'ID');?></th>
+			<th><?php echo $this->Paginator->sort('item_class_id', 'Classe do item');?></th>
+			<th><?php echo $this->Paginator->sort('pngc_code_id', 'PNGC');?></th>
+			<th><?php echo $this->Paginator->sort('name', 'Nome');?></th>
+			<th><?php echo $this->Paginator->sort('description', 'Descrição');?></th>
+			<th><?php echo $this->Paginator->sort('image_path', 'Imagem');?></th>
+			<th><?php echo $this->Paginator->sort('created', 'Criado');?></th>
+			<th><?php echo $this->Paginator->sort('modified', 'Modificado');?></th>
+			<th class="actions"><?php echo __('Ações');?></th>
 	</tr>
 	<?php
 	foreach ($items as $item): ?>
@@ -20,7 +20,7 @@
 			<?php echo $this->Html->link($item['ItemClass']['name'], array('controller' => 'item_classes', 'action' => 'view', $item['ItemClass']['id'])); ?>
 		</td>
 		<td>
-			<?php echo $this->Html->link($item['PngcCode']['id'], array('controller' => 'pngc_codes', 'action' => 'view', $item['PngcCode']['id'])); ?>
+			<?php echo $this->Html->link($item['PngcCode']['keycode'], array('controller' => 'pngc_codes', 'action' => 'view', $item['PngcCode']['id'])); ?>
 		</td>
 		<td><?php echo h($item['Item']['name']); ?>&nbsp;</td>
 		<td><?php echo h($item['Item']['description']); ?>&nbsp;</td>
@@ -28,9 +28,9 @@
 		<td><?php echo h($item['Item']['created']); ?>&nbsp;</td>
 		<td><?php echo h($item['Item']['modified']); ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $item['Item']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $item['Item']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $item['Item']['id']), null, __('Are you sure you want to delete # %s?', $item['Item']['id'])); ?>
+			<?php echo $this->Html->link(__('Visualizar'), array('action' => 'view', $item['Item']['id'])); ?>
+			<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $item['Item']['id'])); ?>
+			<?php echo $this->Form->postLink(__('Deletar'), array('action' => 'delete', $item['Item']['id']), null, __('Deseja realmente deletar o item #%s?', $item['Item']['name'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -44,19 +44,19 @@
 
 	<div class="paging">
 	<?php
-		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
+		echo $this->Paginator->prev('< ' . __('anterior'), array(), null, array('class' => 'prev disabled'));
 		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+		echo $this->Paginator->next(__('próximo') . ' >', array(), null, array('class' => 'next disabled'));
 	?>
 	</div>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
+	<h3><?php echo __('Ações'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('New Item'), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Item Classes'), array('controller' => 'item_classes', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Item Class'), array('controller' => 'item_classes', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Pngc Codes'), array('controller' => 'pngc_codes', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Pngc Code'), array('controller' => 'pngc_codes', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Novo item'), array('action' => 'add')); ?></li>
+		<li><?php echo $this->Html->link(__('Listar classes dos itens'), array('controller' => 'item_classes', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Noca classe do item'), array('controller' => 'item_classes', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Listar códigos PNGCs'), array('controller' => 'pngc_codes', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Noco código PNGC'), array('controller' => 'pngc_codes', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

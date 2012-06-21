@@ -7,6 +7,7 @@ App::uses('AppController', 'Controller');
  */
 class UnitiesController extends AppController {
 
+	var $uses = array('Unity', 'Region', 'City');
 	
 /**
  * index method
@@ -49,7 +50,7 @@ class UnitiesController extends AppController {
 		}
 		
 		$inicio = array(''=>'Selecione um item');		
-		$cities = $this->Unity->Region->City->find('list');
+		$cities = $this->__getCities();
 		$healthDistricts = $this->Unity->HealthDistrict->find('list');
 		$unityTypes = $this->Unity->UnityType->find('list');
 		//---------------
@@ -57,6 +58,37 @@ class UnitiesController extends AppController {
 		$healthDistricts = $inicio + $healthDistricts;
 		$unityTypes = $inicio + $unityTypes;
 		$this->set(compact('cities', 'healthDistricts', 'unityTypes'));
+	}
+	
+/**
+ * 
+ * Enter description here ...
+ */
+	private function __getCities() {
+		
+		$db = $this->Region->getDataSource();			
+		$subQuery = $db->buildStatement(
+		    array(
+		        'fields'     => array('DISTINCT Region.city_id'),
+		        'table'      => $db->fullTableName($this->Region),
+		        'alias'      => 'Region',
+		        'limit'      => null,
+		        'offset'     => null,
+		        'joins'      => array(),
+		        'conditions' => array(
+		    	),
+		        'order'      => null,
+		        'group'      => null
+		    ),
+		    $this->Region
+		);
+		$subQuery = ' EXISTS (' . $subQuery . ') ';
+		$subQueryExpression = $db->expression($subQuery);
+		$conditions[] = $subQueryExpression;
+		$cities = $this->Unity->Region->City->find('list', compact('conditions'));
+
+		return $cities;
+		
 	}
 
 /**

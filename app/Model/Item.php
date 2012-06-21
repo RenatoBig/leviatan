@@ -59,5 +59,38 @@ class Item extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+	
+/**
+ * 
+ * Validação dos campos
+ * @var unknown_type
+ */
+	var $validate = array(
+		'item_class_id' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio escolher uma classe do item.',
+			)
+		),
+		'pngc_code_id' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio escolher um código PNGC.',
+			)
+		),
+		'name' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio informar um nome para o item.',
+			)
+		),
+		'description' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio informar uma descrição para o item.',
+			)
+		)		
+	);
+	
 
 }

@@ -1,25 +1,62 @@
+<script>
+$(document).ready(function() {
+
+	//validação de formulário
+	$("#ItemAddForm").validate({ 
+    	rules: { 
+			'data[Item][item_class_id]':{
+				required: true,
+			},
+			'data[Item][pngc_code_id]':{
+				required: true
+			},
+			'data[Item][name]':{
+				required: true
+			},
+			'data[Item][description]':{
+				required: true
+			}
+		},
+		messages: {
+			'data[Item][item_class_id]':{
+				required: "Campo obrigatório"
+			},
+			'data[Item][pngc_code_id]':{
+				required: "Campo obrigatório"
+			},
+			'data[Item][name]':{
+				required: "Campo obrigatório"
+			},
+			'data[Item][description]':{
+				required: "Campo obrigatório"
+			}
+		}
+	}); 
+	
+});
+</script>
 <div class="items form">
-<?php echo $this->Form->create('Item');?>
+<?php echo $this->Form->create('Item', array('type'=>'file'));?>
 	<fieldset>
-		<legend><?php echo __('Add Item'); ?></legend>
+		<legend><?php echo __('Adicionar Item'); ?></legend>
 	<?php
-		echo $this->Form->input('item_class_id');
-		echo $this->Form->input('pngc_code_id');
-		echo $this->Form->input('name');
-		echo $this->Form->input('description');
-		echo $this->Form->input('image_path');
+		echo $this->Form->input('item_class_id', array('label'=>__('Classe do item')));
+		echo $this->Form->input('pngc_code_id', array('label'=>__('PNGC')));
+		echo $this->Form->input('name', array('label'=>__('Nome')));
+		echo $this->Form->input('description', array('label'=>__('Descrição')));
+		echo $this->Form->input('image_path', array('label'=>__('Imagem'), 'type'=>'file'));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit'));?>
+<?php echo $this->Form->end(__('Cadastrar'));?>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
+	<h3><?php echo __('Ações'); ?></h3>
 	<ul>
 
-		<li><?php echo $this->Html->link(__('List Items'), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('List Item Classes'), array('controller' => 'item_classes', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Item Class'), array('controller' => 'item_classes', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('List Pngc Codes'), array('controller' => 'pngc_codes', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Pngc Code'), array('controller' => 'pngc_codes', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Listar Itens'), array('action' => 'index'));?></li>
+		<li><?php echo $this->Html->link(__('Listar classes dos itens'), array('controller' => 'item_classes', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Nova classe do item'), array('controller' => 'item_classes', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Listar PNGCs'), array('controller' => 'pngc_codes', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Novo código PNGC'), array('controller' => 'pngc_codes', 'action' => 'add')); ?> </li>
 	</ul>
 </div>
