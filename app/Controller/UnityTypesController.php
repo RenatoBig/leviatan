@@ -86,6 +86,13 @@ class UnityTypesController extends AppController {
 		if (!$this->UnityType->exists()) {
 			throw new NotFoundException(__('tipo da unidade inválida'));
 		}
+		
+		$unityType = $this->UnityType->read(null, $id);
+		if(!empty($unityType['Unity'])) {
+			$this->Session->setFlash('Você não pode detelar este tipo de unidade, ele está cadastrado em outra tabela.');
+			$this->redirect(array('action'=>'index'));
+		}
+		
 		if ($this->UnityType->delete()) {
 			$this->Session->setFlash(__('tipo da unidade deletado'));
 			$this->redirect(array('action' => 'index'));

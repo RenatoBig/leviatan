@@ -86,6 +86,13 @@ class ExpenseGroupsController extends AppController {
 		if (!$this->ExpenseGroup->exists()) {
 			throw new NotFoundException(__('Grupo de gastos inválido'));
 		}
+		
+		$expenseGroup = $this->ExpenseGroup->read(null, $id);
+		if(!empty($expenseGroup['PngcCode'])) {
+			$this->Session->setFlash('Você não pode detelar este grupo de gastos, ele está cadastrado em outra tabela.');
+			$this->redirect(array('action'=>'index'));
+		}
+		
 		if ($this->ExpenseGroup->delete()) {
 			$this->Session->setFlash(__('Grupo de gastos deletado'));
 			$this->redirect(array('action' => 'index'));

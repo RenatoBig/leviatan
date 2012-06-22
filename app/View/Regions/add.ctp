@@ -64,7 +64,6 @@ $(document).ready(function() {
 		//----------------------
 		
 		echo $this->Form->input('city_id', array('label'=>__('Cidade')));
-		echo '<div id="loading">Loading...</div>';		
 		echo $this->Form->input('area_id', array('label'=>__('Área')));
 	?>
 	</fieldset>

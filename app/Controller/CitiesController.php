@@ -87,6 +87,12 @@ class CitiesController extends AppController {
 			throw new NotFoundException(__('Cidade inválida.'));
 		}
 		
+		$city = $this->City->read(null, $id);
+		if(!empty($city['Region'])) {
+			$this->Session->setFlash('Você não pode deletar esta Cidade, ela está cadastrada em outra tabela.');
+			$this->redirect(array('action' => 'index'));
+		}
+		
 		if($this->City->delete()) {
 			$this->Session->setFlash(__('Cidade deletada.'));
 			$this->redirect(array('action' => 'index'));

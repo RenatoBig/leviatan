@@ -29,7 +29,7 @@ $cakeDescription = __d('cake_dev', 'Leviatan');
 	<?php
 		echo $this->Html->meta('icon');
 
-		echo $this->Html->css(array('cake.generic', 'bootstrap', 'bootstrap.min', 'bootstrap-responsive', 'bootstrap-responsive.min'));
+		echo $this->Html->css(array('cake.generic'));//, 'bootstrap', 'bootstrap.min', 'bootstrap-responsive', 'bootstrap-responsive.min'));
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');

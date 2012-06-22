@@ -169,13 +169,20 @@ class UnitiesController extends AppController {
 		}
 		$this->Unity->id = $id;
 		if (!$this->Unity->exists()) {
-			throw new NotFoundException(__('Invalid unity'));
+			throw new NotFoundException(__('Unidade inválida'));
 		}
-		if ($this->Unity->delete()) {
-			$this->Session->setFlash(__('Unity deleted'));
+		
+		$unity = $this->Unity->read(null, $id);
+		if(!empty($unity['UnitySector'])) {
+			$this->Session->setFlash('Você não pode deletar esta unidade, ela está cadastrada em outra tabela.');
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Unity was not deleted'));
+		
+		if ($this->Unity->delete()) {
+			$this->Session->setFlash(__('Unidade deletada'));
+			$this->redirect(array('action' => 'index'));
+		}
+		$this->Session->setFlash(__('A unidade não pode ser deletada.'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

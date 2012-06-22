@@ -149,6 +149,13 @@ class RegionsController extends AppController {
 		if (!$this->Region->exists()) {
 			throw new NotFoundException(__('Região inválida'));
 		}
+				
+		$region = $this->Region->read(null, $id);
+		if(!empty($region['Unity'])) {
+			$this->Session->setFlash('Você não pode deletar esta região, ela está cadastrada em outra tabela.');
+			$this->redirect(array('action' => 'index'));
+		}
+		
 		if ($this->Region->delete()) {
 			$this->Session->setFlash(__('Região deletada'));
 			$this->redirect(array('action' => 'index'));

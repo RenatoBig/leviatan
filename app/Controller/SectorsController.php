@@ -86,6 +86,13 @@ class SectorsController extends AppController {
 		if (!$this->Sector->exists()) {
 			throw new NotFoundException(__('Setor inválido'));
 		}
+		
+		$sector = $this->Sector->read(null, $id);
+		if(!empty($sector['UnitySector'])) {
+			$this->Session->setFlash('Você não pode detelar este setor, ele está cadastrado em outra tabela.');
+			$this->redirect(array('action'=>'index'));
+		}
+		
 		if ($this->Sector->delete()) {
 			$this->Session->setFlash(__('Setor deletado'));
 			$this->redirect(array('action' => 'index'));

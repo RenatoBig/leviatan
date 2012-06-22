@@ -86,6 +86,13 @@ class HealthDistrictsController extends AppController {
 		if (!$this->HealthDistrict->exists()) {
 			throw new NotFoundException(__('Distrito sanitário inválido'));
 		}
+		
+		$healhDistrict = $this->HealthDistrict->read(null, $id);
+		if(!empty($healhDistrict['Unity'])) {
+			$this->Session->setFlash('Você não pode detelar este distrito sanitário, ele está cadastrado em outra tabela.');
+			$this->redirect(array('action'=>'index'));
+		}
+		
 		if ($this->HealthDistrict->delete()) {
 			$this->Session->setFlash(__('O distrito sanitário foi deletado'));
 			$this->redirect(array('action' => 'index'));

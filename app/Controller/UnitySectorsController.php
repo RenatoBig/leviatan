@@ -66,14 +66,14 @@ class UnitySectorsController extends AppController {
 	public function edit($id = null) {
 		$this->UnitySector->id = $id;
 		if (!$this->UnitySector->exists()) {
-			throw new NotFoundException(__('Invalid unity sector'));
+			throw new NotFoundException(__('Unidade_setor inválida'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->UnitySector->save($this->request->data)) {
-				$this->Session->setFlash(__('The unity sector has been saved'));
+				$this->Session->setFlash(__('A unidade_setor foi alterada'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The unity sector could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('A unidade_setor foi alterada. Por favor, tente novamente.'));
 			}
 		} else {
 			$this->request->data = $this->UnitySector->read(null, $id);
@@ -100,13 +100,20 @@ class UnitySectorsController extends AppController {
 		}
 		$this->UnitySector->id = $id;
 		if (!$this->UnitySector->exists()) {
-			throw new NotFoundException(__('Invalid unity sector'));
+			throw new NotFoundException(__('Unidade_setor inválida'));
 		}
-		if ($this->UnitySector->delete()) {
-			$this->Session->setFlash(__('Unity sector deleted'));
+		
+		$unitySector = $this->UnitySector->read(null, $id);
+		if(!empty($unitySector['Employee'])) {
+			$this->Session->setFlash('Você não pode deletar esta unidade_setor, ela está cadastrada em outra tabela.');
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Unity sector was not deleted'));
+		
+		if ($this->UnitySector->delete()) {
+			$this->Session->setFlash(__('Unidade_setor foi deletada'));
+			$this->redirect(array('action' => 'index'));
+		}
+		$this->Session->setFlash(__('A unidade_setor não pode ser deletada'));
 		$this->redirect(array('action' => 'index'));
 	}
 	

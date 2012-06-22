@@ -153,6 +153,13 @@ class InputsController extends AppController {
 		if (!$this->Input->exists()) {
 			throw new NotFoundException(__('Insumo inválido'));
 		}
+		
+		$input = $this->Input->read(null, $id);
+		if(!empty($input['PngcCode'])) {
+			$this->Session->setFlash('Você não pode deletar este registro, ele está cadastrado em outra tabela.');
+			$this->redirect(array('action' => 'index'));
+		}
+				
 		if ($this->Input->delete()) {
 			$this->Session->setFlash(__('Insumo deletado'));
 			$this->redirect(array('action' => 'index'));

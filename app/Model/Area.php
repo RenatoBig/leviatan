@@ -48,6 +48,6 @@ class Area extends AppModel {
 				'message'=> 'É obrigátorio o nome da área.',
 			)			
 		)
-	);
+	);	
 
 }

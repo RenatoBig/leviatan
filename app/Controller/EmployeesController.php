@@ -128,6 +128,13 @@ class EmployeesController extends AppController {
 		if (!$this->Employee->exists()) {
 			throw new NotFoundException(__('Funcionário inválido.'));
 		}
+		
+		$employee = $this->Employee->read(null, $id);
+		if(!empty($employee['User'])) {
+			$this->Session->setFlash('Você não pode detelar este funcionário, ele está cadastrado em outra tabela.');
+			$this->redirect(array('action'=>'index'));
+		}
+		
 		if ($this->Employee->delete()) {
 			$this->Session->setFlash(__('Funcionário deletado.'));
 			$this->redirect(array('action' => 'index'));

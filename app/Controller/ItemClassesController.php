@@ -27,7 +27,7 @@ class ItemClassesController extends AppController {
 	public function view($id = null) {
 		$this->ItemClass->id = $id;
 		if (!$this->ItemClass->exists()) {
-			throw new NotFoundException(__('Item da classe inválido'));
+			throw new NotFoundException(__('Classe do item inválida'));
 		}
 		$this->set('itemClass', $this->ItemClass->read(null, $id));
 	}
@@ -41,10 +41,10 @@ class ItemClassesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->ItemClass->create();
 			if ($this->ItemClass->save($this->request->data)) {
-				$this->Session->setFlash(__('Item da classe inválido'));
+				$this->Session->setFlash(__('Classe do item inválida'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O item da classe não foi cadastrado. por favor, tente novamente.'));
+				$this->Session->setFlash(__('A classe do item não foi cadastrada. por favor, tente novamente.'));
 			}
 		}
 		$inicio = array(''=>'Selecione um item');
@@ -62,14 +62,14 @@ class ItemClassesController extends AppController {
 	public function edit($id = null) {
 		$this->ItemClass->id = $id;
 		if (!$this->ItemClass->exists()) {
-			throw new NotFoundException(__('Item da classe inválido'));
+			throw new NotFoundException(__('Classe do item inválida'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->ItemClass->save($this->request->data)) {
-				$this->Session->setFlash(__('O item da classe foi alterado'));
+				$this->Session->setFlash(__('A classe do item foi alterada'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O item da classe não pode ser alterado. Por favor, tente novamente.'));
+				$this->Session->setFlash(__('A classe do item não pode ser alterada. Por favor, tente novamente.'));
 			}
 		} else {
 			$this->request->data = $this->ItemClass->read(null, $id);
@@ -92,13 +92,20 @@ class ItemClassesController extends AppController {
 		}
 		$this->ItemClass->id = $id;
 		if (!$this->ItemClass->exists()) {
-			throw new NotFoundException(__('Item da classe inválido'));
+			throw new NotFoundException(__('Classe do item inválida'));
 		}
+		
+		$itemClass= $this->ItemClass->read(null, $id);
+		if(!empty($itemClass['Item'])) {
+			$this->Session->setFlash('Você não pode deletar esta classe do item, ela está cadastrado em outra tabela.');
+			$this->redirect(array('action'=>'index'));
+		}
+		
 		if ($this->ItemClass->delete()) {
-			$this->Session->setFlash(__('Item da classe deletado'));
+			$this->Session->setFlash(__('Classe do item deletada'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('o item da classe não pode ser deletado'));
+		$this->Session->setFlash(__('A classe do item não pode ser deletada'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

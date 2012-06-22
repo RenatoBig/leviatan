@@ -86,6 +86,13 @@ class InputCategoriesController extends AppController {
 		if (!$this->InputCategory->exists()) {
 			throw new NotFoundException(__('Categoria inválida'));
 		}
+		
+		$inputCategory = $this->InputCategory->read(null, $id);
+		if(!empty($inputCategory['Input'])) {
+			$this->Session->setFlash('Você não pode deletar esta categoria, ela está cadastrada em outra tabela.');
+			$this->redirect(array('action' => 'index'));
+		}
+		
 		if ($this->InputCategory->delete()) {
 			$this->Session->setFlash(__('Categoria deletada'));
 			$this->redirect(array('action' => 'index'));
