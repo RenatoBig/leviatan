@@ -73,5 +73,16 @@ class Region extends AppModel {
 			)
 		)
 	);
+	
+/**
+ * Função chamada antes de deletar o registro
+ * @see lib/Cake/Model/Model::beforeDelete()
+ */
+	public function beforeDelete() {
+		$register = $this->read(null, $this->id);
+		if(!empty($register['Unity'])) {
+			return false;
+		}		
+	}
 
 }

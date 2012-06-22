@@ -95,17 +95,11 @@ class ItemClassesController extends AppController {
 			throw new NotFoundException(__('Classe do item inválida'));
 		}
 		
-		$itemClass= $this->ItemClass->read(null, $id);
-		if(!empty($itemClass['Item'])) {
-			$this->Session->setFlash('Você não pode deletar esta classe do item, ela está cadastrado em outra tabela.');
-			$this->redirect(array('action'=>'index'));
-		}
-		
 		if ($this->ItemClass->delete()) {
 			$this->Session->setFlash(__('Classe do item deletada'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('A classe do item não pode ser deletada'));
+		$this->Session->setFlash(__('A classe do item não pode ser deletada. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

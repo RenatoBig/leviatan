@@ -86,18 +86,12 @@ class MeasureTypesController extends AppController {
 		if (!$this->MeasureType->exists()) {
 			throw new NotFoundException(__('Inválido tipo de medida'));
 		}
-		
-		$measureType = $this->MeasureType->read(null, $id);
-		if(!empty($measureType['PngcCode'])) {
-			$this->Session->setFlash('Você não pode detelar este tipo de medida, ele está cadastrado em outra tabela.');
-			$this->redirect(array('action'=>'index'));
-		}
-		
+				
 		if ($this->MeasureType->delete()) {
 			$this->Session->setFlash(__('Tipo de medida deletado'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('O tipo de medida nçao pode ser deletado'));
+		$this->Session->setFlash(__('O tipo de medida não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

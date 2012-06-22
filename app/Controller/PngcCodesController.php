@@ -177,17 +177,11 @@ class PngcCodesController extends AppController {
 			throw new NotFoundException(__('PNGC inválido'));
 		}
 		
-		$pngc = $this->PngcCode->read(null, $id);
-		if(!empty($pngc['Item'])) {
-			$this->Session->setFlash('Você não pode detelar este PNGC, ele está cadastrado em outra tabela.');
-			$this->redirect(array('action'=>'index'));
-		}
-		
 		if ($this->PngcCode->delete()) {
 			$this->Session->setFlash(__('PNGC deletado'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('O PNGC não pode ser deletado'));
+		$this->Session->setFlash(__('O PNGC não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 	

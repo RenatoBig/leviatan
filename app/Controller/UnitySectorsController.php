@@ -102,18 +102,12 @@ class UnitySectorsController extends AppController {
 		if (!$this->UnitySector->exists()) {
 			throw new NotFoundException(__('Unidade_setor inválida'));
 		}
-		
-		$unitySector = $this->UnitySector->read(null, $id);
-		if(!empty($unitySector['Employee'])) {
-			$this->Session->setFlash('Você não pode deletar esta unidade_setor, ela está cadastrada em outra tabela.');
-			$this->redirect(array('action' => 'index'));
-		}
-		
+
 		if ($this->UnitySector->delete()) {
 			$this->Session->setFlash(__('Unidade_setor foi deletada'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('A unidade_setor não pode ser deletada'));
+		$this->Session->setFlash(__('A unidade_setor não pode ser deletada. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 	

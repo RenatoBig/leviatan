@@ -87,17 +87,11 @@ class GroupsController extends AppController {
 			throw new NotFoundException(__('Grupo inválido'));
 		}
 		
-		$group = $this->Group->read(null, $id);
-		if(!empty($group['User'])) {
-			$this->Session->setFlash('Você não pode detelar este grupo, ele está cadastrado em outra tabela.');
-			$this->redirect(array('action'=>'index'));
-		}
-		
 		if ($this->Group->delete()) {
 			$this->Session->setFlash(__('Grupo deletado'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('O grupo não foi deletado'));
+		$this->Session->setFlash(__('O grupo não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 

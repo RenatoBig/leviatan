@@ -89,17 +89,11 @@ class InputSubcategoriesController extends AppController {
 			throw new NotFoundException(__('Subcategoria inválida'));
 		}
 		
-		$inputSubcategory = $this->InputSubcategory->read(null, $id);
-		if(!empty($inputSubcategory['Input'])) {
-			$this->Session->setFlash('Você não pode deletar esta subcategoria, ela está cadastrada em outra tabela.');
-			$this->redirect(array('action' => 'index'));
-		}
-		
 		if ($this->InputSubcategory->delete()) {
 			$this->Session->setFlash(__('Subcategoria deletada'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('A subcategoria não foi deletada'));
+		$this->Session->setFlash(__('A subcategoria não pode ser deletada. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 	

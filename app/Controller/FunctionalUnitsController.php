@@ -87,17 +87,11 @@ class FunctionalUnitsController extends AppController {
 			throw new NotFoundException(__('Unidade funcional inválida'));
 		}
 		
-		$functionalUnits = $this->FunctionalUnit->read(null, $id);
-		if(!empty($functionalUnits['PngcCode'])) {
-			$this->Session->setFlash('Você não pode detelar esta unidade funcional, ele está cadastrado em outra tabela.');
-			$this->redirect(array('action'=>'index'));
-		}
-		
 		if ($this->FunctionalUnit->delete()) {
 			$this->Session->setFlash(__('A unidade funcional foi deletada'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('A unidade não pode ser deletada'));
+		$this->Session->setFlash(__('A unidade não pode ser deletada. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

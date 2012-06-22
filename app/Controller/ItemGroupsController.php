@@ -96,17 +96,11 @@ class ItemGroupsController extends AppController {
 			throw new NotFoundException(__('Item do grupo inválido'));
 		}
 		
-		$itemGroup = $this->ItemGroup->read(null, $id);
-		if(!empty($itemGroup['ItemClass'])) {
-			$this->Session->setFlash('Você não pode deletar este grupo do item, ele está cadastrado em outra tabela.');
-			$this->redirect(array('action'=>'index'));
-		}
-		
 		if ($this->ItemGroup->delete()) {
-			$this->Session->setFlash(__('Item do grupo deletado'));
+			$this->Session->setFlash(__('Grupo do item deletado'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Item do grupo não foi deletado'));
+		$this->Session->setFlash(__('O grupo do item não não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 	

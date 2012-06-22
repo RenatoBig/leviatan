@@ -118,7 +118,7 @@ class UsersController extends AppController {
 			$this->Session->setFlash(__('Usuário deletado'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('O usuário não pode ser deletado'));
+		$this->Session->setFlash(__('O usuário não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 	

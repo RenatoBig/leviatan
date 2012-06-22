@@ -87,18 +87,12 @@ class AreasController extends AppController {
 		if (!$this->Area->exists()) {
 			throw new NotFoundException(__('Área inválida'));
 		}
-		
-		$area = $this->Area->read(null, $id);
-		if(!empty($area['Region'])) {
-			$this->Session->setFlash('Você não pode deletar esta área, ela está cadastrada em outra tabela.');
-			$this->redirect(array('action' => 'index'));
-		}
-		
+
 		if ($this->Area->delete()) {
 			$this->Session->setFlash(__('Área deletada'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('A área não pode ser alterada'));
+		$this->Session->setFlash(__('A área não pode ser deletada. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 	

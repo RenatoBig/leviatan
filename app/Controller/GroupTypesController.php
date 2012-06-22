@@ -87,17 +87,11 @@ class GroupTypesController extends AppController {
 			throw new NotFoundException(__('Tipo do grupo inválido'));
 		}
 		
-		$group = $this->GroupType->read(null, $id);
-		if(!empty($group['ItemGroup'])) {
-			$this->Session->setFlash('Você não pode deletar este tipo do grupo, ele está cadastrado em outra tabela.');
-			$this->redirect(array('action'=>'index'));
-		}
-		
 		if ($this->GroupType->delete()) {
 			$this->Session->setFlash(__('Tipo do grupo deletado'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Tipo do grupo não pode ser deletado'));
+		$this->Session->setFlash(__('Tipo do grupo não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 }
