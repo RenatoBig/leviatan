@@ -15,6 +15,19 @@ class ItemsController extends AppController {
  * @return void
  */
 	public function index() {
+		
+		if(isset($this->data['Item']['busca'])) {
+			$conditions = array(
+				'conditions'=>array('Item.name LIKE '=>'%'.$this->data['Item']['busca'].'%'),
+				'limit'=>10,
+				'order'=>array('Item.name'=>'asc')
+			);
+			
+			$this->paginate = $conditions;
+		}
+		
+		
+		
 		$this->Item->recursive = 0;
 		$this->set('items', $this->paginate());
 	}
@@ -217,6 +230,22 @@ class ItemsController extends AppController {
 		} else {
 			return false;
 		}
+	}
+	
+/**
+ * 
+ * Enter description here ...
+ */
+	public function autoComplete() {
+		$this->layout = 'ajax';
+		
+		$items = $this->Item->find('all', array(
+				'conditions'=>array('Item.name LIKE' => $this->params['url']['q'].'%'),
+				'fields'=>array('name', 'id')
+			)
+		);
+		
+		$this->set(compact('items'));
 	}
 	
 }
