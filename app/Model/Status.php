@@ -49,5 +49,29 @@ class Status extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+/**
+ * 
+ * Validação dos campos
+ * @var unknown_type
+ */
+	var $validate = array(
+		'name' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio o nome do status.',
+			)			
+		)
+	);
+	
+/**
+ * (non-PHPdoc)
+ * @see lib/Cake/Model/Model::beforeDelete()
+ */
+	public function beforeDelete() {
+		$status = $this->read(null, $this->id);
+		if(!empty($status['Order']) || !empty($status['OrderItem'])) {
+			return false;
+		}	
+	}
 
 }

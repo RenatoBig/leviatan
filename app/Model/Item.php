@@ -92,5 +92,17 @@ class Item extends AppModel {
 		)		
 	);
 	
+/**
+ * (non-PHPdoc)
+ * @see lib/Cake/Model/Model::beforeDelete()
+ */
+	public function beforeDelete() { 
+		
+		$item = $this->read(null, $this->id);
+		if(!empty($item['OrderItem'])) {
+			return false;
+		}
+	}
+	
 
 }

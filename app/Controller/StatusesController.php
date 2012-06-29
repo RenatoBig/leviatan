@@ -27,7 +27,7 @@ class StatusesController extends AppController {
 	public function view($id = null) {
 		$this->Status->id = $id;
 		if (!$this->Status->exists()) {
-			throw new NotFoundException(__('Invalid status'));
+			throw new NotFoundException(__('Status inválido'));
 		}
 		$this->set('status', $this->Status->read(null, $id));
 	}
@@ -41,10 +41,10 @@ class StatusesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Status->create();
 			if ($this->Status->save($this->request->data)) {
-				$this->Session->setFlash(__('The status has been saved'));
+				$this->Session->setFlash(__('O status foi cadastrado'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The status could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('O status não pode ser cadastrado. Por favor, tente novamente.'));
 			}
 		}
 	}
@@ -58,14 +58,14 @@ class StatusesController extends AppController {
 	public function edit($id = null) {
 		$this->Status->id = $id;
 		if (!$this->Status->exists()) {
-			throw new NotFoundException(__('Invalid status'));
+			throw new NotFoundException(__('Status inválido'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Status->save($this->request->data)) {
-				$this->Session->setFlash(__('The status has been saved'));
+				$this->Session->setFlash(__('O status foi alterado'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The status could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('O status não pode ser alterado. Por favor, tente novamente.'));
 			}
 		} else {
 			$this->request->data = $this->Status->read(null, $id);
@@ -84,13 +84,13 @@ class StatusesController extends AppController {
 		}
 		$this->Status->id = $id;
 		if (!$this->Status->exists()) {
-			throw new NotFoundException(__('Invalid status'));
+			throw new NotFoundException(__('Status inválido'));
 		}
 		if ($this->Status->delete()) {
-			$this->Session->setFlash(__('Status deleted'));
+			$this->Session->setFlash(__('Status deletado'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Status was not deleted'));
+		$this->Session->setFlash(__('O status não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

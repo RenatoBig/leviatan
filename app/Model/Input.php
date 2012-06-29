@@ -54,11 +54,11 @@ class Input extends AppModel {
 		)
 	);
 	
-	/**
-	 * 
-	 * Validação dos campos
-	 * @var unknown_type
-	 */
+/**
+ * 
+ * Validação dos campos
+ * @var unknown_type
+ */
 	var $validate = array(
 		'input_category_id' => array(
 			'registrationRule1' => array(

@@ -27,9 +27,13 @@ class HomologationsController extends AppController {
 	public function view($id = null) {
 		$this->Homologation->id = $id;
 		if (!$this->Homologation->exists()) {
-			throw new NotFoundException(__('Invalid homologation'));
+			throw new NotFoundException(__('Homologação inválida'));
 		}
-		$this->set('homologation', $this->Homologation->read(null, $id));
+		
+		$homologation = $this->Homologation->read(null, $id);
+		$orderItem = $this->Homologation->OrderItem->read(null, $homologation['Homologation']['order_item_id']);
+
+		$this->set(compact('homologation', 'orderItem'));
 	}
 
 /**
@@ -41,14 +45,14 @@ class HomologationsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Homologation->create();
 			if ($this->Homologation->save($this->request->data)) {
-				$this->Session->setFlash(__('The homologation has been saved'));
+				$this->Session->setFlash(__('A homologação foi cadastrada'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The homologation could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('A homologação não pode ser cadastrada. Por favor, tente novamente.'));
 			}
 		}
-		$orderItems = $this->Homologation->OrderItem->find('list');
-		$this->set(compact('orderItems'));
+		
+		$this->__getInformationForms();
 	}
 
 /**
@@ -60,19 +64,34 @@ class HomologationsController extends AppController {
 	public function edit($id = null) {
 		$this->Homologation->id = $id;
 		if (!$this->Homologation->exists()) {
-			throw new NotFoundException(__('Invalid homologation'));
+			throw new NotFoundException(__('Homologação inválida'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Homologation->save($this->request->data)) {
 				$this->Session->setFlash(__('The homologation has been saved'));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The homologation could not be saved. Please, try again.'));
+				$this->Session->setFlash(__('A homologação não pode ser alterada. Por favor, tente novamente.'));
 			}
 		} else {
 			$this->request->data = $this->Homologation->read(null, $id);
 		}
-		$orderItems = $this->Homologation->OrderItem->find('list');
+		
+		$this->__getInformationForms();
+	}
+	
+/**
+ * 
+ * Enter description here ...
+ */
+	private function __getInformationForms() {
+		$orderItems = $this->Homologation->OrderItem->find('all');
+		$orders = array();
+		foreach($orderItems as $orderItem):
+			$orders[$orderItem['OrderItem']['id']] = $orderItem['Order']['keycode'].' - '.$orderItem['Item']['name'];
+		endforeach;
+		$inicio = array(''=>'Selecione um item');
+		$orderItems = $inicio + $orders;
 		$this->set(compact('orderItems'));
 	}
 
@@ -88,13 +107,13 @@ class HomologationsController extends AppController {
 		}
 		$this->Homologation->id = $id;
 		if (!$this->Homologation->exists()) {
-			throw new NotFoundException(__('Invalid homologation'));
+			throw new NotFoundException(__('Homologação inválida'));
 		}
 		if ($this->Homologation->delete()) {
-			$this->Session->setFlash(__('Homologation deleted'));
+			$this->Session->setFlash(__('A homologação foi deletada'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Homologation was not deleted'));
+		$this->Session->setFlash(__('A homologação não pode ser deletada.'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

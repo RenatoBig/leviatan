@@ -61,5 +61,49 @@ class OrderItem extends AppModel {
 			'counterQuery' => ''
 		)
 	);
+	
+/**
+ * 
+ * Enter description here ...
+ * @var unknown_type
+ */
+	var $validate = array(
+		'order_id'=>array(
+			'keycodeRule' => array(
+				'rule'=>'notEmpty',
+				'message'=>'É obrigatório escolher um pedido.'
+			)
+		),
+		'item_id'=>array(
+			'itemRule' => array(
+				'rule'=>'notEmpty',
+				'message'=>'É obrigatório escolher um item.'
+			)
+		),
+		'status_id'=>array(
+			'statusRule' => array(
+				'rule'=>'notEmpty',
+				'message'=>'É obrigatório escolher um status.'
+			)
+		),
+		'quantity'=>array(
+			'quantityRule' => array(
+				'rule'=>'notEmpty',
+				'message'=>'É obrigatório escolher uma quantidade.'
+			)
+		)	
+	);
+	
+/**
+ * (non-PHPdoc)
+ * @see lib/Cake/Model/Model::beforeDelete()
+ */
+	public function beforeDelete() { 
+		
+		$orderItem = $this->read(null, $this->id);
+		if(!empty($orderItem['Homologation'])) {
+			return false;
+		}
+	}
 
 }

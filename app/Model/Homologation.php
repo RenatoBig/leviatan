@@ -23,4 +23,25 @@ class Homologation extends AppModel {
 			'order' => ''
 		)
 	);
+	
+	/**
+ * 
+ * Validação dos campos
+ * @var unknown_type
+ */
+	var $validate = array(
+		'order_item_id' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio escolher um item de um pedido.',
+			)
+		),
+		'remark' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio preencher uma observação.',
+			)
+		)		
+	);
+	
 }

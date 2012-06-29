@@ -29,13 +29,13 @@ $cakeDescription = __d('cake_dev', 'Leviatan');
 	<?php
 		echo $this->Html->meta('icon');
 
-		echo $this->Html->css(array('cake.generic', 'autocomplete'));//, 'bootstrap', 'bootstrap.min', 'bootstrap-responsive', 'bootstrap-responsive.min'));
+		echo $this->Html->css(array('cake.generic', 'autocomplete', 'jquery-ui-1.8.21.custom'));//, 'bootstrap', 'bootstrap.min', 'bootstrap-responsive', 'bootstrap-responsive.min'));
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
 		
-		echo $this->Html->script(array('jquery-1.7.2', 'jquery.validate', 'bootstrap', 'bootstrap.min', 'autocomplete'));
+		echo $this->Html->script(array('jquery-1.7.2', 'jquery-ui-1.8.21.custom.min', 'jquery.validate', 'bootstrap', 'bootstrap.min', 'autocomplete'));
 	?>
 	
 </head>
