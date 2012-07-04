@@ -6,7 +6,8 @@ App::uses('AppController', 'Controller');
  * @property Group $Group
  */
 class GroupsController extends AppController {
-
+	
+	var $layout = 'leviatan';
 
 /**
  * index method
@@ -14,6 +15,7 @@ class GroupsController extends AppController {
  * @return void
  */
 	public function index() {
+		
 		$this->Group->recursive = 0;
 		$this->set('groups', $this->paginate());
 	}
@@ -27,7 +29,8 @@ class GroupsController extends AppController {
 	public function view($id = null) {
 		$this->Group->id = $id;
 		if (!$this->Group->exists()) {
-			throw new NotFoundException(__('Grupo inválido'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Grupo inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('group', $this->Group->read(null, $id));
 	}
@@ -41,10 +44,10 @@ class GroupsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Group->create();
 			if ($this->Group->save($this->request->data)) {
-				$this->Session->setFlash(__('O grupo foi salvo'));
+				$this->Session->setFlash('<div class="alert alert-success">'.__('O grupo foi salvo')."</div>");
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O grupo não pode ser salvo. Por favor, tente novamente.'));
+				$this->Session->setFlash('<div class="alert alert-error">'.__('O grupo não pode ser salvo. Por favor, tente novamente.').'</div>');
 			}
 		}
 	}
@@ -58,14 +61,15 @@ class GroupsController extends AppController {
 	public function edit($id = null) {
 		$this->Group->id = $id;
 		if (!$this->Group->exists()) {
-			throw new NotFoundException(__('Grupo inválido'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Grupo inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Group->save($this->request->data)) {
-				$this->Session->setFlash(__('O grupo foi salvo'));
+				$this->Session->setFlash('<div class="alert alert-success">'.__('O grupo foi salvo').'</div>');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O grupo não pode ser salvo. Por favor, tente novamente.'));
+				$this->Session->setFlash('<div class="alert alert-error">'.__('O grupo não pode ser salvo. Por favor, tente novamente.').'</div>');
 			}
 		} else {
 			$this->request->data = $this->Group->read(null, $id);
@@ -80,18 +84,20 @@ class GroupsController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Requisição inválida').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		$this->Group->id = $id;
 		if (!$this->Group->exists()) {
-			throw new NotFoundException(__('Grupo inválido'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Grupo inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		
 		if ($this->Group->delete()) {
-			$this->Session->setFlash(__('Grupo deletado'));
+			$this->Session->setFlash('<div class="alert alert-success">'.__('Grupo deletado').'</div>');
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('O grupo não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
+		$this->Session->setFlash('<div class="alert alert-error">'.__('O grupo não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.').'</div>');
 		$this->redirect(array('action' => 'index'));
 	}
 

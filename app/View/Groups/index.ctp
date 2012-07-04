@@ -1,48 +1,50 @@
-<div class="groups index">
-	<h2><?php echo __('Groups');?></h2>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
-			<th><?php echo $this->Paginator->sort('id', 'ID');?></th>
-			<th><?php echo $this->Paginator->sort('name', 'Nome');?></th>
-			<th><?php echo $this->Paginator->sort('created', 'Criado');?></th>
-			<th><?php echo $this->Paginator->sort('modified', 'Modificado');?></th>
-			<th class="actions"><?php echo __('Ações');?></th>
-	</tr>
-	<?php
-	foreach ($groups as $group): ?>
-	<tr>
-		<td><?php echo h($group['Group']['id']); ?>&nbsp;</td>
-		<td><?php echo h($group['Group']['name']); ?>&nbsp;</td>
-		<td><?php echo h($group['Group']['created']); ?>&nbsp;</td>
-		<td><?php echo h($group['Group']['modified']); ?>&nbsp;</td>
-		<td class="actions">
-			<?php echo $this->Html->link(__('Visualizar'), array('action' => 'view', $group['Group']['id'])); ?>
-			<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $group['Group']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Deletar'), array('action' => 'delete', $group['Group']['id']), null, __('Deseja relamente deletar o grupo #%s?', $group['Group']['name'])); ?>
-		</td>
-	</tr>
-<?php endforeach; ?>
-	</table>
-	<p>
-	<?php
-	echo $this->Paginator->counter(array(
-	'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
-	));
-	?>	</p>
+<div class="span2">	
+	<div class="well" style="padding: 8px 0;">
+		<ul class="nav nav-list">
+			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
+			<li class="divider"></li>
+			<li><?php echo $this->Html->link(__('Novo grupo'), array('action' => 'add')); ?></li>
+			<li><?php echo $this->Html->link(__('Usuários'), array('controller' => 'users', 'action' => 'index')); ?> </li>
+		</ul>
+	</div>
+</div>
 
-	<div class="paging">
+<div class="span10">
+	<h2><?php echo __('Grupos');?></h2>
+	<table cellpadding="0" cellspacing="0" class="table">
+		<thead>
+			<tr>
+				<th><?php echo $this->Paginator->sort('id', 'ID');?></th>
+				<th><?php echo $this->Paginator->sort('name', 'Nome');?></th>
+				<th><?php echo $this->Paginator->sort('created', 'Criado');?></th>
+				<th><?php echo $this->Paginator->sort('modified', 'Modificado');?></th>
+				<th class="actions"><?php echo __('Ações');?></th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php
+		foreach ($groups as $group): ?>		
+			<tr>
+				<td><?php echo h($group['Group']['id']); ?></td>
+				<td><?php echo h($group['Group']['name']); ?></td>
+				<td><?php echo h($group['Group']['created']); ?></td>
+				<td><?php echo h($group['Group']['modified']); ?></td>
+				<td class="actions">
+					<?php echo $this->Html->link(__('Visualizar'), array('action' => 'view', $group['Group']['id']), array('class'=>'btn btn-primary')); ?>
+					<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $group['Group']['id']), array('class'=>'btn btn-primary')); ?>
+					<?php echo $this->Form->postLink(__('Deletar'), array('action' => 'delete', $group['Group']['id']), array('class'=>'btn btn-danger'), __('Deseja relamente deletar o grupo #%s?', $group['Group']['name'])); ?>
+				</td>
+			</tr>		
+		<?php endforeach; ?>
+		</tbody>
+	</table>	
+
+	<div class="pagination">
 	<?php
-		echo $this->Paginator->prev('< ' . __('anterior'), array(), null, array('class' => 'prev disabled'));
+		echo $this->Paginator->prev('< ' . __('anterior'), array(), null, array('class' => 'disabled'));
 		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('próximo') . ' >', array(), null, array('class' => 'next disabled'));
+		echo $this->Paginator->next(__('próximo') . ' >', array(), null, array('class' => 'disabled'));
 	?>
 	</div>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Novo grupo'), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('Listar usuários'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo usuário'), array('controller' => 'users', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
+

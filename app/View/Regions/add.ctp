@@ -1,40 +1,18 @@
-<script>
-$(document).ready(function() {
+<div class="span2">	
+	<div class="well" style="padding: 8px 0;">
+		<ul class="nav nav-list">
+			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
+			<li class="divider"></li>
+			<li><?php echo $this->Html->link(__('Regiões'), array('action' => 'index')); ?></li>
+			<li><?php echo $this->Html->link(__('Áreas'), array('controller'=>'areas','action' => 'index')); ?></li>
+			<li><?php echo $this->Html->link(__('Cidades'), array('controller' => 'cities', 'action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Unidades'), array('controller' => 'unities', 'action' => 'index')); ?> </li>
+		</ul>
+	</div>
+</div>
 
-	//Combobox
-	$('#RegionAreaId').parent().hide();
-	
-	$('#RegionCityId').change(function() {
-		if($(this).val() == 0) {
-			$('#RegionAreaId').parent().hide('slow');
-		}else {
-			$('#RegionAreaId').parent().show('slow');
-		}
-	});
-	
-	//validação de formulário
-	$("#RegionAddForm").validate({ 
-    	rules: {
-			'data[Region][city_id]':{
-				required: true
-			},
-			'data[Region][area_id]':{
-				required: true
-			}
-		},
-		messages: {			
-			'data[Region][city_id]':{
-				required: "Selecione uma região."
-			},
-			'data[Region][area_id]':{
-				required: "Selecione um área"
-			}
-		}
-	}); 
-});
-</script>
-<div class="regions form">
-<?php echo $this->Form->create('Region');?>
+<div class="span4">
+<?php echo $this->Form->create('Region', array('class'=>'well'));?>
 	<fieldset>
 		<legend><?php echo __('Adicionar região'); ?></legend>
 	<?php
@@ -67,18 +45,5 @@ $(document).ready(function() {
 		echo $this->Form->input('area_id', array('label'=>__('Área')));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Cadastrar'));?>
-</div>
-<div class="actions">
-	<h3><?php echo __('Ações'); ?></h3>
-	
-	<ul>
-		<li><?php echo $this->Html->link(__('Lista de regiões'), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('Lista de cidades'), array('controller' => 'cities', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nova cidade'), array('controller' => 'cities', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Lista de áreas'), array('controller' => 'areas', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nova área'), array('controller' => 'areas', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Lista de unidades'), array('controller' => 'unities', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nova unidade'), array('controller' => 'unities', 'action' => 'add')); ?> </li>
-	</ul>
+	<?php echo $this->Form->end(array('label'=>__('Cadastrar'), 'class'=>'btn btn-primary'));?>
 </div>

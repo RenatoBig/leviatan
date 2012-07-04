@@ -49,6 +49,7 @@ $(document).ready(function() {
 		echo $this->Form->input('image_path', array('label'=>__('Imagem'), 'type'=>'file'));
 		echo '<p>Imagem atual: </p>';
 		echo $this->Html->image('items'.DS.$this->request->data['Item']['image_path']); 
+		echo $this->Form->input('prev_image', array('type'=>'hidden', 'value'=>$this->request->data['Item']['image_path']));
 		
 	?>
 	</fieldset>

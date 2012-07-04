@@ -43,13 +43,22 @@ class AppController extends Controller {
         'Session'
     );
     public $helpers = array('Html', 'Form', 'Session', 'Js');
+    public $uses = array('User', 'Employee');
 
     public function beforeFilter() {
     	    	
         //Configure AuthComponent
         $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
         $this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'login');
-        $this->Auth->loginRedirect = array('controller' => 'items', 'action' => 'index');        
+        $this->Auth->loginRedirect = array('controller' => 'orders', 'action' => 'index');
+		
+       // $this->Employee->recursive = -1;
+        $u = $this->Auth->user();
+        if($u != null) {
+        	$user = $this->User->read(null, $u['id']);
+        	
+        	$this->set(compact('user'));
+        }
     }
 	
 }

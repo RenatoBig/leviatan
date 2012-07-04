@@ -1,57 +1,80 @@
-<div class="orderItems view">
-<h2><?php  echo __('Item do pedido');?></h2>
-	<dl>
-		<dt><?php echo __('ID'); ?></dt>
+<div class="span2">
+	<div class="well" style="padding: 8px 0;">
+		<ul class="nav nav-list">
+			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
+			<li class="divider"></li>
+			<li><?php echo $this->Html->link(__('Fazer pedido'), array('controller'=>'order_items', 'action' => 'products')); ?></li>
+			<li><?php echo $this->Html->link(__('Usuários'), array('controller' => 'users', 'action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Usuários'), array('controller' => 'users', 'action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Usuários'), array('controller' => 'users', 'action' => 'index')); ?> </li>
+		</ul>
+	</div>
+</div>	
+
+<?php 
+if(empty($orderItems)) {
+	
+	echo "Não existe pedidos.";
+	
+}else {?>
+<div class="span10 well">	
+	<h2><?php  echo __('Pedido');?></h2>
+	<dl class="dl-horizontal">
+		<dt><?php echo __('Pedido:'); ?></dt>
 		<dd>
-			<?php echo h($orderItem['OrderItem']['id']); ?>
-			&nbsp;
+			<?php echo h($orderItems[0]['Order']['keycode']); ?>
 		</dd>
-		<dt><?php echo __('Pedido'); ?></dt>
+		<dt><?php echo __('Data inicial:'); ?></dt>
 		<dd>
-			<?php echo $this->Html->link($orderItem['Order']['keycode'], array('controller' => 'orders', 'action' => 'view', $orderItem['Order']['id'])); ?>
-			&nbsp;
+			<?php echo h($orderItems[0]['Order']['start_date']); ?>
 		</dd>
-		<dt><?php echo __('Item'); ?></dt>
-		<dd>
-			<?php echo $this->Html->link($orderItem['Item']['name'], array('controller' => 'items', 'action' => 'view', $orderItem['Item']['id'])); ?>
-			&nbsp;
+		<dt><?php echo __('Data final:'); ?></dt>
+		<dd>			
+			<?php 
+				if($orderItems[0]['Order']['end_date'] != null) {
+					echo h($orderItems[0]['Order']['end_date']);
+				}else {
+					echo 'Indefinida';
+				}
+			?>
+					
 		</dd>
-		<dt><?php echo __('Quantidade'); ?></dt>
+		<dt><?php echo __('Status:'); ?></dt>
 		<dd>
-			<?php echo h($orderItem['OrderItem']['quantity']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Status'); ?></dt>
-		<dd>
-			<?php echo $this->Html->link($orderItem['Status']['name'], array('controller' => 'statuses', 'action' => 'view', $orderItem['Status']['id'])); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Criado'); ?></dt>
-		<dd>
-			<?php echo h($orderItem['OrderItem']['created']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Modificado'); ?></dt>
-		<dd>
-			<?php echo h($orderItem['OrderItem']['modified']); ?>
-			&nbsp;
+			<?php echo h($orderItems[0]['Order']['status_id']); ?>
 		</dd>
 	</dl>
-</div>
-<div class="actions">
-	<h3><?php echo __('Ações'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Editar item do pedido'), array('action' => 'edit', $orderItem['OrderItem']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Deletar item do pedido'), array('action' => 'delete', $orderItem['OrderItem']['id']), null, __('Are you sure you want to delete # %s?', $orderItem['OrderItem']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar itens dos pedidos'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo item do pedido'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar pedidos'), array('controller' => 'orders', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo pedido'), array('controller' => 'orders', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar itens'), array('controller' => 'items', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo item'), array('controller' => 'items', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar status'), array('controller' => 'statuses', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo status'), array('controller' => 'statuses', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar Homologações'), array('controller' => 'homologations', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nova homologação'), array('controller' => 'homologations', 'action' => 'add')); ?> </li>
-	</ul>
+
+	<h2><?php echo __('Itens do pedido');?></h2>	
+	<table cellpadding="0" cellspacing="0" class="table">
+	<thead>
+		<tr>
+			<th><?php echo __('Nome');?></th>
+			<th><?php echo __('Descrição');?></th>
+			<th><?php echo __('Imagem');?></th>
+			<th><?php echo __('Quantidade');?></th>
+			<th><?php echo __('Status');?></th>
+		</tr>
+	</thead>
+	<tbody>
+	<?php	
+	foreach ($orderItems as $order): ?>
+		<tr>
+			<td><?php echo h($order['Item']['name']); ?>&nbsp;</td>
+			<td><?php echo h($order['Item']['description']); ?>&nbsp;</td>
+			<?php 
+				if(empty($order['Item']['image_path'])){
+					echo '<td>'.$this->Html->image('no-image.gif').'</td>';
+				} else {
+					echo '<td>'.$this->Html->image('items'.DS.$order['Item']['image_path']).'</td>';
+				}
+			?>
+			<td><?php echo h($order['OrderItem']['quantity']); ?>&nbsp;</td>
+			<td><?php echo h($order['OrderItem']['status_id']); ?>&nbsp;</td>			
+		</tr>
+	<?php endforeach; ?>
+	</tbody>
+	<?php 
+	}
+	?>
 </div>

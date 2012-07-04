@@ -1,52 +1,18 @@
-<script>
-$(document).ready(function() {
+<div class="span2">	
+	<div class="well" style="padding: 8px 0;">
+		<ul class="nav nav-list">
+			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
+			<li class="divider"></li>
+			<li><?php echo $this->Html->link(__('Regiões'), array('action' => 'index')); ?></li>
+			<li><?php echo $this->Html->link(__('Áreas'), array('controller'=>'areas','action' => 'index')); ?></li>
+			<li><?php echo $this->Html->link(__('Cidades'), array('controller' => 'cities', 'action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Unidades'), array('controller' => 'unities', 'action' => 'index')); ?> </li>
+		</ul>
+	</div>
+</div>
 
-	$('#RegionCityId').change(function() {		
-		if($(this).val() == 0) {
-			$('#RegionAreaId').parent().hide('slow');
-		}else {
-			$('#RegionAreaId').parent().show('slow');
-		}
-	});
-	
-	//Função que retira o nome da área atual quando clica no select da área
-	$('#RegionAreaId').click(function() {
-		var cidade = '<?php echo $this->request->data['City']['id']?>';
-		var area = '<?php echo $this->request->data['Area']['id']?>';
-
-		var citySelect = document.getElementById("RegionCityId");
-		var areaSelect = document.getElementById("RegionAreaId");
-		
-		if(areaSelect.value == area && citySelect.value == cidade) {
-			areaSelect.remove(areaSelect.selectedIndex);
-		}		
-	});
-	
-	
-	//validação de formulário
-	$("#RegionEditForm").validate({ 
-    	rules: {
-			'data[Region][city_id]':{
-				required: true
-			},
-			'data[Region][area_id]':{
-				required: true
-			}
-		},
-		messages: {			
-			'data[Region][city_id]':{
-				required: "Selecione uma região."
-			},
-			'data[Region][area_id]':{
-				required: "Selecione um área"
-			}
-		}
-	}); 
-});
-</script>
-
-<div class="regions form">
-<?php echo $this->Form->create('Region');?>
+<div class="span4">
+<?php echo $this->Form->create('Region', array('class'=>'well'));?>
 	<fieldset>
 		<legend><?php echo __('Editar Região'); ?></legend>
 	<?php
@@ -79,19 +45,22 @@ $(document).ready(function() {
 		echo $this->Form->input('area_id', array('label'=>__('Área')));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Alterar'));?>
+<?php echo $this->Form->end(array('label'=>__('Cadastrar'), 'class'=>'btn btn-primary'));?>
 </div>
-<div class="actions">
-	<h3><?php echo __('Ações'); ?></h3>
-	<ul>
 
-		<li><?php echo $this->Form->postLink(__('Deletar região'), array('action' => 'delete', $this->Form->value('Region.id')), null, __('Deseja realmente deletar #%s?', $this->Form->value('Region.id'))); ?></li>
-		<li><?php echo $this->Html->link(__('Lista regiões'), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('Lista cidades'), array('controller' => 'cities', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nova cidade'), array('controller' => 'cities', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Lista áreas'), array('controller' => 'areas', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nova área'), array('controller' => 'areas', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Lista unidades'), array('controller' => 'unities', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nova unidade'), array('controller' => 'unities', 'action' => 'add')); ?> </li>
-	</ul>
-</div>
+<script type="text/javascript">
+<!--
+//Função que retira o nome da área atual quando clica no select da área
+$('#RegionEditForm #RegionAreaId').click(function() {
+	var cidade = '<?php echo $this->request->data['City']['id']?>';
+	var area = '<?php echo $this->request->data['Area']['id']?>';
+
+	var citySelect = document.getElementById("RegionCityId");
+	var areaSelect = document.getElementById("RegionAreaId");
+	
+	if(areaSelect.value == area && citySelect.value == cidade) {
+		areaSelect.remove(areaSelect.selectedIndex);
+	}		
+});
+//-->
+</script>

@@ -1,6 +1,18 @@
-<div class="areas view">
-<h2><?php  echo __('Area');?></h2>
-	<dl>
+<div class="span2">	
+	<div class="well" style="padding: 8px 0;">
+		<ul class="nav nav-list">
+			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
+			<li class="divider"></li>
+			<li><?php echo $this->Html->link(__('Áreas'), array('action' => 'index')); ?></li>
+			<li><?php echo $this->Html->link(__('Cidades'), array('controller' => 'cities', 'action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Regioẽs'), array('controller' => 'regions', 'action' => 'index')); ?> </li>
+		</ul>
+	</div>
+</div>
+
+<div class="span4">
+	<h2><?php  echo __('Area');?></h2>
+	<dl class="dl-horizontal">
 		<dt><?php echo __('ID'); ?></dt>
 		<dd>
 			<?php echo h($area['Area']['id']); ?>
@@ -22,15 +34,4 @@
 			&nbsp;
 		</dd>
 	</dl>
-</div>
-<div class="actions">
-	<h3><?php echo __('Ações'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Editar área'), array('action' => 'edit', $area['Area']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Deletar área'), array('action' => 'delete', $area['Area']['id']), null, __('Deseja realmente deletar #%s?', $area['Area']['name'])); ?> </li>
-		<li><?php echo $this->Html->link(__('Lista áreas'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nova área'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Lista de regiões'), array('controller' => 'regions', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nova região'), array('controller' => 'regions', 'action' => 'add')); ?> </li>
-	</ul>
 </div>

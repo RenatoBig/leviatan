@@ -1,41 +1,37 @@
-<div class="cities view">
-<h2><?php  echo __('Cidade');?></h2>
-	<dl>
+<div class="span2">	
+	<div class="well" style="padding: 8px 0;">
+		<ul class="nav nav-list">
+			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
+			<li class="divider"></li>
+			<li><?php echo $this->Html->link(__('Cidades'), array('action' => 'index')); ?></li>
+			<li><?php echo $this->Html->link(__('Áreas'), array('controller' => 'areas', 'action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Regioẽs'), array('controller' => 'regions', 'action' => 'index')); ?> </li>
+		</ul>
+	</div>
+</div>
+
+<div class="span4">
+	<h2><?php  echo __('Cidade');?></h2>
+	<dl class="dl-horizontal">
 		<dt><?php echo __('ID'); ?></dt>
 		<dd>
 			<?php echo h($city['City']['id']); ?>
-			&nbsp;
 		</dd>
 		<dt><?php echo __('Código'); ?></dt>
 		<dd>
 			<?php echo h($city['City']['keycode']); ?>
-			&nbsp;
 		</dd>
 		<dt><?php echo __('Nome'); ?></dt>
 		<dd>
 			<?php echo h($city['City']['name']); ?>
-			&nbsp;
 		</dd>
 		<dt><?php echo __('Criado'); ?></dt>
 		<dd>
 			<?php echo h($city['City']['created']); ?>
-			&nbsp;
 		</dd>
 		<dt><?php echo __('Modificado'); ?></dt>
 		<dd>
 			<?php echo h($city['City']['modified']); ?>
-			&nbsp;
 		</dd>
 	</dl>
-</div>
-<div class="actions">
-	<h3><?php echo __('Ações'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Editar cidade'), array('action' => 'edit', $city['City']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Deletar cidade'), array('action' => 'delete', $city['City']['id']), null, __('Deseja realmente deletar #%s?', $city['City']['name'])); ?> </li>
-		<li><?php echo $this->Html->link(__('Lista de cidades'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nova cidade'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Lista de regiões'), array('controller' => 'regions', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nova região'), array('controller' => 'regions', 'action' => 'add')); ?> </li>
-	</ul>
 </div>

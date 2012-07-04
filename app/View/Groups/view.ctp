@@ -1,36 +1,35 @@
-<div class="groups view">
-<h2><?php  echo __('Grupo');?></h2>
-	<dl>
+<div class="span2">
+	<div class="well" style="padding: 8px 0;">
+		<ul class="nav nav-list">
+			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
+			<li class="divider"></li>
+			<li><?php echo $this->Html->link(__('Editar Grupo'), array('action' => 'edit', $group['Group']['id'])); ?> </li>
+			<li><?php echo $this->Form->postLink(__('Deletar grupo'), array('action' => 'delete', $group['Group']['id']), null, __('Deseja realmente deletar o grupo #%s?', $group['Group']['name'])); ?> </li>
+			<li><?php echo $this->Html->link(__('Grupos'), array('action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Usuários'), array('controller' => 'users', 'action' => 'index')); ?> </li>
+		</ul>
+	</div>
+</div>
+
+
+<div class="span4">
+		<h2><?php  echo __('Grupo');?></h2>
+	<dl class="dl-horizontal">
 		<dt><?php echo __('ID'); ?></dt>
 		<dd>
 			<?php echo h($group['Group']['id']); ?>
-			&nbsp;
 		</dd>
 		<dt><?php echo __('Nome'); ?></dt>
 		<dd>
 			<?php echo h($group['Group']['name']); ?>
-			&nbsp;
 		</dd>
 		<dt><?php echo __('Criado'); ?></dt>
 		<dd>
 			<?php echo h($group['Group']['created']); ?>
-			&nbsp;
 		</dd>
 		<dt><?php echo __('Modificado'); ?></dt>
 		<dd>
 			<?php echo h($group['Group']['modified']); ?>
-			&nbsp;
 		</dd>
 	</dl>
-</div>
-<div class="actions">
-	<h3><?php echo __('Ações'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Editar Grupo'), array('action' => 'edit', $group['Group']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Deletar grupo'), array('action' => 'delete', $group['Group']['id']), null, __('Deseja realmente deletar o grupo #%s?', $group['Group']['name'])); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar grupos'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo grupo'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar usuários'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo usuário'), array('controller' => 'users', 'action' => 'add')); ?> </li>
-	</ul>
 </div>

@@ -7,6 +7,8 @@ App::uses('AppController', 'Controller');
  */
 class UsersController extends AppController {
 	
+	var $layout = 'leviatan';
+	
 /**
  * index method
  *
@@ -26,7 +28,8 @@ class UsersController extends AppController {
 	public function view($id = null) {
 		$this->User->id = $id;
 		if (!$this->User->exists()) {
-			throw new NotFoundException(__('Usuário inválido'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Usuário inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('user', $this->User->read(null, $id));
 	}
@@ -54,10 +57,10 @@ class UsersController extends AppController {
 			
 			$this->User->create();			
 			if ($this->User->save($this->request->data)) {
-				$this->Session->setFlash(__('O usuário foi cadastrado.'));
+				$this->Session->setFlash('<div class="alert alert-success">'.__('O usuário foi cadastrado.').'</div>');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O usuário não pode ser cadastrado. Por favor, tente novamente.'));
+				$this->Session->setFlash('<div class="alert alert-error">'.__('O usuário não pode ser cadastrado. Por favor, tente novamente.').'</div>');
 			}
 		}
 		$inicio = array(''=>'Selecione um item');
@@ -78,14 +81,15 @@ class UsersController extends AppController {
 	public function edit($id = null) {
 		$this->User->id = $id;
 		if (!$this->User->exists()) {
-			throw new NotFoundException(__('Usuário inválido'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Usuário inválido').'</div>');
+			$this->redirect(array('action'=>'index'));			
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {			
 			if ($this->User->save($this->request->data)) {				
-				$this->Session->setFlash(__('o usuário foi alterado'));
+				$this->Session->setFlash('<div class="alert alert-success">'.__('o usuário foi alterado').'</div>');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O usuário não pode ser alterado. por favor, tente novamente.'));
+				$this->Session->setFlash('<div class="alert alert-error">'.__('O usuário não pode ser alterado. por favor, tente novamente.').'</div>');
 			}
 		} else {
 			$this->request->data = $this->User->read(null, $id);
@@ -112,13 +116,14 @@ class UsersController extends AppController {
 		}
 		$this->User->id = $id;
 		if (!$this->User->exists()) {
-			throw new NotFoundException(__('Usuário inválido'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Usuário inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->User->delete()) {
-			$this->Session->setFlash(__('Usuário deletado'));
+			$this->Session->setFlash('<div class="alert alert-success">'.__('Usuário deletado').'</div>');
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('O usuário não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
+		$this->Session->setFlash('<div class="alert alert-error">'.__('O usuário não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.').'</div>');
 		$this->redirect(array('action' => 'index'));
 	}
 	
@@ -127,11 +132,12 @@ class UsersController extends AppController {
  * Enter description here ...
  */
 	public function login() {
+		$this->layout = 'login';
 	    if ($this->request->is('post')) {
 	        if ($this->Auth->login()) {
 	            $this->redirect($this->Auth->redirect());
 	        } else {
-	            $this->Session->setFlash('Usuário ou senha incorretos.');
+	            $this->Session->setFlash('<div class="alert alert-error">'.__('Usuário ou senha incorretos.').'</div>');
 	        }
 	    }
 	}
@@ -141,8 +147,11 @@ class UsersController extends AppController {
  * Enter description here ...
  */
 	public function logout() {
-	    //Leave empty for now.
-	    $this->Session->setFlash('Adeus');
-		$this->redirect($this->Auth->logout());
+		// Destruindo a sessão
+		if ($this->Session->valid()) {
+			$this->Session->destroy(); // Destrói
+		    $this->Session->setFlash('<div class="alert alert-success">'.__('Adeus').'</div>');
+			$this->redirect('/');
+		}
 	}
 }

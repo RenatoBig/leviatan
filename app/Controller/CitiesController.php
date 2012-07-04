@@ -6,7 +6,8 @@ App::uses('AppController', 'Controller');
  * @property City $City
  */
 class CitiesController extends AppController {
-
+	
+	var $layout = "leviatan";
 
 /**
  * index method
@@ -27,7 +28,8 @@ class CitiesController extends AppController {
 	public function view($id = null) {
 		$this->City->id = $id;
 		if (!$this->City->exists()) {
-			throw new NotFoundException(__('Cidade inválida.'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Cidade inválida').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('city', $this->City->read(null, $id));
 	}
@@ -41,10 +43,10 @@ class CitiesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->City->create();
 			if ($this->City->save($this->request->data)) {
-				$this->Session->setFlash(__('A cidade foi cadastrada.'));
+				$this->Session->setFlash('<div class="alert alert-success">'.__('A cidade foi cadastrada.').'</div>');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('A cidade não pode ser cadastrada. Por favor tente novamente.'));
+				$this->Session->setFlash('<div class="alert alert-error">'.__('A cidade não pode ser cadastrada. Por favor tente novamente.').'</div>');
 			}
 		}
 	}
@@ -58,14 +60,15 @@ class CitiesController extends AppController {
 	public function edit($id = null) {
 		$this->City->id = $id;
 		if (!$this->City->exists()) {
-			throw new NotFoundException(__('Cidade inválida.'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Cidade inválida').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->City->save($this->request->data)) {
-				$this->Session->setFlash(__('A cidade foi alterada.'));
+				$this->Session->setFlash('<div class="alert alert-success">'.__('A cidade foi alterada.').'</div>');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('A cidade não pode ser alterada. Por favor, tente novamente.'));
+				$this->Session->setFlash('<div class="alert alert-error">'.__('A cidade não pode ser alterada. Por favor, tente novamente.').'</div>');
 			}
 		} else {
 			$this->request->data = $this->City->read(null, $id);
@@ -84,15 +87,16 @@ class CitiesController extends AppController {
 		}
 		$this->City->id = $id;
 		if (!$this->City->exists()) {
-			throw new NotFoundException(__('Cidade inválida.'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Cidade inválida').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		
 		if($this->City->delete()) {
-			$this->Session->setFlash(__('Cidade deletada.'));
+			$this->Session->setFlash('<div class="alert alert-success">'.__('Cidade deletada.').'</div>');
 			$this->redirect(array('action' => 'index'));
 		}
 
-		$this->Session->setFlash(__('A cidade não pode ser deletada. Possivelmente o registro está cadastrado em outra tabela.'));
+		$this->Session->setFlash('<div class="alert alert-error">'.__('A cidade não pode ser deletada. Possivelmente o registro está cadastrado em outra tabela.').'</div>');
 		$this->redirect(array('action' => 'index'));
 	}
 }

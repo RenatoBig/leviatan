@@ -1,62 +1,27 @@
-<script>
-$(document).ready(function() {
+<div class="span2">
+	<div class="well" style="padding: 8px 0;">
+		<ul class="nav nav-list">
+			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
+			<li class="divider"></li>
+			<li><?php echo $this->Html->link(__('Usuários'), array('action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Grupos'), array('controller' => 'groups', 'action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Funcionários'), array('controller' => 'employees', 'action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Pedidos'), array('controller' => 'orders', 'action' => 'index')); ?> </li>
+		</ul>
+	</div>
+</div>
 
-	//validação de formulário
-	$("#UserAddForm").validate({ 
-    	rules: { 			
-			'data[User][group_id]':{
-				required: true
-			},
-			'data[User][employee_id]':{
-				required: true
-			},
-			'data[User][password]':{
-				required: true
-			},
-			'data[User][confirm_password]':{
-				required: true,
-				equalTo: "#UserPassword"
-			}
-		},
-		messages: {
-			'data[User][group_id]':{
-				required: "Campo obrigatório"
-			},
-			'data[User][employee_id]':{
-				required: "Campo obrigatório"
-			},
-			'data[User][password]':{
-				required: "Campo obrigatório"
-			},
-			'data[User][confirm_password]':{
-				required: "Campo obrigatório",
-				equalTo: "Senhas não conferem"
-			}
-		}
-	}); 
-	
-});
-</script>
-
-<div class="users form">
-<?php echo $this->Form->create('User');?>
+<div class="span4">
+<?php echo $this->Form->create('User', array('class'=>'well'));?>
 	<fieldset>
 		<legend><?php echo __('Adicionar usuário'); ?></legend>
 	<?php
 		echo $this->Form->input('group_id', array('label'=>__('Grupo')));
 		echo $this->Form->input('employee_id', array('label'=>__('Funcionário')));
 		echo $this->Form->input('password', array('label'=>__('Senha')));
-		echo $this->Form->input('confirm_password', array('label'=>__('Confirmar senha')));		
+		echo $this->Form->input('confirm_password', array('label'=>__('Confirmar senha'), 'type'=>'password'));		
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Cadastrar'));?>
+<?php echo $this->Form->end(array('label'=>__('Cadastrar'), 'class'=>'btn btn-primary'));?>
 </div>
-<div class="actions">
-	<h3><?php echo __('Ações'); ?></h3>
-	<ul>
 
-		<li><?php echo $this->Html->link(__('Listar usuários'), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('Listar grupos'), array('controller' => 'groups', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo grupo'), array('controller' => 'groups', 'action' => 'add')); ?> </li>
-	</ul>
-</div>

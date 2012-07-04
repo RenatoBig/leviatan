@@ -55,7 +55,7 @@ class ItemsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Item->create();
 			if(!empty($this->request->data['Item']['image_path']['name'])) {
-				$imagem = $this->__uploadImage($this->data['Item']['image_path']);
+				$imagem = $this->__uploadImage($this->request->data['Item']['image_path']);
 				if($imagem) {
 					$this->request->data['Item']['image_path'] = $imagem;
 				}else {
@@ -110,11 +110,10 @@ class ItemsController extends AppController {
 		
 		if ($this->request->is('post') || $this->request->is('put')) {
 			
-			$item = $this->Item->read(null, $this->request->data['Item']['id']);
-			$imagemAnterior = $item['Item']['image_path'];
+			$imagemAnterior = $this->request->data['Item']['prev_image'];
 
 			if(empty($this->request->data['Item']['image_path']['name'])) {				
-				$this->request->data['Item']['image_path'] = $item['Item']['image_path'];
+				$this->request->data['Item']['image_path'] = $imagemAnterior;
 			}else {
 				$imagem = $this->__uploadImage($this->data['Item']['image_path']);
 				if($imagem) {
@@ -123,7 +122,7 @@ class ItemsController extends AppController {
 				}else {
 					$this->Session->setFlash(__('Erro ao fazer upload da imagem.'));
 					$this->__getInformationForm();
-					$this->request->data['Item']['image_path'] = $item['Item']['image_path'];					
+					$this->request->data['Item']['image_path'] = $imagemAnterior;					
 					return;
 				}
 			}		
@@ -246,6 +245,28 @@ class ItemsController extends AppController {
 		);
 		
 		$this->set(compact('items'));
+	}
+	
+/**
+ * 
+ * Enter description here ...
+ */
+	public function getItems() {
+		$this->layout = 'ajax';
+		if($this->request->is('ajax')) {
+			debug($this->request);exit;
+			if(isset($this->data['Item']['busca'])) {
+				$conditions = array(
+					'conditions'=>array('Item.name LIKE '=>'%'.$this->data['Item']['busca'].'%'),
+					'limit'=>10,
+					'order'=>array('Item.name'=>'asc')
+				);
+				$items = $this->Item->find('all', $conditions);
+				$this->paginate = $conditions;
+				debug($items);exit;
+			}
+			$this->set(compact('items'));
+		}
 	}
 	
 }

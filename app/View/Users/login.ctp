@@ -1,29 +1,4 @@
-<script>
-$(document).ready(function() {
-
-	//validação de formulário
-	$("#UserLoginForm").validate({ 
-    	rules: { 			
-			'data[User][username]':{
-				required: true
-			},
-			'data[User][password]':{
-				required: true
-			}
-		},
-		messages: {
-			'data[User][username]':{
-				required: "Campo obrigatório"
-			},
-			'data[User][password]':{
-				required: "Campo obrigatório"
-			}
-		}
-	}); 
-	
-});
-</script>
-<div id="login">
+<div class="span4 offset4">
 	<?php echo $this->Form->create('User', array('action'=>'login', 'class'=>'well'));?>
 		<fieldset>
 			<legend><?php echo __('Login'); ?></legend>
@@ -34,7 +9,7 @@ $(document).ready(function() {
 			echo $this->Form->input('password', array('label'=>'Senha'));	
 		?>
 		</fieldset>
-	<?php echo $this->Form->end(__('Login'));?>
+	<?php echo $this->Form->end(array('label'=>__('Login'), 'class'=>'btn btn-primary'));?>
 </div>
 
 

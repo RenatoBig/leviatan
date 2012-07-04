@@ -1,25 +1,17 @@
-<script>
-$(document).ready(function() {
+<div class="span2">	
+	<div class="well" style="padding: 8px 0;">
+		<ul class="nav nav-list">
+			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
+			<li class="divider"></li>
+			<li><?php echo $this->Html->link(__('Áreas'), array('action' => 'index')); ?></li>
+			<li><?php echo $this->Html->link(__('Cidades'), array('controller' => 'cities', 'action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Regioẽs'), array('controller' => 'regions', 'action' => 'index')); ?> </li>
+		</ul>
+	</div>
+</div>
 
-	//validação de formulário
-	$("#AreaEditForm").validate({ 
-    	rules: { 
-			'data[Area][name]':{
-				required: true
-			}
-		},
-		messages: {
-			'data[Area][name]':{
-				required: "Campo obrigatório."
-			}
-		}
-	}); 
-	
-});
-</script>
-
-<div class="areas form">
-<?php echo $this->Form->create('Area');?>
+<div class="span4">
+<?php echo $this->Form->create('Area', array('class'=>'well'));?>
 	<fieldset>
 		<legend><?php echo __('Editar Área'); ?></legend>
 	<?php
@@ -27,15 +19,5 @@ $(document).ready(function() {
 		echo $this->Form->input('name', array('label'=>__('Nome')));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Alterar'));?>
-</div>
-<div class="actions">
-	<h3><?php echo __('Ações'); ?></h3>
-	<ul>
-
-		<li><?php echo $this->Form->postLink(__('Deletar área'), array('action' => 'delete', $this->Form->value('Area.id')), null, __('Deseja realmente deletar #%s?', $this->Form->value('Area.name'))); ?></li>
-		<li><?php echo $this->Html->link(__('Lista de áreas'), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('Lista de regiões'), array('controller' => 'regions', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nova região'), array('controller' => 'regions', 'action' => 'add')); ?> </li>
-	</ul>
+<?php echo $this->Form->end(array('label'=>__('Alterar'), 'class'=>'btn btn-primary'));?>
 </div>

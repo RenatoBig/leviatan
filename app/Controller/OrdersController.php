@@ -8,6 +8,7 @@ App::uses('AppController', 'Controller');
 class OrdersController extends AppController {
 	
 	var $uses = array('Order', 'User');
+	var $layout = 'leviatan';
 
 /**
  * index method

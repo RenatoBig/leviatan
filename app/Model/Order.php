@@ -83,12 +83,6 @@ class Order extends AppModel {
 				'rule'=>'notEmpty',
 				'message'=>'É obrigatório preencher a data inicial.'
 			)
-		),
-		'end_date'=>array(
-			'stardateRule' => array(
-				'rule'=>'notEmpty',
-				'message'=>'É obrigatório preencher a data final.'
-			)
 		)		
 	);
 
@@ -111,13 +105,14 @@ class Order extends AppModel {
 	public function beforeSave($options) {
 		$dataInicial = $this->data['Order']['start_date'];
 		$dataFinal = $this->data['Order']['end_date'];
-		$hora = date('H:i:s');
 		
-		$dI = explode("/", $dataInicial);
-		$dF = explode("/", $dataFinal);
-		
+		$dI = explode("/", $dataInicial);		
 		$dataInicial = $dI[2].'-'.$dI[1].'-'.$dI[0];
-		$dataFinal = $dF[2].'-'.$dF[1].'-'.$dF[0];
+		
+		if($dataFinal != null) {
+			$dF = explode("/", $dataFinal);
+			$dataFinal = $dF[2].'-'.$dF[1].'-'.$dF[0];
+		}
 		
 		$this->data['Order']['start_date'] = $dataInicial;
 		$this->data['Order']['end_date'] = $dataFinal;

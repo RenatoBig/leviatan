@@ -1,6 +1,19 @@
-<div class="users view">
-<h2><?php  echo __('Usuário');?></h2>
-	<dl>
+<div class="span2">
+	<div class="well" style="padding: 8px 0;">
+		<ul class="nav nav-list">
+			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
+			<li class="divider"></li>
+			<li><?php echo $this->Html->link(__('Novo usuário'), array('action' => 'add')); ?></li>
+			<li><?php echo $this->Html->link(__('Grupos'), array('controller' => 'groups', 'action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Funcionários'), array('controller' => 'employees', 'action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Pedidos'), array('controller' => 'orders', 'action' => 'index')); ?> </li>
+		</ul>
+	</div>
+</div>
+
+<div class="span4">
+	<h2><?php  echo __('Usuário');?></h2>
+	<dl class="dl-horizontal">
 		<dt><?php echo __('ID'); ?></dt>
 		<dd>
 			<?php echo h($user['User']['id']); ?>
@@ -37,15 +50,4 @@
 			&nbsp;
 		</dd>
 	</dl>
-</div>
-<div class="actions">
-	<h3><?php echo __('Ações'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Editar Usuário'), array('action' => 'edit', $user['User']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Deletar usuário'), array('action' => 'delete', $user['User']['id']), null, __('Are you sure you want to delete # %s?', $user['User']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar usuários'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo usuário'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar grupos'), array('controller' => 'groups', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo grupo'), array('controller' => 'groups', 'action' => 'add')); ?> </li>
-	</ul>
 </div>
