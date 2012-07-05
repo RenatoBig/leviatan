@@ -92,11 +92,11 @@ class RegionsController extends AppController {
 		$this->set(compact('cities', 'areas'));
 	}
 	
-	/**
-	 * 
-	 * Recupera as áreas que ainda não foram cadastradas na região
-	 * @param unknown_type $cityId
-	 */
+/**
+ * 
+ * Recupera as áreas que ainda não foram cadastradas na região
+ * @param unknown_type $cityId
+ */
 	private function __getAreas() {
 		//id da unidade			
 		$cityId = $this->request->data['Region']['city_id'];

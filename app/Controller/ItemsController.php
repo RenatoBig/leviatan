@@ -8,6 +8,8 @@ App::uses('AppController', 'Controller');
 class ItemsController extends AppController {
 
 	 public $components = array('Upload');
+	 public $elements = array('pagination');
+	 var $layout = 'leviatan';
 	 
 /**
  * index method
@@ -16,19 +18,13 @@ class ItemsController extends AppController {
  */
 	public function index() {
 		
-		if(isset($this->data['Item']['busca'])) {
-			$conditions = array(
-				'conditions'=>array('Item.name LIKE '=>'%'.$this->data['Item']['busca'].'%'),
-				'limit'=>10,
-				'order'=>array('Item.name'=>'asc')
-			);
-			
-			$this->paginate = $conditions;
-		}
-		
-		
-		
 		$this->Item->recursive = 0;
+		$conditions = array(
+			'limit'=>'6',
+			'order'=>array('Item.name'=>'asc')
+		);
+		$this->paginate = $conditions;
+				
 		$this->set('items', $this->paginate());
 	}
 
@@ -41,7 +37,8 @@ class ItemsController extends AppController {
 	public function view($id = null) {
 		$this->Item->id = $id;
 		if (!$this->Item->exists()) {
-			throw new NotFoundException(__('Item inválido'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Item inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('item', $this->Item->read(null, $id));
 	}
@@ -59,7 +56,7 @@ class ItemsController extends AppController {
 				if($imagem) {
 					$this->request->data['Item']['image_path'] = $imagem;
 				}else {
-					$this->Session->setFlash('Erro ao fazer upload da imagem.');
+					$this->Session->setFlash('<div class="alert alert-error">'.__('Erro ao fazer upload da imagem.').'</div>');
 					$this->__getInformationForm();
 					return;
 				}
@@ -69,10 +66,10 @@ class ItemsController extends AppController {
 			}
 
 			if ($this->Item->save($this->request->data)) {				
-				$this->Session->setFlash(__('O item foi cadastrado'));
+				$this->Session->setFlash('<div class="alert alert-success">'.__('O item foi cadastrado').'</div>');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O item não pode ser cadastrado. Por favor, tente novamente.'));
+				$this->Session->setFlash('<div class="alert alert-error">'.__('O item não pode ser cadastrado. Por favor, tente novamente.').'</div>');
 				if($imagem != '') {
 					$this->__removeImage($this->request->data['Item']['image_path']);
 				}
@@ -105,7 +102,8 @@ class ItemsController extends AppController {
 	public function edit($id = null) {
 		$this->Item->id = $id;
 		if (!$this->Item->exists()) {
-			throw new NotFoundException(__('Item inválido'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Item inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		
 		if ($this->request->is('post') || $this->request->is('put')) {
@@ -120,7 +118,7 @@ class ItemsController extends AppController {
 					$this->request->data['Item']['image_path'] = $imagem;					
 					$this->__removeImage($imagemAnterior);					
 				}else {
-					$this->Session->setFlash(__('Erro ao fazer upload da imagem.'));
+					$this->Session->setFlash('<div class="alert alert-error">'.__('Erro ao fazer upload da imagem.').'</div>');
 					$this->__getInformationForm();
 					$this->request->data['Item']['image_path'] = $imagemAnterior;					
 					return;
@@ -128,10 +126,10 @@ class ItemsController extends AppController {
 			}		
 			
 			if ($this->Item->save($this->request->data)) {
-				$this->Session->setFlash(__('O item foi alterado'));
+				$this->Session->setFlash('<div class="alert alert-success">'.__('O item foi alterado').'</div>');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O item não pode ser alterado. Por favor, tente novamente.'));
+				$this->Session->setFlash('<div class="alert alert-error">'.__('O item não pode ser alterado. Por favor, tente novamente.').'</div>');
 			}
 		} else {
 			$this->request->data = $this->Item->read(null, $id);
@@ -160,19 +158,20 @@ class ItemsController extends AppController {
 			$remove = $this->__removeImage($item['Item']['image_path']);
 
 			if(!$remove) {
-				$this->Session->setFlash(__('Erro ao remover a imagem.'));
+				$this->Session->setFlash('<div class="alert alert-error">'.__('Erro ao remover a imagem.').'</div>');
 				$this->redirect(array('action' => 'index'));	
 			}	
 		}		
 		
 		if (!$this->Item->exists()) {
-			throw new NotFoundException(__('Item inválido'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Item inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Item->delete()) {						
-			$this->Session->setFlash(__('Item deletado'));
+			$this->Session->setFlash('<div class="alert alert-success">'.__('Item deletado').'</div>');
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('O item não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
+		$this->Session->setFlash('<div class="alert alert-error">'.__('O item não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.').'</div>');
 		$this->redirect(array('action' => 'index'));
 	}
 	
@@ -267,6 +266,39 @@ class ItemsController extends AppController {
 			}
 			$this->set(compact('items'));
 		}
+	}
+	
+/**
+ * 
+ * Enter description here ...
+ */
+	public function changeStatus($id) {
+		
+		if($this->request->is('ajax')) {
+			
+			$this->Item->recursive = -1;
+			$item = $this->Item->read(null, $id);
+			$this->Item->id = $item['Item']['id'];
+						
+			if($item['Item']['status_id'] == ATIVO) {
+				$status_id = INATIVO;
+			}else if($item['Item']['status_id'] == INATIVO) {
+				$status_id = ATIVO;
+			}
+			
+			if($this->Item->saveField('status_id', $status_id, false)) {
+				echo true;
+			}else {
+				echo '<div class="alert alert-error">Não foi possível alterar o status. </div>';				
+			}
+			
+			exit;
+		
+		}else {
+			echo false;
+			exit;
+		}
+		
 	}
 	
 }

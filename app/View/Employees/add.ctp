@@ -1,60 +1,17 @@
-<script>
-$(document).ready(function() {
+<div class="span2">	
+	<div class="well" style="padding: 8px 0;">
+		<ul class="nav nav-list">
+			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
+			<li class="divider"></li>
+			<li><?php echo $this->Html->link(__('Funcionários'), array('action' => 'index')); ?></li>
+			<li><?php echo $this->Html->link(__('Usuários'), array('controller' => 'users', 'action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Unidades setores'), array('controller' => 'unity_sectors', 'action' => 'index')); ?> </li>
+		</ul>
+	</div>
+</div>
 
-	//Combobox
-	$('#sector').parent().hide();
-	
-	$('#unity_id').change(function() {
-		if($(this).val() == 0) {
-			$('#sector').parent().hide('slow');
-		}else {
-			$('#sector').parent().show('slow');
-		}
-	});	
-
-	//validação de formulário
-	$("#EmployeeAddForm").validate({ 
-    	rules: { 
-			'data[Employee][registration]':{
-				required: true,
-				number: true,
-				minlength: 6
-			},
-			'data[Employee][Unity]':{
-				required: true
-			},
-			'data[Employee][unity_sector_id]':{
-				required: true
-			},
-			'data[Employee][name]':{
-				required: true,
-				minlength: 3
-			}
-		},
-		messages: {
-			'data[Employee][registration]':{
-				required: "Este campo é obrigatório.",
-				minlength: "Quantidade mínima de dígitos é 6.",
-				number: "Apenas números são permitidos."					
-			},
-			'data[Employee][Unity]':{
-				required: "Selecione uma unidade."
-			},
-			'data[Employee][unity_sector_id]':{
-				required: "Selecione um setor"
-			},
-			'data[Employee][name]':{
-				required: "Este campo é obrigatório.",
-				minlength: "Nome muito pequeno."
-			}
-		}
-	}); 
-	
-});
-</script>
-
-<div class="employees form">
-<?php echo $this->Form->create('Employee');?>
+<div class="span4">
+<?php echo $this->Form->create('Employee', array('class'=>'well'));?>
 	<fieldset>
 		<legend><?php echo __('Adicionar funcionário'); ?></legend>
 	<?php
@@ -86,7 +43,7 @@ $(document).ready(function() {
 		echo $this->Form->input('Unity', array('label'=>__('Unidades'), 'id'=>'unity_id'));
 		echo $this->Form->input('unity_sector_id', array('label'=>__('Setor'),'id'=>'sector'));
 		echo $this->Form->input('name', array('label'=>__('Nome')));
-		echo $this->Form->input('birth_date', array('label'=>__('Data de Nascimento')));
+		echo $this->Form->input('birth_date', array('label'=>__('Data de Nascimento'), 'class'=>'calendario input-small', 'type'=>'text'));
 		echo $this->Form->input('email', array('label'=>__('Email')));
 		echo $this->Form->input('phone', array('label'=>__('Telefone')));
 		echo $this->Form->input('rg', array('label'=>__('RG')));
@@ -99,16 +56,5 @@ $(document).ready(function() {
 		echo $this->Form->input('account', array('label'=>__('Conta corrente')));		
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Cadastrar'));?>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-
-		<li><?php echo $this->Html->link(__('Listar funcionários'), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('Listar unidades_setores'), array('controller' => 'unity_sectors', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo unidade_setor'), array('controller' => 'unity_sectors', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar usuários'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo usuário'), array('controller' => 'users', 'action' => 'add')); ?> </li>
-	</ul>
+<?php echo $this->Form->end(array('label'=>__('Cadastrar'), 'class'=>'btn btn-primary'));?>
 </div>

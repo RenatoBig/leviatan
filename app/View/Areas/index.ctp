@@ -10,23 +10,17 @@
 	</div>
 </div>
 
-<div class="span10">
+<div class="span4">
 	<h2><?php echo __('Áreas');?></h2>
 	<table cellpadding="0" cellspacing="0" class="table">
 	<tr>
-			<th><?php echo $this->Paginator->sort('id', 'ID');?></th>
 			<th><?php echo $this->Paginator->sort('name', 'Nome');?></th>
-			<th><?php echo $this->Paginator->sort('created', 'Criado');?></th>
-			<th><?php echo $this->Paginator->sort('modified', 'Modificado');?></th>
 			<th class="actions"><?php echo __('Ações');?></th>
 	</tr>
 	<?php
 	foreach ($areas as $area): ?>
 	<tr>
-		<td><?php echo h($area['Area']['id']); ?>&nbsp;</td>
 		<td><?php echo h($area['Area']['name']); ?>&nbsp;</td>
-		<td><?php echo h($area['Area']['created']); ?>&nbsp;</td>
-		<td><?php echo h($area['Area']['modified']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('Visualizar'), array('action' => 'view', $area['Area']['id']), array('class'=>'btn btn-primary')); ?>
 			<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $area['Area']['id']), array('class'=>'btn btn-primary')); ?>

@@ -8,10 +8,15 @@
 class AclAppController extends AppController
 {
     var $components = array('Acl', 'Auth', 'Session', 'RequestHandler', 'Acl.AclManager', 'Acl.AclReflector');
-	
+    
     function beforeFilter()
 	{
 	    parent :: beforeFilter();
+	    
+	 	if($this->Auth->user('group_id') != ADMIN) {
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Área restrita!').'</div>');
+			$this->redirect('/orders/index');
+		}
 	    
 		$this->_check_config();
 	}

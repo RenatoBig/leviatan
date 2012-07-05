@@ -7,6 +7,7 @@ App::uses('AppController', 'Controller');
  */
 class HealthDistrictsController extends AppController {
 
+	var $layout = 'leviatan';
 
 /**
  * index method
@@ -27,7 +28,8 @@ class HealthDistrictsController extends AppController {
 	public function view($id = null) {
 		$this->HealthDistrict->id = $id;
 		if (!$this->HealthDistrict->exists()) {
-			throw new NotFoundException(__('Distrito sanitário inválido'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Distrito sanitário inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('healthDistrict', $this->HealthDistrict->read(null, $id));
 	}
@@ -41,10 +43,10 @@ class HealthDistrictsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->HealthDistrict->create();
 			if ($this->HealthDistrict->save($this->request->data)) {
-				$this->Session->setFlash(__('O distrito sanitário foi cadastrado'));
+				$this->Session->setFlash('<div class="alert alert-success">'.__('O distrito sanitário foi cadastrado').'</div>');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O distrito sanitário não pode ser cadastrado. Por favor, tente novamente.'));
+				$this->Session->setFlash('<div class="alert alert-error">'.__('O distrito sanitário não pode ser cadastrado. Por favor, tente novamente.').'</div>');
 			}
 		}
 	}
@@ -58,14 +60,15 @@ class HealthDistrictsController extends AppController {
 	public function edit($id = null) {
 		$this->HealthDistrict->id = $id;
 		if (!$this->HealthDistrict->exists()) {
-			throw new NotFoundException(__('Distrito sanitário inválido'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Distrito sanitário inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->HealthDistrict->save($this->request->data)) {
-				$this->Session->setFlash(__('O distrito sanitário não pode ser alterado'));
+				$this->Session->setFlash('<div class="alert alert-success">'.__('O distrito sanitário não pode ser alterado').'</div>');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('o distrito sanitário não foi alterado. por favor, tente novamente.'));
+				$this->Session->setFlash('<div class="alert alert-error">'.__('o distrito sanitário não foi alterado. por favor, tente novamente.').'</div>');
 			}
 		} else {
 			$this->request->data = $this->HealthDistrict->read(null, $id);
@@ -84,14 +87,15 @@ class HealthDistrictsController extends AppController {
 		}
 		$this->HealthDistrict->id = $id;
 		if (!$this->HealthDistrict->exists()) {
-			throw new NotFoundException(__('Distrito sanitário inválido'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Distrito sanitário inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		
 		if ($this->HealthDistrict->delete()) {
-			$this->Session->setFlash(__('O distrito sanitário foi deletado'));
+			$this->Session->setFlash('<div class="alert alert-success">'.__('O distrito sanitário foi deletado').'</div>');
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('O distrito sanitário não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
+		$this->Session->setFlash('<div class="alert alert-error">'.__('O distrito sanitário não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.').'</div>');
 		$this->redirect(array('action' => 'index'));
 	}
 }

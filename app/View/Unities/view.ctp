@@ -1,6 +1,20 @@
-<div class="unities view">
-<h2><?php  echo __('Unidade');?></h2>
-	<dl>
+<div class="span2">
+	<div class="well" style="padding: 8px 0;">
+		<ul class="nav nav-list">
+			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
+			<li class="divider"></li>
+			<li><?php echo $this->Html->link(__('Unidades'), array('action' => 'index')); ?></li>
+			<li><?php echo $this->Html->link(__('Tipos das unidades'), array('controller'=>'unity_types', 'action' => 'index')); ?></li>
+			<li><?php echo $this->Html->link(__('Distritos sanitários'), array('controller'=>'health_districts', 'action' => 'index')); ?></li>
+			<li><?php echo $this->Html->link(__('Unidades setor'), array('controller'=>'unity_sectors', 'action' => 'index')); ?></li>
+			<li><?php echo $this->Html->link(__('Regiões'), array('controller'=>'regions', 'action' => 'index')); ?></li>
+		</ul>
+	</div>
+</div>
+
+<div class="span4 well">
+	<h2><?php  echo __('Unidade');?></h2>
+	<dl class="dl-horizontal">
 		<dt><?php echo __('ID'); ?></dt>
 		<dd>
 			<?php echo h($unity['Unity']['id']); ?>
@@ -77,21 +91,4 @@
 			&nbsp;
 		</dd>
 	</dl>
-</div>
-<div class="actions">
-	<h3><?php echo __('Ações'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Editar unidade'), array('action' => 'edit', $unity['Unity']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Deletar unidade'), array('action' => 'delete', $unity['Unity']['id']), null, __('Are you sure you want to delete # %s?', $unity['Unity']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar unidades'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nova unidade'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar regiões'), array('controller' => 'regions', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nova região'), array('controller' => 'regions', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar distritos sanitários'), array('controller' => 'health_districts', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo distrito sanitário'), array('controller' => 'health_districts', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar tipos das unidades'), array('controller' => 'unity_types', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo tipo da unidade'), array('controller' => 'unity_types', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar unidades_setores'), array('controller' => 'unity_sectors', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo unidade_setor'), array('controller' => 'unity_sectors', 'action' => 'add')); ?> </li>
-	</ul>
 </div>

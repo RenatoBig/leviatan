@@ -6,7 +6,8 @@ App::uses('AppController', 'Controller');
  * @property UnityType $UnityType
  */
 class UnityTypesController extends AppController {
-
+	
+	var $layout = 'leviatan';
 
 /**
  * index method
@@ -27,7 +28,8 @@ class UnityTypesController extends AppController {
 	public function view($id = null) {
 		$this->UnityType->id = $id;
 		if (!$this->UnityType->exists()) {
-			throw new NotFoundException(__('Inválido tipo da unidade.'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Tipo da unidade inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('unityType', $this->UnityType->read(null, $id));
 	}
@@ -41,10 +43,10 @@ class UnityTypesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->UnityType->create();
 			if ($this->UnityType->save($this->request->data)) {
-				$this->Session->setFlash(__('O tipo da unidade foi cadastrado'));
+				$this->Session->setFlash('<div class="alert alert-success">'.__('O tipo da unidade foi cadastrado').'</div>');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O tipo da unidade não pode ser cadastrado. Por favor, tente novamente.'));
+				$this->Session->setFlash('<div class="alert alert-error">'.__('O tipo da unidade não foi cadastrada. Por favor, tente novamente').'</div>');
 			}
 		}
 	}
@@ -58,14 +60,15 @@ class UnityTypesController extends AppController {
 	public function edit($id = null) {
 		$this->UnityType->id = $id;
 		if (!$this->UnityType->exists()) {
-			throw new NotFoundException(__('tipo da unidade inválido'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Tipo da unidade inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->UnityType->save($this->request->data)) {
-				$this->Session->setFlash(__('O tipo da unidade foi alterado'));
+				$this->Session->setFlash('<div class="alert alert-success">'.__('O tipo da unidade foi alterado').'</div>');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O tipo da unidade não foi alterado. Por favor, tente novamente.'));
+				$this->Session->setFlash('<div class="alert alert-error">'.__('O tipo da unidade não foi cadastrada. Por favor, tente novamente').'</div>');
 			}
 		} else {
 			$this->request->data = $this->UnityType->read(null, $id);
@@ -84,14 +87,14 @@ class UnityTypesController extends AppController {
 		}
 		$this->UnityType->id = $id;
 		if (!$this->UnityType->exists()) {
-			throw new NotFoundException(__('tipo da unidade inválida'));
-		}
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Tipo da unidade inválido').'</div>');
+			$this->redirect(array('action'=>'index'));		}
 		
 		if ($this->UnityType->delete()) {
-			$this->Session->setFlash(__('tipo da unidade deletado'));
+			$this->Session->setFlash('<div class="alert alert-success">'.__('tipo da unidade deletado').'</div>');
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('O tipo da unidade não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
+		$this->Session->setFlash('<div class="alert alert-error">'.__('O tipo da unidade não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela').'</div>');
 		$this->redirect(array('action' => 'index'));
 	}
 }

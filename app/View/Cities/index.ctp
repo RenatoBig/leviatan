@@ -10,16 +10,13 @@
 	</div>
 </div>
 
-<div class="span10">
-	<h2><?php echo __('Cities');?></h2>
+<div class="span4">
+	<h2><?php echo __('Cidades');?></h2>
 	<table cellpadding="0" cellspacing="0" class="table">
 	<thead>
 		<tr>
-			<th><?php echo $this->Paginator->sort('id', 'ID');?></th>
 			<th><?php echo $this->Paginator->sort('keycode', 'Código');?></th>
 			<th><?php echo $this->Paginator->sort('name', 'Nome');?></th>
-			<th><?php echo $this->Paginator->sort('created', 'Criado');?></th>
-			<th><?php echo $this->Paginator->sort('modified', 'Modificado');?></th>
 			<th><?php echo __('Ações');?></th>
 		</tr>
 	</thead>
@@ -27,11 +24,8 @@
 	<?php
 	foreach ($cities as $city): ?>
 	<tr>
-		<td><?php echo h($city['City']['id']);?></td>
 		<td><?php echo h($city['City']['keycode']);?></td>
 		<td><?php echo h($city['City']['name']);?></td>
-		<td><?php echo h($city['City']['created']);?></td>
-		<td><?php echo h($city['City']['modified']);?></td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('Visualizar'), array('action' => 'view', $city['City']['id']), array('class'=>'btn btn-primary')); ?>
 			<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $city['City']['id']), array('class'=>'btn btn-primary')); ?>

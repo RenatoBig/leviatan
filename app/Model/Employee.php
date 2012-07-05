@@ -102,5 +102,23 @@ class Employee extends AppModel {
 			return false;
 		}		
 	}
+	
+/**
+ * (non-PHPdoc)
+ * @see lib/Cake/Model/Model::beforeSave()
+ */
+	public function beforeSave($options) {
+		$data = $this->data['Employee']['birth_date'];
+		
+		
+		if(strpos($data,"/" ) == false) {
+			return;			
+		}
+		
+		$dI = explode("/", $data);				
+		$data = $dI[2].'-'.$dI[1].'-'.$dI[0];
+		
+		$this->data['Employee']['birth_date'] = $data;
+	}
 
 }

@@ -6,20 +6,18 @@
 			<li><?php echo $this->Html->link(__('Nova região'), array('action' => 'add')); ?></li>
 			<li><?php echo $this->Html->link(__('Áreas'), array('controller' => 'areas', 'action' => 'index')); ?> </li>
 			<li><?php echo $this->Html->link(__('Cidades'), array('controller' => 'cities', 'action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Unidades'), array('controller' => 'unities', 'action' => 'index')); ?> </li>
 		</ul>
 	</div>
 </div>
 
-<div class="span10">
+<div class="span6">
 	<h2><?php echo __('Regiões');?></h2>
 	<table cellpadding="0" cellspacing="0" class="table">
 	<thead>
 		<tr>
-			<th><?php echo $this->Paginator->sort('id', 'ID');?></th>
 			<th><?php echo $this->Paginator->sort('city_id', 'Cidade');?></th>
 			<th><?php echo $this->Paginator->sort('area_id', 'Área');?></th>
-			<th><?php echo $this->Paginator->sort('created', 'Criado');?></th>
-			<th><?php echo $this->Paginator->sort('modified', 'Modificado');?></th>
 			<th><?php echo __('Ações');?></th>
 		</tr>
 	</thead>
@@ -27,15 +25,12 @@
 	<?php
 	foreach ($regions as $region): ?>
 	<tr>
-		<td><?php echo h($region['Region']['id']); ?></td>
 		<td>
 			<?php echo $this->Html->link($region['City']['name'], array('controller' => 'cities', 'action' => 'view', $region['City']['id'])); ?>
 		</td>
 		<td>
 			<?php echo $this->Html->link($region['Area']['name'], array('controller' => 'areas', 'action' => 'view', $region['Area']['id'])); ?>
 		</td>
-		<td><?php echo h($region['Region']['created']); ?></td>
-		<td><?php echo h($region['Region']['modified']); ?></td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('Visualizar'), array('action' => 'view', $region['Region']['id']), array('class'=>'btn btn-primary')); ?>
 			<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $region['Region']['id']), array('class'=>'btn btn-primary')); ?>

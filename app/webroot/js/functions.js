@@ -1,0 +1,102 @@
+$(document).ready(function() {
+	
+	//Calendário
+	$(function(){
+		$(".calendario").datepicker({
+		yearRange: "1900:2012",
+		changeMonth: true,
+		changeYear: true,
+		dateFormat: 'dd/mm/yy',
+		dayNames: [
+			'Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'
+		],
+		dayNamesMin: [
+			'D','S','T','Q','Q','S','S','D'
+		],
+		dayNamesShort: [
+			'Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'
+		],
+		monthNames: [
+			'Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro',
+			'Outubro','Novembro','Dezembro'
+		],
+		monthNamesShort: [
+			'Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set',
+			'Out','Nov','Dez'
+		],
+		nextText: 'Próximo',
+		prevText: 'Anterior'
+
+		});
+	});
+	
+	
+	//---------------------------------------------
+	//Autocomplete
+//	$("#autoComplete").autocomplete("items/autoComplete",
+//	{
+//		minChars: 2,
+//		cacheLength: 10,
+//		onItemSelect: selectItem,
+//		onFindValue: findValue,
+//		formatItem: formatItem,
+// 		autoFill: false
+// 	});
+	
+	//---------------------
+	$('.enable').click(function() {
+		var id = $(this).val();
+		
+		var caminho = '/items/changeStatus/'+id;
+
+		var elemento = $(this);
+
+		// pega a url atual
+		url = location.href;
+		// pega o tamanho da string até leviatan/
+		var tamanho = url.indexOf("leviatan") + "leviatan".length;
+		// pega a url até gerenciador/
+		var aux = url.substr(0, tamanho);
+		// concatena com o controller/action/id
+		url = aux + caminho;
+		
+		$.ajax({
+			url : url,
+			success : function() {
+				//retirar a exibição da tela aguarde
+				//message_box.hide();
+			}
+		});
+	});
+	
+	//---------------------------------------------------------
+
+});
+
+function selectItem(li) {
+    findValue(li);
+}
+ 
+function findValue(li) {
+
+    if( li == null ) 
+        return alert("No match!");
+ 
+	// if coming from an AJAX call, let's use the product id as the value
+    if(!!li.extra ) { 
+        var sValue = li.extra[0];
+    } else {// otherwise, let's just display the value in the text box 
+        var sValue = li.selectValue;
+    }
+
+}
+ 
+function formatItem(row) {
+    /*if(row[1] == undefined) {
+        return row[0];
+    }
+    else {
+        return row[0] + " (id: " + row[1] + ")";
+    }*/
+    return row[0];
+}

@@ -11,18 +11,20 @@
 	</div>
 </div>
 
-<div class="span10">
-	<h2><?php echo __('Users');?></h2>
+<?php 
+if(empty($users)) {
+	echo "<div class='span4 alert alert-info'>";
+	echo "<h3>Não há usuários</h3>";
+	echo "</div>";	
+} else{?>
+<div class="span8">
+	<h2><?php echo __('Usuários');?></h2>
 	<table cellpadding="0" cellspacing="0" class="table">
 	<thead>
 		<tr>
-			<th><?php echo $this->Paginator->sort('id', 'ID');?></th>
 			<th><?php echo $this->Paginator->sort('employee_id', 'Funcionário');?></th>
 			<th><?php echo $this->Paginator->sort('username', 'Usuário');?></th>
-			<th><?php echo $this->Paginator->sort('password', 'Senha');?></th>
 			<th><?php echo $this->Paginator->sort('group_id', 'Grupo');?></th>
-			<th><?php echo $this->Paginator->sort('created', 'Criado');?></th>
-			<th><?php echo $this->Paginator->sort('modified', 'Modificado');?></th>
 			<th class="actions"><?php echo __('Ações');?></th>
 		</tr>
 	</thead>
@@ -30,15 +32,11 @@
 		<?php
 		foreach ($users as $user):?>
 		<tr>
-			<td><?php echo h($user['User']['id']); ?>&nbsp;</td>
 			<td><?php echo h($user['Employee']['name']); ?>&nbsp;</td>
 			<td><?php echo h($user['User']['username']); ?>&nbsp;</td>
-			<td><?php echo h($user['User']['password']); ?>&nbsp;</td>
 			<td>
 				<?php echo $this->Html->link($user['Group']['name'], array('controller' => 'groups', 'action' => 'view', $user['Group']['id'])); ?>
 			</td>
-			<td><?php echo h($user['User']['created']); ?>&nbsp;</td>
-			<td><?php echo h($user['User']['modified']); ?>&nbsp;</td>
 			<td class="actions">
 				<?php echo $this->Html->link(__('Visualizar'), array('action' => 'view', $user['User']['id']), array('class'=>'btn btn-primary')); ?>
 				<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $user['User']['id']), array('class'=>'btn btn-primary')); ?>
@@ -57,4 +55,7 @@
 	?>
 	</div>
 </div>
+<?php 
+}
+?>
 

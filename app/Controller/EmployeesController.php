@@ -6,7 +6,9 @@ App::uses('AppController', 'Controller');
  * @property Employee $Employee
  */
 class EmployeesController extends AppController {
-
+	
+	var $layout = 'leviatan';
+	
 /**
  * index method
  *
@@ -26,7 +28,8 @@ class EmployeesController extends AppController {
 	public function view($id = null) {
 		$this->Employee->id = $id;
 		if (!$this->Employee->exists()) {
-			throw new NotFoundException(__('Funcionário inválido'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('FUncionário inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('employee', $this->Employee->read(null, $id));
 	}
@@ -41,10 +44,10 @@ class EmployeesController extends AppController {
 			
 			$this->Employee->create();
 			if ($this->Employee->save($this->request->data)) {
-				$this->Session->setFlash(__('O funcionário foi cadastrado.'));
+				$this->Session->setFlash('<div class="alert alert-success">'.__('O funcionário foi cadastrado.').'</div>');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O funcionário não pode ser cadastrado. Por favor, tente novamente.'));
+				$this->Session->setFlash('<div class="alert alert-error">'.__('O funcionário não pode ser cadastrado. Por favor, tente novamente.').'</div>');
 			}
 		}
 		
@@ -65,14 +68,15 @@ class EmployeesController extends AppController {
 	public function edit($id = null) {
 		$this->Employee->id = $id;
 		if (!$this->Employee->exists()) {
-			throw new NotFoundException(__('Funcionário inválido.'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Funcionário inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Employee->save($this->request->data)) {
-				$this->Session->setFlash(__('O funcionário foi alterado.'));
+				$this->Session->setFlash('<div class="alert alert-success">'.__('O funcionário foi alterado.').'</div>');
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O funcionário não pode ser cadastrado. Por favor, tente novamente.'));
+				$this->Session->setFlash('<div class="alert alert-error">'.__('O funcionário não pode ser cadastrado. Por favor, tente novamente.').'</div>');
 			}
 		} else {
 			//Recupera o registro do funcionário para edição
@@ -126,14 +130,15 @@ class EmployeesController extends AppController {
 		}
 		$this->Employee->id = $id;
 		if (!$this->Employee->exists()) {
-			throw new NotFoundException(__('Funcionário inválido.'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('FUncionário inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
 		}
 		
 		if ($this->Employee->delete()) {
-			$this->Session->setFlash(__('Funcionário deletado.'));
+			$this->Session->setFlash('<div class="alert alert-success">'.__('Funcionário deletado.').'</div>');
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Não foi possível deletar o funcionário. Possivelmente o registro está cadastrado em outra tabela.'));
+		$this->Session->setFlash('<div class="alert alert-error">'.__('Não foi possível deletar o funcionário. Possivelmente o registro está cadastrado em outra tabela.').'</div>');
 		$this->redirect(array('action' => 'index'));
 	}
 }

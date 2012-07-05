@@ -1,26 +1,16 @@
-<script>
-$(document).ready(function() {
+<div class="span2">
+	<div class="well" style="padding: 8px 0;">
+		<ul class="nav nav-list">
+			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
+			<li class="divider"></li>
+			<li><?php echo $this->Html->link(__('Tipos das unidades'), array('action' => 'index')); ?></li>
+			<li><?php echo $this->Html->link(__('Unidades'), array('controller'=>'unities', 'action' => 'index')); ?></li>
+		</ul>
+	</div>
+</div>
 
-	//validação de formulário
-	$("#UnityTypeEditForm").validate({ 
-    	rules: { 			
-			'data[UnityType][name]':{
-				required: true
-			}
-		},
-		messages: {
-			
-			'data[UnityType][name]':{
-				required: "Campo obrigatório."
-			}
-		}
-	}); 
-	
-});
-</script>
-
-<div class="unityTypes form">
-<?php echo $this->Form->create('UnityType');?>
+<div class="span4">
+<?php echo $this->Form->create('UnityType', array('class'=>'well'));?>
 	<fieldset>
 		<legend><?php echo __('Editar tipo da unidade'); ?></legend>
 	<?php
@@ -28,15 +18,5 @@ $(document).ready(function() {
 		echo $this->Form->input('name', array('label'=>__('Nome')));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Alterar'));?>
-</div>
-<div class="actions">
-	<h3><?php echo __('Ações'); ?></h3>
-	<ul>
-
-		<li><?php echo $this->Form->postLink(__('Deletar tipo da unidade'), array('action' => 'delete', $this->Form->value('UnityType.id')), null, __('Deseja realmente deletar o tipo da unidade #%s?', $this->Form->value('UnityType.name'))); ?></li>
-		<li><?php echo $this->Html->link(__('Listar tipos das unidades'), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('Listar unidades'), array('controller' => 'unities', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nova unidade'), array('controller' => 'unities', 'action' => 'add')); ?> </li>
-	</ul>
+<?php echo $this->Form->end(array('label'=>__('Alterar'), 'class'=>'btn btn-primary'));?>
 </div>

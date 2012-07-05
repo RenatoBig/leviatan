@@ -3,7 +3,7 @@
 		<ul class="nav nav-list">
 			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
 			<li class="divider"></li>
-			<li><?php echo $this->Html->link(__('Usuários'), array('action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Usuários'), array('action' => 'index')); ?></li>
 			<li><?php echo $this->Html->link(__('Grupos'), array('controller' => 'groups', 'action' => 'index')); ?> </li>
 			<li><?php echo $this->Html->link(__('Funcionários'), array('controller' => 'employees', 'action' => 'index')); ?> </li>
 			<li><?php echo $this->Html->link(__('Pedidos'), array('controller' => 'orders', 'action' => 'index')); ?> </li>

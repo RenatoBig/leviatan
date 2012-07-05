@@ -8,16 +8,11 @@
 class AclController extends AclAppController {
 
 	var $name = 'Acl';
-	var $uses = null;
+	var $uses = array("User");
 	
 	function beforeFilter()
 	{
 	    parent :: beforeFilter();
-	    
-	    if($this->Auth->user('group_id') != 1) {
-			$this->Session->setFlash('Área restrita!');
-			$this->redirect('/items/index');
-		}
 			
 		$this->Auth->allow('*');
 	}

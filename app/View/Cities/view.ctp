@@ -10,7 +10,7 @@
 	</div>
 </div>
 
-<div class="span4">
+<div class="span4 well">
 	<h2><?php  echo __('Cidade');?></h2>
 	<dl class="dl-horizontal">
 		<dt><?php echo __('ID'); ?></dt>

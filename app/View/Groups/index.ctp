@@ -9,15 +9,13 @@
 	</div>
 </div>
 
-<div class="span10">
+<div class="span6">
 	<h2><?php echo __('Grupos');?></h2>
 	<table cellpadding="0" cellspacing="0" class="table">
 		<thead>
 			<tr>
-				<th><?php echo $this->Paginator->sort('id', 'ID');?></th>
+				<th><?php echo $this->Paginator->sort('ID', 'id');?></th>
 				<th><?php echo $this->Paginator->sort('name', 'Nome');?></th>
-				<th><?php echo $this->Paginator->sort('created', 'Criado');?></th>
-				<th><?php echo $this->Paginator->sort('modified', 'Modificado');?></th>
 				<th class="actions"><?php echo __('Ações');?></th>
 			</tr>
 		</thead>
@@ -27,8 +25,6 @@
 			<tr>
 				<td><?php echo h($group['Group']['id']); ?></td>
 				<td><?php echo h($group['Group']['name']); ?></td>
-				<td><?php echo h($group['Group']['created']); ?></td>
-				<td><?php echo h($group['Group']['modified']); ?></td>
 				<td class="actions">
 					<?php echo $this->Html->link(__('Visualizar'), array('action' => 'view', $group['Group']['id']), array('class'=>'btn btn-primary')); ?>
 					<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $group['Group']['id']), array('class'=>'btn btn-primary')); ?>

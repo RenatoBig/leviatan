@@ -1,6 +1,19 @@
-<div class="items view">
-<h2><?php  echo __('Item');?></h2>
-	<dl>
+<div class="span2">	
+	<div class="well" style="padding: 8px 0;">
+		<ul class="nav nav-list">
+			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
+			<li class="divider"></li>
+			<li><?php echo $this->Html->link(__('Itens'), array('action' => 'index')); ?></li>
+			<li><?php echo $this->Html->link(__('PNGC'), array('controller' => 'pngc_codes', 'action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Classe do item'), array('controller' => 'item_classes', 'action' => 'index')); ?> </li>
+			<li><?php echo $this->Html->link(__('Pedidos'), array('controller' => 'orders', 'action' => 'index')); ?> </li>
+		</ul>
+	</div>
+</div>
+
+<div class="span4 well">
+	<h2><?php  echo __('Item');?></h2>
+	<dl class="dl-horizontal">
 		<dt><?php echo __('ID'); ?></dt>
 		<dd>
 			<?php echo h($item['Item']['id']); ?>
@@ -28,7 +41,13 @@
 		</dd>
 		<dt><?php echo __('Imagem'); ?></dt>
 		<dd>
-			<?php echo $this->Html->image('items'.DS.$item['Item']['image_path']); ?>
+			<?php 
+				if(empty($item['Item']['image_path'])){
+					echo $this->Html->image('no-image.gif');
+				} else {
+					echo $this->Html->image('items'.DS.$item['Item']['image_path']);
+				}
+			?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Criado'); ?></dt>
@@ -42,17 +61,4 @@
 			&nbsp;
 		</dd>
 	</dl>
-</div>
-<div class="actions">
-	<h3><?php echo __('Ações'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Editar Item'), array('action' => 'edit', $item['Item']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Deletar Item'), array('action' => 'delete', $item['Item']['id']), null, __('Deseja realmente deletar o item #%s?', $item['Item']['name'])); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar Itens'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo Item'), array('action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar classes dos itens'), array('controller' => 'item_classes', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Nova classe de item'), array('controller' => 'item_classes', 'action' => 'add')); ?> </li>
-		<li><?php echo $this->Html->link(__('Listar PNGCs'), array('controller' => 'pngc_codes', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo PNGC'), array('controller' => 'pngc_codes', 'action' => 'add')); ?> </li>
-	</ul>
 </div>

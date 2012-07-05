@@ -138,3 +138,21 @@ CakePlugin::load('Acl', array('bootstrap' => true));
  * The model name used for the user role (typically 'Role' or 'Group')
  */
 Configure :: write('acl.aro.role.model', 'Group');
+
+//Constantes dos status
+define("ATIVO", "1");
+define("INATIVO", '2');
+
+//Constantes dos Grupos de usuários
+define("ADMIN", "1");
+//Coordenação de desenvolvimento institucional
+define("CDI_A", "2");
+define("CDI_B", "3");
+//Núcleo de equipamentos
+define("NDE_A", "4");
+define("NDE_B", "5");
+//Núcleo de custos
+define("NDC_A", "6");
+define("NDC_B", "7");
+
+
