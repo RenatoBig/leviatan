@@ -19,7 +19,15 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 			echo $this->fetch('script');
 			
 			echo $this->Html->script(array('jquery-1.7.2', 'jquery-ui-1.8.21.custom.min', 'jquery.validate', 'bootstrap', 'bootstrap.min', 'autocomplete', 'validate', 'bootstrap-modal'));
-		?>		
+		?>	
+		 <script type="text/javascript">
+	   	 	$("#flashMessage, #authMessage").fadeIn();
+	   
+		    window.setTimeout(escondeMsg, 3500);   
+		    function escondeMsg() {   		
+			    $("#flashMessage, #authMessage").fadeOut();
+		    }	
+		</script>	
 	</head>
 	<body>
 		<div class="container">				

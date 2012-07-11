@@ -3,11 +3,7 @@
 		<ul class="nav nav-list">
 			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
 			<li class="divider"></li>
-			<li><?php echo $this->Html->link(__('Usuários'), array('action' => 'index')); ?> </li>
-			<li><?php echo $this->Html->link(__('Grupos'), array('controller' => 'groups', 'action' => 'index')); ?> </li>
-			<li><?php echo $this->Html->link(__('Funcionários'), array('controller' => 'employees', 'action' => 'index')); ?> </li>
-			<li><?php echo $this->Html->link(__('Fazer pedido'), array('controller' => 'order_items', 'action' => 'products')); ?> </li>
-			<li><?php echo $this->Html->link(__('Carrinho'), array('controller' => 'order_items', 'action' => 'cart')); ?> </li>
+			<li><?php echo $this->Html->link(__('Fazer solicitação'), array('controller' => 'solicitation_items', 'action' => 'index')); ?> </li>
 		</ul>
 	</div>
 </div>
@@ -22,7 +18,7 @@ if(empty($items)) {
 	<h2><?php echo __('Carrinho de compras');?></h2>
 	<div class="well">
 				
-		<?php echo $this->Form->create('OrderItem', array('action' => 'checkout')) ?>
+		<?php echo $this->Form->create('SolicitationItem', array('action' => 'checkout')) ?>
 		<table class="table" id="table">		
 			<thead>
 				<tr>
@@ -35,8 +31,8 @@ if(empty($items)) {
 			</thead>	
 			<tbody>
 				<?php foreach($items as $key=>$item): ?>
-				<tr id="tr_<?php echo $item['Item']['id']; ?>">
-					<?php echo $this->Form->input('id', array('type'=>'hidden', 'value'=>$item['Item']['id'], 'name'=>'data[OrderItem]['.$key.'][itemId]'));?>
+				<tr id="tr_<?php echo $key; ?>">
+					<?php echo $this->Form->input('id', array('type'=>'hidden', 'value'=>$item['Item']['id'], 'name'=>'data[SolicitationItem]['.$key.'][item_id]'));?>
 					<td><?php echo h($item['Item']['name']); ?></td>
 					<td><?php echo h($item['Item']['description']); ?></td>
 					<?php 
@@ -47,10 +43,10 @@ if(empty($items)) {
 					}
 					?>
 					<td>
-						<?php echo $this->Form->input('', array('maxLength'=>'11', 'value'=>'1', 'class'=>'input-mini', 'name'=>'data[OrderItem]['.$key.'][quantity]', 'type'=>'text', 'label'=>''));?>
+						<?php echo $this->Form->input('', array('maxLength'=>'4', 'value'=>'1', 'class'=>'input-mini', 'name'=>'data[SolicitationItem]['.$key.'][quantity]', 'type'=>'text', 'label'=>''));?>
 					</td>
 					<td>
-						<?php echo $this->Form->button('Remover', array('label'=>'', 'type'=>'button', 'value'=>$item['Item']['id'], 'class'=>'removeFromCart btn btn-danger'));?>
+						<?php echo $this->Form->button('Remover', array('label'=>'', 'type'=>'button', 'value'=>$item['Item']['id'].'-'.$key, 'class'=>'removeFromCart btn btn-danger'));?>
 					</td>
 				</tr>
 				<?php endforeach; ?>

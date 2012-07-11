@@ -107,7 +107,7 @@ class Employee extends AppModel {
  * (non-PHPdoc)
  * @see lib/Cake/Model/Model::beforeSave()
  */
-	public function beforeSave($options) {
+	public function beforeSave($options = null) {
 		$data = $this->data['Employee']['birth_date'];
 		
 		

@@ -7,6 +7,8 @@ App::uses('AppController', 'Controller');
  */
 class OrderItemsController extends AppController {
 	
+	public $helpers = array('Utils', 'Pagination');
+	var $uses = array('OrderItem', 'Order');
 	var $layout = "leviatan";
 
 
@@ -27,8 +29,8 @@ class OrderItemsController extends AppController {
  * @return void
  */
 	public function view($id = null) {
-		$this->OrderItem->Order->id = $id;
-		if (!$this->OrderItem->Order->exists()) {
+		$this->Order->id = $id;
+		if (!$this->Order->exists()) {
 			throw new NotFoundException(__('Pedido inválido'));
 		}
 		
@@ -110,6 +112,21 @@ class OrderItemsController extends AppController {
 		
 		$orderItems = $this->OrderItem->find('all', array('conditions'=>array('OrderItem.order_id'=>$id)));
 		
+		//-------------
+		//Não deixa o usuário deletar o pedido de outro usuário
+		//Usuário logado
+		$user = $this->Auth->user();
+		$order_id = $orderItems[0]['Order']['id'];
+		$order = $this->OrderItem->Order->read(null, $order_id);
+		//Usuário do pedido
+		$userOrder = $order['User']['id'];
+		
+		if($user['id'] != $userOrder) {
+			$this->Session->setFlash('<div class="alert alert-error">'.__("Você não pode deletar o pedido de outro usuário.").'</div>');
+			$this->redirect(array('controller'=>'orders', 'action'=>'index'));
+		}
+		//--------------------
+		
 		$deleteOk = true;
 		$idsOrderItems = array();
 		foreach($orderItems as $orderItem) {
@@ -137,7 +154,7 @@ class OrderItemsController extends AppController {
 		}
 
 		$this->Session->setFlash('<div class="alert alert-success">'.__('Pedido deletado').'</div>');
-		$this->redirect(array('controller'=>'orders', 'action'=>'index'));
+		$this->redirect(array('controller'=>'orders', 'action'=>'index'));		
 	}
 	
 /**
@@ -146,7 +163,7 @@ class OrderItemsController extends AppController {
  */
 	public function products($id = null) {		
 
-		if($this->request->is('post')) {			
+		/*if($this->request->is('post')) {			
 			$this->OrderItem->Item->recursive = -1;
 			$items = $this->Session->read('items');
 			if($items == null) {
@@ -157,10 +174,18 @@ class OrderItemsController extends AppController {
 			$items = am($items, array($item));
 			
 			$this->Session->write('items', $items);
-			$this->Session->setFlash('<div class="alert alert-success">'.__("Item adicionado ao carrinho").'</div>');			
-		}
+			
+			echo true;
+			//$this->Session->setFlash('<div class="alert alert-success">'.__("Item adicionado ao carrinho").'</div>');
+			//$this->redirect(array('controller'=>'order_items', 'action'=>'products'));			
+		}*/
+
+		$conditions = array(
+			'conditions'=>array('Item.status_id'=>ATIVO),
+			'order'=>array('Item.name'=>'asc')
+		);
 		
-		$items = $this->OrderItem->Item->find('all');		
+		$items = $this->OrderItem->Item->find('all', $conditions);
 		$this->set(compact('items'));
 	}
 	
@@ -168,24 +193,7 @@ class OrderItemsController extends AppController {
  * 
  * Enter description here ...
  */
-	public function cart($id = null) {
-		
-		if($this->request->is('post')) {
-			$idDelete = -1;
-			$itemsSession = $this->Session->read('items');
-			foreach($itemsSession as $key=>$item):
-				if($item['Item']['id'] == $id) {
-					$idDelete = $key;
-					break;
-				}
-			endforeach;
-			
-			unset($itemsSession[$idDelete]);
-			
-			$items = $itemsSession;
-			$this->Session->write('items', $items);
-			$this->Session->setFlash('<div class="alert alert-success">'.__('Item removido com sucesso').'</div>');			
-		}		
+	public function cart($id = null) {			
 		
 		$items = $this->Session->read('items');		
 		$this->set(compact('items'));		
@@ -196,8 +204,8 @@ class OrderItemsController extends AppController {
  * Enter description here ...
  */
 	public function checkout() {
-		if($this->request->is('post')) {
-			
+		
+		if($this->request->is('post')) {			
 			$flag = true;
 			$user = $this->Session->read('Auth');
 			$date = date('d/m/Y');
@@ -209,23 +217,21 @@ class OrderItemsController extends AppController {
 			$order['Order']['user_id'] = $user['User']['id'];
 			$order['Order']['start_date'] = $date;
 			$order['Order']['end_date'] = null;
-			$order['Order']['status_id'] = '1';
+			$order['Order']['status_id'] = INATIVO;
 			
 			if(!$this->OrderItem->Order->save($order)) {
 				$this->Session->setFlash('<div class="alert alert-error">'.__('Erro ao salvar o pedido').'</div>');
 				$this->redirect(array('action'=>'cart'));
 			}			
-			$idOrder = $this->OrderItem->Order->id;
-			
-			
+			$idOrder = $this->OrderItem->Order->id;		
 			
 			$orderItem['OrderItem']['order_id'] = $idOrder;
-			$orderItem['OrderItem']['status_id'] = '1';			
 			
 			foreach($this->request->data['OrderItem'] as $key=>$row):
 				$this->OrderItem->create();
 				$orderItem['OrderItem']['item_id'] = $row['itemId'];
 				$orderItem['OrderItem']['quantity'] = $row['quantity'];	
+				$orderItem['OrderItem']['status_id'] = INATIVO;
 				if(!$this->OrderItem->save($orderItem)) {
 					$this->OrderItem->Order->delete();
 					$this->Session->setFlash('<div class="alert alert-error">'.__('Erro ao salvar o pedido').'</div>');
@@ -239,4 +245,52 @@ class OrderItemsController extends AppController {
 		} 
 	}
 	
+/**
+ * 
+ * Adiciona item ao carrinho
+ * @param unknown_type $id
+ */
+	public function addToCart($id) {
+		$this->autoRender = false;
+		if($this->request->is('ajax')) {			
+			$this->OrderItem->Item->recursive = -1;
+			$items = $this->Session->read('items');
+			if($items == null) {
+				$items = array();
+			}
+						
+			$item = $this->OrderItem->Item->find('first', array('conditions'=>array('Item.id'=>$id)));
+			$items = am($items, array($item));
+			
+			$this->Session->write('items', $items);
+						
+			echo true;
+		}
+	}
+	
+/**
+ * 
+ * Remove item do carrinho
+ * @param unknown_type $id
+ */
+	public function removeFromCart($id) {
+		$this->autoRender = false;
+		if($this->request->is('ajax')) {			
+			$idDelete = -1;
+			$itemsSession = $this->Session->read('items');
+			foreach($itemsSession as $key=>$item):
+				if($item['Item']['id'] == $id) {
+					$idDelete = $key;
+					break;
+				}
+			endforeach;
+			
+			unset($itemsSession[$idDelete]);
+			
+			$items = $itemsSession;
+			$this->Session->write('items', $items);
+			
+			echo true;
+		}
+	}
 }

@@ -24,7 +24,6 @@ class ItemsController extends AppController {
 			'order'=>array('Item.name'=>'asc')
 		);
 		$this->paginate = $conditions;
-				
 		$this->set('items', $this->paginate());
 	}
 

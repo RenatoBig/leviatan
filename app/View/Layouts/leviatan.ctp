@@ -21,6 +21,15 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 			echo $this->Html->script(array('jquery-1.7.2', 'jquery-ui-1.8.21.custom.min', 'jquery.validate', 'bootstrap', 'bootstrap.min', 'bootstrap-modal', 'bootstrap-dropdown', 'autocomplete', 'validate', 'functions'));
 		?>
 		
+		<script type="text/javascript">
+		   $("#flashMessage, #alert-message").fadeIn();		   
+		   window.setTimeout(escondeMsg, 2500);   
+		   
+		   function escondeMsg() {   		
+			$("#flashMessage, #alert-message").fadeOut();
+		   }	
+		</script>
+		
 	</head>
 	<body>
 		<!-- nav-bar -->
@@ -63,9 +72,11 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 		<!-- /navbar -->
 		</div>
 				
-		<div class="container">				
-			<?php echo $this->Session->flash(); ?>
-			<?php echo $this->Session->flash('auth'); ?>		
+		<div class="container">
+			<div id="alert-message">
+				<?php echo $this->Session->flash(); ?>
+				<?php echo $this->Session->flash('auth'); ?>
+			</div>	
 			<div class="row-fluid">	
 				<?php echo $this->fetch('content'); ?>
 			</div>

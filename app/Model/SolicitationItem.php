@@ -1,0 +1,109 @@
+<?php
+App::uses('AppModel', 'Model');
+/**
+ * OrderItem Model
+ *
+ * @property Solicitation $Solicitation
+ * @property Item $Item
+ * @property Status $Status
+ * @property Homologation $Homologation
+ */
+class SolicitationItem extends AppModel {
+
+	//The Associations below have been created with all possible keys, those that are not needed can be removed
+
+/**
+ * belongsTo associations
+ *
+ * @var array
+ */
+	public $belongsTo = array(
+		'Solicitation' => array(
+			'className' => 'Solicitation',
+			'foreignKey' => 'solicitation_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'Item' => array(
+			'className' => 'Item',
+			'foreignKey' => 'item_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'Status' => array(
+			'className' => 'Status',
+			'foreignKey' => 'status_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
+	);
+
+/**
+ * hasMany associations
+ *
+ * @var array
+ */
+	public $hasMany = array(
+		'Homologation' => array(
+			'className' => 'Homologation',
+			'foreignKey' => 'order_item_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		)
+	);
+	
+/**
+ * 
+ * Enter description here ...
+ * @var unknown_type
+ */
+	var $validate = array(
+		'order_id'=>array(
+			'keycodeRule' => array(
+				'rule'=>'notEmpty',
+				'message'=>'É obrigatório escolher uma solicitação.'
+			)
+		),
+		'item_id'=>array(
+			'itemRule' => array(
+				'rule'=>'notEmpty',
+				'message'=>'É obrigatório escolher um item.'
+			)
+		),
+		'status_id'=>array(
+			'statusRule' => array(
+				'rule'=>'notEmpty',
+				'message'=>'É obrigatório escolher um status.'
+			)
+		),
+		'quantity'=>array(
+			'quantityRule' => array(
+				'rule'=>'notEmpty',
+				'message'=>'É obrigatório escolher uma quantidade.'
+			)
+		)	
+	);
+	
+/**
+ * (non-PHPdoc)
+ * @see lib/Cake/Model/Model::beforeDelete()
+ */
+	public function beforeDelete() { 
+		
+		$solicitationItem = $this->read(null, $this->id);
+		if(!empty($solicitationItem['Homologation'])) {
+			return false;
+		}
+	}
+
+}

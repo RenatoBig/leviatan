@@ -1,19 +1,9 @@
-<?php 
-//Configurando parâmetros da paginação
-$pagination = $this->Pagination;
-$pagination->setTotalRegistros(count($items));
-$pagination->setQtdeRegistros(2);
-?>
-
 <div class="span2">
 	<div class="well" style="padding: 8px 0;">
 		<ul class="nav nav-list">
 			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
 			<li class="divider"></li>
-			<li><?php echo $this->Html->link(__('Usuários'), array('action' => 'index')); ?> </li>
-			<li><?php echo $this->Html->link(__('Grupos'), array('controller' => 'groups', 'action' => 'index')); ?> </li>
-			<li><?php echo $this->Html->link(__('Funcionários'), array('controller' => 'employees', 'action' => 'index')); ?> </li>
-			<li><?php echo $this->Html->link(__('Carrinho'), array('controller' => 'order_items', 'action' => 'cart')); ?> </li>
+			<li><?php echo $this->Html->link(__('Carrinho'), array('controller' => 'solicitation_items', 'action' => 'cart')); ?> </li>
 		</ul>
 	</div>
 </div>
@@ -31,7 +21,7 @@ $pagination->setQtdeRegistros(2);
 				</tr>
 			</thead>	
 			<tbody>
-				<?php foreach($items as $item): ?>
+				<?php foreach($items as $key=>$item): ?>
 				<tr>
 					<td><?php echo h($item['Item']['name']); ?></td>
 					<td><?php echo h($item['Item']['description']); ?></td>
@@ -43,12 +33,12 @@ $pagination->setQtdeRegistros(2);
 					}
 					?>
 					<td>
-						<?php echo $this->Form->button(__('Adicionar ao carrinho'), array('label'=>'', 'type'=>'button', 'value'=>$item['Item']['id'], 'class'=>'addToCart btn btn-primary'));?>
+						<?php echo $this->Form->button(__('Adicionar ao carrinho'), array('label'=>'', 'id'=>'button_'.$key, 'type'=>'button', 'value'=>$item['Item']['id'].'-'.$key, 'class'=>'addToCart btn btn-primary'));?>
 					</td>
 				</tr>
 				<?php endforeach; ?>
 			</tbody>		
 		</table>	
 	</div>
-	<?php //echo $this->element('pagination'); ?>
+	<?php echo $this->element('pagination');?>	
 </div>

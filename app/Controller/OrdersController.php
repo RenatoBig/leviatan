@@ -17,6 +17,17 @@ class OrdersController extends AppController {
  */
 	public function index() {
 		$this->Order->recursive = 2;
+		
+		$user = $this->Auth->user();
+		$conditions = array(
+			'conditions'=>array(
+				'User.group_id'=>$user['group_id']
+			),
+			'limit'=>5,
+			'order'=>array('Order.start_date'=>'desc')
+		);
+		$this->paginate = $conditions;
+		
 		$this->set('orders', $this->paginate());
 	}
 

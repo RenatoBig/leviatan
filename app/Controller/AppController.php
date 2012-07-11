@@ -50,9 +50,8 @@ class AppController extends Controller {
         //Configure AuthComponent
         $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
         $this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'login');
-        $this->Auth->loginRedirect = array('controller' => 'orders', 'action' => 'index');
-		
-       // $this->Employee->recursive = -1;
+        $this->Auth->loginRedirect = array('controller' => 'pages', 'action' => 'display');
+
         $u = $this->Auth->user();
         if($u != null) {
         	$user = $this->User->read(null, $u['id']);

@@ -142,6 +142,10 @@ Configure :: write('acl.aro.role.model', 'Group');
 //Constantes dos status
 define("ATIVO", "1");
 define("INATIVO", '2');
+define("AGUARDANDO", '3');
+define("HOMOLOGADO", '4');
+define("NEGADO", '5');
+define("CONCLUIDO", '6');
 
 //Constantes dos Grupos de usuários
 define("ADMIN", "1");
@@ -154,5 +158,6 @@ define("NDE_B", "5");
 //Núcleo de custos
 define("NDC_A", "6");
 define("NDC_B", "7");
+define("DIRETOR", "9");
 
 

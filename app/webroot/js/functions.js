@@ -43,13 +43,13 @@ $(document).ready(function() {
 // 		autoFill: false
 // 	});
 	
+	//Habilitar ou desabilitar status do item
 	//---------------------
 	$('.enable').click(function() {
+		
 		var id = $(this).val();
 		
 		var caminho = '/items/changeStatus/'+id;
-
-		var elemento = $(this);
 
 		// pega a url atual
 		url = location.href;
@@ -63,16 +63,149 @@ $(document).ready(function() {
 		$.ajax({
 			url : url,
 			success : function() {
-				//retirar a exibição da tela aguarde
-				//message_box.hide();
+			
+			
 			}
 		});
-	});
-	
+	});	
 	//---------------------------------------------------------
+	
+	//Remover itens do carrinho
+	$('.removeFromCart').click(function(){
+		
+		var id_key = $(this).val();
+		
+		var tamanho = id_key.length;
+		var indice = id_key.indexOf('-');
+		
+		//Id do registro no banco de dados
+		var id = id_key.substr(0, indice);
+		//Registro a ser retirado da listagem
+		var key = id_key.substr(indice+1, tamanho - 1);
+		
+		
+		var caminho = '/solicitation_items/removeFromCart/'+id;
+		
+		// pega a url atual
+		url = location.href;
+		// pega o tamanho da string até leviatan/
+		var tamanho = url.indexOf("leviatan") + "leviatan".length;
+		// pega a url até gerenciador/
+		var aux = url.substr(0, tamanho);
+		// concatena com o controller/action/id
+		url = aux + caminho;		
+		
+		$.ajax({
+			url : url,
+			success : function() {
+				//Remove a linha			
+				$("#tr_"+key).remove();
+				
+				var table = document.getElementById('table');
+				var trs = table.getElementsByTagName('tr');
+	        	//Testa se não existe mais itens
+				if(trs.length == 1) {
+					$('.span10').html(
+						"<div class='span4 alert alert-info'>" +
+						"<h3>Não há itens no carrinho</h3>" +
+						"</div>"
+					);					
+				}
+			}
+		});		
+		
+	});		
+	//---------------------------------------------------------
+	//Adicionar itens ao carrinho
+	$('.addToCart').click(function(){
+		
+		var id_key = $(this).val();
+		
+		var tamanho = id_key.length;
+		var indice = id_key.indexOf('-');
+		
+		//Id do registro no banco de dados
+		var id = id_key.substr(0, indice);
+		//Registro a ser retirado da listagem
+		var key = id_key.substr(indice+1, tamanho - 1);
+		
+		var caminho = '/solicitation_items/addToCart/'+id;
+		
+		// pega a url atual
+		url = location.href;
+		// pega o tamanho da string até leviatan/
+		var tamanho = url.indexOf("leviatan") + "leviatan".length;
+		// pega a url até leviatan/
+		var aux = url.substr(0, tamanho);
+		// concatena com o controller/action/id
+		url = aux + caminho;		
+		
+		$.ajax({
+			url : url,
+			success : function() {
+
+			}
+		});			
+	});	
+	
+	//--------------------------
+	$('.homologation, .deny').click(function() {
+		
+		var id_key = $(this).val();
+		
+		var tamanho = id_key.length;
+		var indice = id_key.indexOf('-');
+		
+		//Id do registro no banco de dados
+		var id = id_key.substr(0, indice);
+		//Registro a ser retirado da listagem
+		var key = id_key.substr(indice+1, tamanho - 1);
+		
+		var caminho = '/solicitation_items/changeStatus/'+id;
+		
+		// pega a url atual
+		url = location.href;
+		// pega o tamanho da string até leviatan/
+		var tamanho = url.indexOf("leviatan") + "leviatan".length;
+		// pega a url até leviatan/
+		var aux = url.substr(0, tamanho);
+		// concatena com o controller/action/id
+		url = aux + caminho;		
+		
+		var status = '';
+		if($(this).html() == "Homologar") {
+			status = "HOMOLOGADO";
+		}else if($(this).html() == "Negar"){
+			status = "NEGADO";
+		}
+	
+		$.ajax({
+			url : url,
+			data: {status: status},
+			success : function() {
+				
+				//Remove a linha			
+				$("#trItem_"+key).remove();
+				
+				var table = document.getElementById('table');
+				var trs = table.getElementsByTagName('tr');
+	        	//Testa se não existe mais itens
+				if(trs.length == 1) {
+					window.location.href = aux + "/solicitation_items/items";				
+				}else if(trs.length < 6) {
+					$(".paginacao").fadeOut();
+				}
+			}
+		});			
+		
+		
+		
+	});
 
 });
 
+//-----------------------------------
+//Autocomplete
 function selectItem(li) {
     findValue(li);
 }
@@ -100,3 +233,6 @@ function formatItem(row) {
     }*/
     return row[0];
 }
+//------------------------------------------
+
+	
