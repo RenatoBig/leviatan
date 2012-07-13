@@ -146,7 +146,8 @@ define("PENDENTE", '3');
 define("HOMOLOGADO", '4');
 define("APROVADO", '5');
 define("NEGADO", '6');
-define("CONCLUIDO", '7');
+define("REDE", '7');
+define("CONCLUIDO", '8');
 
 
 //Constantes dos Grupos de usuários

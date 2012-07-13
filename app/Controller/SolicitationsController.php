@@ -42,8 +42,10 @@ class SolicitationsController extends AppController {
 		$this->Solicitation->recursive = -1;
 		$solicitation = $this->Solicitation->read(null, $id);
 		
-		$options['conditions'] = array('SolicitationItem.solicitation_id'=>$solicitation['Solicitation']['id']);
-		$options['limit'] = '2';
+		$options['conditions'] = array(
+			'SolicitationItem.solicitation_id'=>$solicitation['Solicitation']['id']
+		);
+		$options['limit'] = '5';
 
 		$this->paginate = $options;
 		

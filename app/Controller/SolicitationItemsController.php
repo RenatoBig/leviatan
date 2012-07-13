@@ -252,33 +252,19 @@ class SolicitationItemsController extends AppController {
  * 
  * Muda o status do item da solicitação
  */
-	public function changeStatus($id = null) {
-		if($this->request->is('ajax')) {
-			$value = '';
-			$status = $this->request->query['status'];
-			
-			if($status == "HOMOLOGADO") {
-				$value = HOMOLOGADO;
-			}else if($status == "APROVADO") {
-				$value = APROVADO;
-			}else if($status == "NEGADO") {
-				$value = NEGADO;
-			}else if($status == "CONCLUIDO") {
-				$value = CONCLUIDO;
-			}
-			
+	public function changeStatus($id, $status) {
+		
+		if($this->request->is('post')) {						
 			$this->SolicitationItem->recursive = -1;
-			$solicitationItem = $this->SolicitationItem->read(null, $id);
-			$solicitation_id = $solicitationItem['SolicitationItem']['id'];
+			$this->SolicitationItem->id = $id;
 			
-			$this->SolicitationItem->id = $solicitation_id;
-			if($this->SolicitationItem->saveField('status_id', $value, false)) {
-				echo true;
+			if($this->SolicitationItem->saveField('status_id', $status, false)) {
+				$this->Session->setFlash('<div class="alert alert-success">'.__('Item atualizado').'</div>');
 			}else {
-				echo false;	
+				$this->Session->setFlash('<div class="alert alert-error">'.__('O item não pode ser atualizado').'</div>');
 			}
 			
-			exit;
+			$this->redirect(array('action' => 'pendingSolicitations'));			
 		}
 	}
 	
@@ -326,7 +312,8 @@ class SolicitationItemsController extends AppController {
 	private function __getItems($status) {
 		
 		//Itens cadastrados
-		$op['fields'] = array('DISTINCT Item.id', 'Item.name');
+		$op['group'] = array('SolicitationItem.item_id');
+		$op['fields'] = array('Item.id', 'Item.name');
 		$op['conditions'] = array("SolicitationItem.status_id"=>$status);
 		$temp = $this->SolicitationItem->find('all', $op);
 		

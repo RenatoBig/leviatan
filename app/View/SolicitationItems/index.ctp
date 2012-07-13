@@ -27,12 +27,12 @@
 				}			
 				?>
 				<br>
-				<spam class='title-item'>
+				<span class='title-item'>
 					<?php echo $item['Item']['name']?>
-				</spam>
-				<spam class="title-item">
+				</span>
+				<span class="title-item">
 					<?php echo $this->Form->button(__('Adicionar ao carrinho'), array('label'=>'', 'id'=>'button_'.$key, 'type'=>'button', 'value'=>$item['Item']['id'].'-'.$key, 'class'=>'addToCart btn btn-primary'));?>
-				</spam>
+				</span>
 			</div>
 			
 		</li>	

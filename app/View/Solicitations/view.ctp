@@ -33,7 +33,6 @@ if(empty($items)) {
 		<tr>
 			<th><?php echo __('Nome');?></th>
 			<th><?php echo __('Descrição');?></th>
-			<th><?php echo __('Imagem');?></th>
 			<th><?php echo __('Quantidade');?></th>
 			<th><?php echo __('Status');?></th>
 		</tr>
@@ -44,13 +43,6 @@ if(empty($items)) {
 		<tr>
 			<td><?php echo h($item['Item']['name']); ?>&nbsp;</td>
 			<td><?php echo h($item['Item']['description']); ?>&nbsp;</td>
-			<?php 
-				if(empty($item['Item']['image_path'])){
-					echo '<td>'.$this->Html->image('no-image.gif').'</td>';
-				} else {
-					echo '<td>'.$this->Html->image('items'.DS.$item['Item']['image_path']).'</td>';
-				}
-			?>
 			<td><?php echo h($item['SolicitationItem']['quantity']); ?>&nbsp;</td>
 			<td><?php echo $this->Utils->nameStatus($item['SolicitationItem']['status_id']); ?>&nbsp;</td>			
 		</tr>

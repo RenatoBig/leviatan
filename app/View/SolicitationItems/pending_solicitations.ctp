@@ -58,9 +58,9 @@
 				&nbsp;
 			</td>
 			<td>
-				<?php echo $this->Form->button('Aprovar', array('class'=>'btn btn-info approved', 'value'=>$item['SolicitationItem']['id'].'-'.$key));?>
-				<?php echo $this->Form->button('Homologar', array('class'=>'btn btn-success homologation', 'value'=>$item['SolicitationItem']['id'].'-'.$key));?>
-				<?php echo $this->Form->button('Negar', array('class'=>'btn btn-danger deny', 'value'=>$item['SolicitationItem']['id'].'-'.$key));?>
+				<?php echo $this->Form->postLink('Aprovar', array('controller'=>'solicitation_items', 'action'=>'changeStatus', $item['SolicitationItem']['id'], APROVADO), array('class'=>'btn btn-info'));?>
+				<?php echo $this->Form->postLink('Homologar', array('controller'=>'solicitation_items', 'action'=>'changeStatus', $item['SolicitationItem']['id'], HOMOLOGADO), array('class'=>'btn btn-success'));?>
+				<?php echo $this->Form->postLink('Negar', array('controller'=>'solicitation_items', 'action'=>'changeStatus', $item['SolicitationItem']['id'], NEGADO), array('class'=>'btn btn-danger'));?>
 			</td>
 		</tr>
 	<?php endforeach; ?>
