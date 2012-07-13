@@ -10,15 +10,15 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 			<?php echo $title_for_layout; ?>
 		</title>
 		<?php
-			echo $this->Html->meta('icon');
-	
-			echo $this->Html->css(array('autocomplete', 'jquery-ui-1.8.21.custom', 'bootstrap', 'bootstrap.min', 'bootstrap-responsive', 'bootstrap-responsive.min', 'leviatan'));
-	
 			echo $this->fetch('meta');
 			echo $this->fetch('css');
 			echo $this->fetch('script');
 			
-			echo $this->Html->script(array('jquery-1.7.2', 'jquery-ui-1.8.21.custom.min', 'jquery.validate', 'bootstrap', 'bootstrap.min', 'bootstrap-modal', 'bootstrap-dropdown', 'autocomplete', 'validate', 'functions'));
+			echo $this->Html->meta('icon');
+	
+			echo $this->Html->css(array('autocomplete', 'jquery-ui-1.8.21.custom', 'bootstrap', 'bootstrap-responsive', 'leviatan'));
+			
+			echo $this->Html->script(array('jquery-1.7.2', 'jquery-ui-1.8.21.custom.min', 'jquery.validate', 'bootstrap', 'bootstrap.min', 'bootstrap-modal', 'bootstrap-dropdown', 'autocomplete', 'validate', 'functions', 'ckeditor/ckeditor'));
 		?>
 		
 		<script type="text/javascript">

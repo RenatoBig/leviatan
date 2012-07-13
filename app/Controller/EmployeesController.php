@@ -16,6 +16,10 @@ class EmployeesController extends AppController {
  */
 	public function index() {
 		$this->Employee->recursive = 0;
+		
+		$options['limit'] = 5;
+		$this->paginate = $options;
+		
 		$this->set('employees', $this->paginate());
 	}
 

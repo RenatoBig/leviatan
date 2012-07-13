@@ -1,15 +1,12 @@
-<div class="span2">
-	<div class="well" style="padding: 8px 0;">
+<div class="span2 actions">
 		<ul class="nav nav-list">
 			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
-			<li class="divider"></li>
-			<li><?php echo $this->Html->link(__('Fazer solicitação'), array('controller'=>'solicitation_items', 'action' => 'index')); ?></li>
-			<li><?php echo $this->Html->link(__('Solicitações pendentes'), array('controller'=>'solicitation_items', 'action' => 'pendingSolicitations')); ?></li>
-			<li><?php echo $this->Html->link(__('Solicitações aprovadas'), array('controller'=>'solicitation_items', 'action' => 'approvedSolicitations')); ?></li>
+			<li><?php echo $this->Html->link(__('Fazer solicitação'), array('controller'=>'solicitation_items', 'action' => 'index'), array('class'=>'btn')); ?></li>
+			<li><?php echo $this->Html->link(__('Solicitações pendentes'), array('controller'=>'solicitation_items', 'action' => 'pendingSolicitations'), array('class'=>'btn')); ?></li>
+			<li><?php echo $this->Html->link(__('Solicitações aprovadas'), array('controller'=>'solicitation_items', 'action' => 'approvedSolicitations'), array('class'=>'btn')); ?></li>
 		</ul>
-	</div>
 </div>
-<div class="span10">
+<div class="span10 index">
 	
 	<?php 
 	if(empty($allItems)) {
@@ -37,7 +34,6 @@
 			<th><?php echo __('Quantidade');?></th>
 			<th><?php echo __('Funcionário');?></th>
 			<th><?php echo __('Unidade');?></th>
-			<th><?php echo __('Setor');?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -63,10 +59,6 @@
 			</td>
 			<td>
 				<?php echo h($item['Unity']['name'])?>
-				&nbsp;
-			</td>
-			<td>
-				<?php echo h($item['Sector']['name'])?>
 				&nbsp;
 			</td>
 		</tr>

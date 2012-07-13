@@ -1,13 +1,10 @@
-<div class="span2">	
-	<div class="well" style="padding: 8px 0;">
-		<ul class="nav nav-list">
-			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
-			<li class="divider"></li>
-			<li><?php echo $this->Html->link(__('Novo funcionário'), array('action' => 'add')); ?></li>
-			<li><?php echo $this->Html->link(__('Usuários'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-			<li><?php echo $this->Html->link(__('Unidades setores'), array('controller' => 'unity_sectors', 'action' => 'index')); ?> </li>
-		</ul>
-	</div>
+<div class="span2 actions">	
+	<ul class="nav nav-list">
+		<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
+		<li><?php echo $this->Html->link(__('Novo funcionário'), array('action' => 'add'), array('class'=>'btn')); ?></li>
+		<li><?php echo $this->Html->link(__('Usuários'), array('controller' => 'users', 'action' => 'index'), array('class'=>'btn')); ?> </li>
+		<li><?php echo $this->Html->link(__('Unidades setores'), array('controller' => 'unity_sectors', 'action' => 'index'), array('class'=>'btn')); ?> </li>
+	</ul>
 </div>
 
 <?php 
@@ -16,7 +13,7 @@ if(empty($employees)) {
 	echo "<h3>Não há funcionários</h3>";
 	echo "</div>";	
 } else{?>
-<div class="span8">
+<div class="span8 index">
 	<h2><?php echo __('Funcionários');?></h2>
 	<table cellpadding="0" cellspacing="0" class="table">
 	<thead>
@@ -41,8 +38,8 @@ if(empty($employees)) {
 				<?php echo $this->Html->link($employee['UnitySector']['id'], array('controller' => 'unity_sectors', 'action' => 'view', $employee['UnitySector']['id'])); ?>
 			</td>
 			<td class="actions">
-				<?php echo $this->Html->link(__('Visualizar'), array('action' => 'view', $employee['Employee']['id']), array('class'=>'btn btn-primary')); ?>
-				<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $employee['Employee']['id']), array('class'=>'btn btn-primary')); ?>
+				<?php echo $this->Html->link(__('Visualizar'), array('action' => 'view', $employee['Employee']['id']), array('class'=>'btn')); ?>
+				<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $employee['Employee']['id']), array('class'=>'btn')); ?>
 				<?php echo $this->Form->postLink(__('Deletar'), array('action' => 'delete', $employee['Employee']['id']), array('class'=>'btn btn-danger'), __('Deseja realmente deletar o funcionário #%s?', $employee['Employee']['name'])); ?>
 			</td>
 		</tr>
@@ -50,13 +47,7 @@ if(empty($employees)) {
 		</tbody>
 	</table>
 	
-	<div class="pagination">
-	<?php
-		echo $this->Paginator->prev('< ' . __('anterior'), array(), null, array('class' => 'prev disabled'));
-		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('próximo') . ' >', array(), null, array('class' => 'next disabled'));
-	?>
-	</div>
+	<?php echo $this->element('pagination');?>	
 </div>
 <?php 
 }

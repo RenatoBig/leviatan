@@ -70,6 +70,10 @@ class Employee extends AppModel {
 			'registrationRule3' => array(
 				'rule' => array('minLength', 6),
 				'message' => 'Número mínimo de caracteres é 6.'
+			),
+			'unique' => array(
+				'rule' => 'isUnique',
+				'message' => 'Essa matrícula ja está cadastrada'
 			)
 			
 		),

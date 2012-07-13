@@ -22,7 +22,7 @@ class SolicitationItemsController extends AppController {
 		$conditions = array(
 			'conditions'=>array('Item.status_id'=>ATIVO),
 			'order'=>array('Item.name'=>'asc'),
-			'limit'=>'3'			
+			'limit'=>'6'			
 		);
 		$this->paginate = $conditions;
 		
@@ -35,42 +35,17 @@ class SolicitationItemsController extends AppController {
  */
 	public function pendingSolicitations() {
 		
+		$values = array('', '', '');
 		if($this->request->is('post')) {
-			if(!empty($this->request->data['Item']['item'])) {
-				$item_id = $this->request->data['Item']['item'];
-			}	
-			if(!empty($this->request->data['Item']['user'])) {
-				$user_id = $this->request->data['Item']['user'];
-			}	
-			if(!empty($this->request->data['Item']['solicitation'])) {
-				$solicitation_id = $this->request->data['Item']['solicitation'];
-			}
-		}
+			$values = $this->__getDataPost($this->request->data);
+		}			
 		
-		$items = $this->__getItems();
-		$users = $this->__getUsers();
-		$solicitations = $this->__getSolicitations();
-		
-		if(isset($item_id)) {
-			$itemsSelect = array('SolicitationItem.item_id'=>$item_id);
-		}else {
-			$itemsSelect = '';
-		}
-		
-		if(isset($user_id)) {
-			$usersSelect = array('Solicitation.user_id'=>$user_id);
-		}else {
-			$usersSelect = '';
-		}
-		
-		if(isset($solicitation_id)) {
-			$solicitationsSelect = array('SolicitationItem.solicitation_id'=>$solicitation_id);
-		}else {
-			$solicitationsSelect = '';
-		}
+		$itemsSelect = $values[0];
+		$usersSelect = $values[1];
+		$solicitationsSelect = $values[2];
 		
 		$options['conditions'] = array(
-			'SolicitationItem.status_id'=>AGUARDANDO, 
+			'SolicitationItem.status_id'=>PENDENTE, 
 			$itemsSelect, 
 			$usersSelect,
 			$solicitationsSelect
@@ -80,94 +55,82 @@ class SolicitationItemsController extends AppController {
 		
 		$this->paginate = $options;
 		
-		$this->UnitySector->recursive = 0;
-		$this->Region->recursive = 0;
-		$this->UnityType->recursive = -1;
-		$this->HealthDistrict->recursive = -1;
-		
-		$allItems = $this->paginate();
-		$newItems = array();		
-		foreach($allItems as $key=>$item):
-			$user_id = $item['Solicitation']['user_id'];
-			$user = $this->User->read(null,$user_id);
-			
-			$unity_sector = $this->UnitySector->read(null, $user['Employee']['unity_sector_id']);
-			$region = $this->Region->read(null, $unity_sector['Unity']['region_id']);
-			$unity_type = $this->UnityType->read(null, $unity_sector['Unity']['unity_type_id']);
-			$health_district = $this->HealthDistrict->read(null, $unity_sector['Unity']['health_district_id']);
-			
-			$allItems[$key]['User'] = $user['User'];
-			$allItems[$key]['Employee'] = $user['Employee'];
-			$allItems[$key]['Sector'] = $unity_sector['Sector'];
-			$allItems[$key]['Unity'] = $unity_sector['Unity'];
-			$allItems[$key]['City'] = $region['City'];
-			$allItems[$key]['Area'] = $region['Area'];
-			$allItems[$key]['UnityType'] = $unity_type['UnityType'];
-			$allItems[$key]['HealthDistrict'] = $health_district['HealthDistrict'];			
-		endforeach;
+		$items = $this->__getItems(PENDENTE);
+		$users = $this->__getUsers();
+		$solicitations = $this->__getSolicitations();		
+		$allItems = $this->__getOthersDatas($this->paginate());
 		
 		$this->set(compact('allItems', 'items', 'users', 'solicitations'));
 	}
 	
 /**
  * 
- * Enter description here ...
+ * Mostra registros que foram aprovados
  */
-	private function __getItems() {
+	public function approvedSolicitations() {
 		
-		//Itens cadastrados
-		$op['fields'] = array('DISTINCT Item.id', 'Item.name');
-		$op['conditions'] = array("SolicitationItem.status_id"=>AGUARDANDO);
-		$temp = $this->SolicitationItem->find('all', $op);
+		$values = array('', '', '');
+		if($this->request->is('post')) {
+			$values = $this->__getDataPost($this->request->data);
+		}			
 		
-		$items[''] = "Selecione um item";
-		foreach($temp as $t):
-			$items[$t['Item']['id']] = $t['Item']['name'];
-		endforeach;
+		$itemsSelect = $values[0];
+		$usersSelect = $values[1];
+		$solicitationsSelect = $values[2];
 		
-		return $items;
+		$options['conditions'] = array(
+			'SolicitationItem.status_id'=>APROVADO, 
+			$itemsSelect, 
+			$usersSelect,
+			$solicitationsSelect
+		);
+		$options['order'] = array('Item.name'=>'asc');
+		$options['limit'] = '5';
+		
+		$this->paginate = $options;
+		
+		$items = $this->__getItems(APROVADO);
+		$users = $this->__getUsers();
+		$solicitations = $this->__getSolicitations();
+		$allItems = $this->__getOthersDatas($this->paginate());		
+		
+		$this->set(compact('allItems', 'items', 'users', 'solicitations'));
 	}
+	
 	
 /**
  * 
- * Enter description here ...
+ * Mostra as solicitações que foram negadas
  */
-	private function __getUsers() {
-
-		$this->Solicitation->recursive = -1;
+	public function deniedSolicitations() {
 		
-		$op['fields'] = array('Solicitation.id', 'Solicitation.user_id');
-		$op['distinct'] = array('Solicitation.user_id');
-		$users = $this->Solicitation->find('all', $op);
+		$values = array('', '', '');
+		if($this->request->is('post')) {
+			$values = $this->__getDataPost($this->request->data);
+		}			
 		
-		foreach($users as $user):
-			$user_ids[] = $user['Solicitation']['user_id']; 
-		endforeach;
+		$itemsSelect = $values[0];
+		$usersSelect = $values[1];
+		$solicitationsSelect = $values[2];		
 		
-		$values = $this->User->find('all', array('conditions'=>array('User.id'=>$user_ids), 'fields'=>'Employee.name'));
+		$options['conditions'] = array(
+			'SolicitationItem.status_id'=>NEGADO, 
+			$itemsSelect, 
+			$usersSelect,
+			$solicitationsSelect
+		);
+		$options['order'] = array('Item.name'=>'asc');
+		$options['limit'] = '5';
 		
-		$employees[''] = 'Selecione um usuário';
-		foreach($values as $v):
-			$employees[$v['User']['id']] = $v['Employee']['name'];
-		endforeach;
+		$this->paginate = $options;
 		
-		return $employees;
+		$items = $this->__getItems(NEGADO);
+		$users = $this->__getUsers();
+		$solicitations = $this->__getSolicitations();
+		$allItems = $this->__getOthersDatas($this->paginate());
+		
+		$this->set(compact('allItems', 'items', 'users', 'solicitations'));
 	}
-	
-/**
- * 
- * Enter description here ...
- */
-	private function __getSolicitations() {
-		
-		$this->Solicitation->recursive = -1;	
-
-		$inicio = array(''=>'Selecione uma solicitação');
-		$solicitations = $inicio + $this->Solicitation->find('list', array('fields'=>array('Solicitation.id', 'Solicitation.keycode')));
-		
-		return $solicitations;		
-	}
-	
 	
 /**
  * 
@@ -256,7 +219,7 @@ class SolicitationItemsController extends AppController {
 			
 			$solicitation['Solicitation']['keycode'] = $keycode;
 			$solicitation['Solicitation']['user_id'] = $user['id'];
-			$solicitation['Solicitation']['status_id'] = AGUARDANDO;
+			$solicitation['Solicitation']['status_id'] = PENDENTE;
 			
 			if(!$this->Solicitation->save($solicitation)) {
 				$this->Session->setFlash('<div class="alert alert-error">'.__('Erro ao salvar o solicitação').'</div>');
@@ -270,7 +233,7 @@ class SolicitationItemsController extends AppController {
 				$this->SolicitationItem->create();
 				$solicitationItem['SolicitationItem']['item_id'] = $row['item_id'];
 				$solicitationItem['SolicitationItem']['quantity'] = $row['quantity'];	
-				$solicitationItem['SolicitationItem']['status_id'] = AGUARDANDO;
+				$solicitationItem['SolicitationItem']['status_id'] = PENDENTE;
 				if(!$this->SolicitationItem->save($solicitationItem)) {
 					$this->Solicitation->delete();
 					$this->Session->setFlash('<div class="alert alert-error">'.__('Erro ao salvar o item da solicitação').'</div>');
@@ -291,12 +254,13 @@ class SolicitationItemsController extends AppController {
  */
 	public function changeStatus($id = null) {
 		if($this->request->is('ajax')) {
-			
 			$value = '';
 			$status = $this->request->query['status'];
-
+			
 			if($status == "HOMOLOGADO") {
 				$value = HOMOLOGADO;
+			}else if($status == "APROVADO") {
+				$value = APROVADO;
 			}else if($status == "NEGADO") {
 				$value = NEGADO;
 			}else if($status == "CONCLUIDO") {
@@ -318,64 +282,21 @@ class SolicitationItemsController extends AppController {
 		}
 	}
 	
+
+	
+	
 /**
  * 
- * Mostra registros que foram aprovados
+ * Recupera os dados das outras tabelas para montar a página
+ * @param unknown_type $allItens
  */
-	public function approvedSolicitations() {
-		
-		if($this->request->is('post')) {
-			if(!empty($this->request->data['Item']['item'])) {
-				$item_id = $this->request->data['Item']['item'];
-			}	
-			if(!empty($this->request->data['Item']['user'])) {
-				$user_id = $this->request->data['Item']['user'];
-			}	
-			if(!empty($this->request->data['Item']['solicitation'])) {
-				$solicitation_id = $this->request->data['Item']['solicitation'];
-			}
-		}
-		
-		$items = $this->__getItemsApproved();
-		$users = $this->__getUsers();
-		$solicitations = $this->__getSolicitations();
-		
-		if(isset($item_id)) {
-			$itemsSelect = array('SolicitationItem.item_id'=>$item_id);
-		}else {
-			$itemsSelect = '';
-		}
-		
-		if(isset($user_id)) {
-			$usersSelect = array('Solicitation.user_id'=>$user_id);
-		}else {
-			$usersSelect = '';
-		}
-		
-		if(isset($solicitation_id)) {
-			$solicitationsSelect = array('SolicitationItem.solicitation_id'=>$solicitation_id);
-		}else {
-			$solicitationsSelect = '';
-		}
-		
-		$options['conditions'] = array(
-			'SolicitationItem.status_id'=>HOMOLOGADO, 
-			$itemsSelect, 
-			$usersSelect,
-			$solicitationsSelect
-		);
-		$options['order'] = array('Item.name'=>'asc');
-		$options['limit'] = '5';
-		
-		$this->paginate = $options;
+	private function __getOthersDatas($allItems) {
 		
 		$this->UnitySector->recursive = 0;
 		$this->Region->recursive = 0;
 		$this->UnityType->recursive = -1;
 		$this->HealthDistrict->recursive = -1;
 		
-		$allItems = $this->paginate();
-		$newItems = array();		
 		foreach($allItems as $key=>$item):
 			$user_id = $item['Solicitation']['user_id'];
 			$user = $this->User->read(null,$user_id);
@@ -395,18 +316,18 @@ class SolicitationItemsController extends AppController {
 			$allItems[$key]['HealthDistrict'] = $health_district['HealthDistrict'];			
 		endforeach;
 		
-		$this->set(compact('allItems', 'items', 'users', 'solicitations'));
+		return $allItems;
 	}
 	
 /**
  * 
- * Recupera os itens para mostrar no select do filtro das solicitações homologadas
+ * Recupera os itens de acordo com o status passado como parâmetro
  */
-	private function __getItemsApproved() {
+	private function __getItems($status) {
 		
 		//Itens cadastrados
 		$op['fields'] = array('DISTINCT Item.id', 'Item.name');
-		$op['conditions'] = array("SolicitationItem.status_id"=>HOMOLOGADO);
+		$op['conditions'] = array("SolicitationItem.status_id"=>$status);
 		$temp = $this->SolicitationItem->find('all', $op);
 		
 		$items[''] = "Selecione um item";
@@ -419,25 +340,59 @@ class SolicitationItemsController extends AppController {
 	
 /**
  * 
- * Mostra as solicitações que foram negadas
+ * Recupera os usuários para colocar no select do filtro
  */
-	public function deniedSolicitations() {
+	private function __getUsers() {
+
+		$this->Solicitation->recursive = -1;
 		
-		if($this->request->is('post')) {
-			if(!empty($this->request->data['Item']['item'])) {
-				$item_id = $this->request->data['Item']['item'];
-			}	
-			if(!empty($this->request->data['Item']['user'])) {
-				$user_id = $this->request->data['Item']['user'];
-			}	
-			if(!empty($this->request->data['Item']['solicitation'])) {
-				$solicitation_id = $this->request->data['Item']['solicitation'];
-			}
+		$op['fields'] = array('Solicitation.id', 'Solicitation.user_id');
+		$op['distinct'] = array('Solicitation.user_id');
+		$users = $this->Solicitation->find('all', $op);
+		
+		foreach($users as $user):
+			$user_ids[] = $user['Solicitation']['user_id']; 
+		endforeach;
+		
+		$values = $this->User->find('all', array('conditions'=>array('User.id'=>$user_ids), 'fields'=>'Employee.name'));
+		
+		$employees[''] = 'Selecione um usuário';
+		foreach($values as $v):
+			$employees[$v['User']['id']] = $v['Employee']['name'];
+		endforeach;
+		
+		return $employees;
+	}
+	
+/**
+ * 
+ * Recupera as solicitações para colocar no filtro
+ */
+	private function __getSolicitations() {
+		
+		$this->Solicitation->recursive = -1;	
+
+		$inicio = array(''=>'Selecione uma solicitação');
+		$solicitations = $inicio + $this->Solicitation->find('list', array('fields'=>array('Solicitation.id', 'Solicitation.keycode')));
+		
+		return $solicitations;		
+	}
+	
+/**
+ * 
+ * Pega dados do post e retorna em um array para ser usado na consulta das páginas
+ */
+	private function __getDataPost($data) {
+		
+		if(!empty($data['Item']['item'])) {
+			$item_id = $data['Item']['item'];
+		}	
+		if(!empty($data['Item']['user'])) {
+			$user_id = $data['Item']['user'];
+		}	
+		if(!empty($data['Item']['solicitation'])) {
+			$solicitation_id = $data['Item']['solicitation'];
 		}
-		
-		$items = $this->__getItemsDenied();
-		$users = $this->__getUsers();
-		$solicitations = $this->__getSolicitations();
 		
 		if(isset($item_id)) {
 			$itemsSelect = array('SolicitationItem.item_id'=>$item_id);
@@ -457,64 +412,9 @@ class SolicitationItemsController extends AppController {
 			$solicitationsSelect = '';
 		}
 		
-		$options['conditions'] = array(
-			'SolicitationItem.status_id'=>NEGADO, 
-			$itemsSelect, 
-			$usersSelect,
-			$solicitationsSelect
-		);
-		$options['order'] = array('Item.name'=>'asc');
-		$options['limit'] = '5';
+		$values = array($itemsSelect, $usersSelect, $solicitationsSelect);
 		
-		$this->paginate = $options;
-		
-		$this->UnitySector->recursive = 0;
-		$this->Region->recursive = 0;
-		$this->UnityType->recursive = -1;
-		$this->HealthDistrict->recursive = -1;
-		
-		$allItems = $this->paginate();
-		$newItems = array();		
-		foreach($allItems as $key=>$item):
-			$user_id = $item['Solicitation']['user_id'];
-			$user = $this->User->read(null,$user_id);
-			
-			$unity_sector = $this->UnitySector->read(null, $user['Employee']['unity_sector_id']);
-			$region = $this->Region->read(null, $unity_sector['Unity']['region_id']);
-			$unity_type = $this->UnityType->read(null, $unity_sector['Unity']['unity_type_id']);
-			$health_district = $this->HealthDistrict->read(null, $unity_sector['Unity']['health_district_id']);
-			
-			$allItems[$key]['User'] = $user['User'];
-			$allItems[$key]['Employee'] = $user['Employee'];
-			$allItems[$key]['Sector'] = $unity_sector['Sector'];
-			$allItems[$key]['Unity'] = $unity_sector['Unity'];
-			$allItems[$key]['City'] = $region['City'];
-			$allItems[$key]['Area'] = $region['Area'];
-			$allItems[$key]['UnityType'] = $unity_type['UnityType'];
-			$allItems[$key]['HealthDistrict'] = $health_district['HealthDistrict'];			
-		endforeach;
-		
-		$this->set(compact('allItems', 'items', 'users', 'solicitations'));
+		return $values;
 	}
-	
-/**
- * 
- * Recupera os itens para mostrar no select do filtro das solicitações Negadas
- */
-	private function __getItemsDenied() {
-		
-		//Itens cadastrados
-		$op['fields'] = array('DISTINCT Item.id', 'Item.name');
-		$op['conditions'] = array("SolicitationItem.status_id"=>NEGADO);
-		$temp = $this->SolicitationItem->find('all', $op);
-		
-		$items[''] = "Selecione um item";
-		foreach($temp as $t):
-			$items[$t['Item']['id']] = $t['Item']['name'];
-		endforeach;
-		
-		return $items;
-	}
-	
 	
 }

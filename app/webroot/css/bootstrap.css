@@ -551,7 +551,7 @@ ol.unstyled {
   list-style: none;
 }
 
-dl {
+/*dl {
   margin-bottom: 18px;
 }
 
@@ -581,7 +581,7 @@ dd {
 
 .dl-horizontal dd {
   margin-left: 130px;
-}
+}*/
 
 hr {
   margin: 18px 0;

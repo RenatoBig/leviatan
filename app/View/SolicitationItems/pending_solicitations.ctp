@@ -1,15 +1,12 @@
-<div class="span2">
-	<div class="well" style="padding: 8px 0;">
-		<ul class="nav nav-list">
-			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
-			<li class="divider"></li>
-			<li><?php echo $this->Html->link(__('Fazer solicitação'), array('controller'=>'solicitation_items', 'action' => 'index')); ?></li>
-			<li><?php echo $this->Html->link(__('Solicitações aprovadas'), array('controller'=>'solicitation_items', 'action' => 'approvedSolicitations')); ?></li>
-			<li><?php echo $this->Html->link(__('Solicitações negadas'), array('controller'=>'solicitation_items', 'action' => 'deniedSolicitations')); ?></li>
-		</ul>
-	</div>
+<div class="span2 actions">
+	<ul class="nav nav-list">
+		<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
+		<li><?php echo $this->Html->link(__('Fazer solicitação'), array('controller'=>'solicitation_items', 'action' => 'index'), array('class'=>'btn')); ?></li>
+		<li><?php echo $this->Html->link(__('Solicitações aprovadas'), array('controller'=>'solicitation_items', 'action' => 'approvedSolicitations'), array('class'=>'btn')); ?></li>
+		<li><?php echo $this->Html->link(__('Solicitações negadas'), array('controller'=>'solicitation_items', 'action' => 'deniedSolicitations'), array('class'=>'btn')); ?></li>
+	</ul>
 </div>
-<div class="span10">
+<div class="span10 index">
 	
 	<?php 
 	if(empty($allItems)) {
@@ -33,12 +30,10 @@
 		<tr>
 			<th><?php echo __('Solicitação');?></th>
 			<th><?php echo __('Item');?></th>
-			<th><?php echo __('Descrição');?></th>
 			<th><?php echo __('Quantidade');?></th>
 			<th><?php echo __('Funcionário');?></th>
 			<th><?php echo __('Unidade');?></th>
-			<th><?php echo __('Setor');?></th>
-			<th><?php echo __('Ação')?></th>
+			<th><?php echo __('Ação');?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -50,10 +45,6 @@
 				<?php echo h($item['Item']['name']);?>
 				&nbsp;
 			</td>		
-			<td>
-				<?php echo h($item['Item']['description']) ?>
-				&nbsp;
-			</td>
 			<td>
 				<?php echo h($item['SolicitationItem']['quantity'])?>
 				&nbsp;
@@ -67,10 +58,7 @@
 				&nbsp;
 			</td>
 			<td>
-				<?php echo h($item['Sector']['name'])?>
-				&nbsp;
-			</td>
-			<td>
+				<?php echo $this->Form->button('Aprovar', array('class'=>'btn btn-info approved', 'value'=>$item['SolicitationItem']['id'].'-'.$key));?>
 				<?php echo $this->Form->button('Homologar', array('class'=>'btn btn-success homologation', 'value'=>$item['SolicitationItem']['id'].'-'.$key));?>
 				<?php echo $this->Form->button('Negar', array('class'=>'btn btn-danger deny', 'value'=>$item['SolicitationItem']['id'].'-'.$key));?>
 			</td>

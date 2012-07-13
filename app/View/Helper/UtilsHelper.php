@@ -17,11 +17,14 @@ class UtilsHelper extends AppHelper {
 			case INATIVO:
 				$status = '<span class="label label-important">Inativo</span>';
 				break;
-			case AGUARDANDO:
-				$status = '<span class="label label-info">Aguardando</span>';
+			case PENDENTE:
+				$status = '<span class="label label-info">Pendente</span>';
 				break;
 			case HOMOLOGADO:
 				$status = '<span class="label label-success">Homologado</span>';
+				break;
+			case APROVADO:
+				$status = '<span class="label label-success">Aprovado</span>';
 				break;
 			case NEGADO:
 				$status = '<span class="label label-important">Negado</span>';

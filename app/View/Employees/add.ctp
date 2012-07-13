@@ -1,16 +1,13 @@
-<div class="span2">	
-	<div class="well" style="padding: 8px 0;">
-		<ul class="nav nav-list">
-			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
-			<li class="divider"></li>
-			<li><?php echo $this->Html->link(__('Funcionários'), array('action' => 'index')); ?></li>
-			<li><?php echo $this->Html->link(__('Usuários'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-			<li><?php echo $this->Html->link(__('Unidades setores'), array('controller' => 'unity_sectors', 'action' => 'index')); ?> </li>
-		</ul>
-	</div>
+<div class="span2 actions">	
+	<ul class="nav nav-list">
+		<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
+		<li><?php echo $this->Html->link(__('Funcionários'), array('action' => 'index'), array('class'=>'btn')); ?></li>
+		<li><?php echo $this->Html->link(__('Usuários'), array('controller' => 'users', 'action' => 'index'), array('class'=>'btn')); ?> </li>
+		<li><?php echo $this->Html->link(__('Unidades setores'), array('controller' => 'unity_sectors', 'action' => 'index'), array('class'=>'btn')); ?> </li>
+	</ul>
 </div>
 
-<div class="span4">
+<div class="span4 form">
 <?php echo $this->Form->create('Employee', array('class'=>'well'));?>
 	<fieldset>
 		<legend><?php echo __('Adicionar funcionário'); ?></legend>
@@ -43,6 +40,7 @@
 		echo $this->Form->input('Unity', array('label'=>__('Unidades'), 'id'=>'unity_id'));
 		echo $this->Form->input('unity_sector_id', array('label'=>__('Setor'),'id'=>'sector'));
 		echo $this->Form->input('name', array('label'=>__('Nome')));
+		echo $this->Form->input('surname', array('label'=>__('Sobrenome')));
 		echo $this->Form->input('birth_date', array('label'=>__('Data de Nascimento'), 'class'=>'calendario input-small', 'type'=>'text'));
 		echo $this->Form->input('email', array('label'=>__('Email')));
 		echo $this->Form->input('phone', array('label'=>__('Telefone')));

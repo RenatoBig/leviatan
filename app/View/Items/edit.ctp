@@ -11,7 +11,7 @@
 	</div>
 </div>
 
-<div class="span4">
+<div class="span6">
 <?php echo $this->Form->create('Item', array('type'=>'file', 'class'=>'well'));?>
 	<fieldset>
 		<legend><?php echo __('Editar Item'); ?></legend>
@@ -21,6 +21,7 @@
 		echo $this->Form->input('pngc_code_id', array('label'=>__('PNGC')));
 		echo $this->Form->input('name', array('label'=>__('Nome')));
 		echo $this->Form->input('description', array('label'=>__('Descrição')));
+		echo $this->Fck->load('ItemDescription');
 		echo $this->Form->input('image_path', array('label'=>__('Imagem'), 'type'=>'file'));
 		echo '<p>Imagem atual: </p>';
 		if(empty($item['Item']['image_path'])){

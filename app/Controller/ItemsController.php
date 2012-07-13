@@ -6,10 +6,11 @@ App::uses('AppController', 'Controller');
  * @property Item $Item
  */
 class ItemsController extends AppController {
-
-	 public $components = array('Upload');
-	 public $elements = array('pagination');
-	 var $layout = 'leviatan';
+	
+	public $helpers = array('Fck');
+	public $components = array('Upload');
+	public $elements = array('pagination');
+	var $layout = 'leviatan';
 	 
 /**
  * index method
@@ -185,8 +186,9 @@ class ItemsController extends AppController {
 		
 		$this->Upload->file_new_name_body = $imgName;
 		$this->Upload->image_resize = true;
-		$this->Upload->image_x = 200;
-		$this->Upload->image_ratio_y = true;
+		$this->Upload->image_x = 150;
+		$this->Upload->image_x = 150;
+		//$this->Upload->image_ratio_y = true;
 		$this->Upload->jpeg_quality = 100;
 		
 		$this->Upload->allowed = array('image/jpeg','image/jpg','image/gif','image/png');

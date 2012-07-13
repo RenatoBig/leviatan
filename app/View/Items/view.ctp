@@ -11,7 +11,7 @@
 	</div>
 </div>
 
-<div class="span4 well">
+<div class="span6 well">
 	<h2><?php  echo __('Item');?></h2>
 	<dl class="dl-horizontal">
 		<dt><?php echo __('ID'); ?></dt>
@@ -36,8 +36,8 @@
 		</dd>
 		<dt><?php echo __('Descrição'); ?></dt>
 		<dd>
-			<?php echo h($item['Item']['description']); ?>
-			&nbsp;
+			<textarea disabled="disabled" id="ItemDescription" rows="" cols=""><?php echo h($item['Item']['description']); ?></textarea>
+			<?php  echo $this->Fck->load('ItemDescription', 'None');?>			
 		</dd>
 		<dt><?php echo __('Imagem'); ?></dt>
 		<dd>

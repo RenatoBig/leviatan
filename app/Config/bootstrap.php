@@ -142,10 +142,12 @@ Configure :: write('acl.aro.role.model', 'Group');
 //Constantes dos status
 define("ATIVO", "1");
 define("INATIVO", '2');
-define("AGUARDANDO", '3');
+define("PENDENTE", '3');
 define("HOMOLOGADO", '4');
-define("NEGADO", '5');
-define("CONCLUIDO", '6');
+define("APROVADO", '5');
+define("NEGADO", '6');
+define("CONCLUIDO", '7');
+
 
 //Constantes dos Grupos de usuários
 define("ADMIN", "1");

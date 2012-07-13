@@ -149,7 +149,12 @@ $(document).ready(function() {
 	});	
 	
 	//--------------------------
-	$('.homologation, .deny').click(function() {
+	$('.homologation, .deny, .approved').click(function() {
+		
+		
+		var valItem = $('#ItemItem').val();
+		var valUser = $('#ItemUser').val();
+		var valSolicitation = $('#ItemSolicitation').val();
 		
 		var id_key = $(this).val();
 		
@@ -177,24 +182,50 @@ $(document).ready(function() {
 			status = "HOMOLOGADO";
 		}else if($(this).html() == "Negar"){
 			status = "NEGADO";
+		}else if($(this).html() == "Aprovar") {
+			status = "APROVADO";
 		}
-	
+
 		$.ajax({
 			url : url,
 			data: {status: status},
 			success : function() {
 				
+				var newUrl = '';
+				if(valItem.length != 0) {
+					newUrl = "item:" + valItem + "/";
+				}
+				if(valUser.length != 0) {
+					newUrl = newUrl + "user:" + valUser + "/";
+				}
+				if(valSolicitation.length != 0) {
+					newUrl = newUrl + "solicitation:" + valSolicitation+ "/";
+				}
+
+				var load = aux + '/solicitation_items/pendingSolicitations/'+newUrl;
+				
+				/*$.ajax({
+					type: "POST",
+					url: load,
+					data: {item: valItem, user:valUser, solicitation: valSolicitation},
+					success: function() {
+						
+					}
+				});*/
+				
+				//window.location.href = load;
+				
 				//Remove a linha			
-				$("#trItem_"+key).remove();
+			/*	$("#trItem_"+key).remove();
 				
 				var table = document.getElementById('table');
 				var trs = table.getElementsByTagName('tr');
 	        	//Testa se não existe mais itens
 				if(trs.length == 1) {
-					window.location.href = aux + "/solicitation_items/items";				
+					window.location.href = aux + "/solicitation_items/pendingSolicitations";				
 				}else if(trs.length < 6) {
 					$(".paginacao").fadeOut();
-				}
+				}*/
 			}
 		});			
 		
