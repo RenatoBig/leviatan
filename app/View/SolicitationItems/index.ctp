@@ -15,9 +15,9 @@
 	?>
 	
 	<h2><?php echo __('Itens');?></h2>
-	<ul class="unstyled grid">
+	<ul class="unstyled grid" id="ul">
 	<?php foreach($items as $key=>$item):?>
-		<li class="span4">
+		<li class="span4" id="li_<?php echo $key;?>">
 			<div class="hitem">
 				<?php 
 				if(empty($item['Item']['image_path'])){
@@ -38,9 +38,9 @@
 		</li>	
 		<?php endforeach;?>
 	</ul>	
+	<?php echo $this->element('pagination');?>
 </div>
 <?php 
-echo $this->element('pagination');
 }
 ?>	
 

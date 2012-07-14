@@ -143,6 +143,20 @@ $(document).ready(function() {
 		$.ajax({
 			url : url,
 			success : function() {
+			
+				//Remove a linha			
+				/*$("#li_"+key).remove();
+				
+				var ul = document.getElementById('ul');
+				var lis = ul.getElementsByTagName('li');
+	        	//Testa se não existe mais itens
+				if(lis.length == 0) {
+					$('.span10').html(
+						"<div class='span4 alert alert-info'>" +
+						"<h3>Não há itens</h3>" +
+						"</div>"
+					);					
+				}*/
 
 			}
 		});			

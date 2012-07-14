@@ -21,8 +21,6 @@
 			<thead>
 				<tr>
 					<th><?php echo __('Nome')?></th>
-					<th><?php echo __('Descrição')?></th>
-<!--					<th><?php //echo __('Imagem')?></th>-->
 					<th><?php echo __('Quantidade')?></th>
 					<th><?php echo __('Ação')?></th>
 				</tr>
@@ -32,14 +30,6 @@
 				<tr id="tr_<?php echo $key; ?>">
 					<?php echo $this->Form->input('id', array('type'=>'hidden', 'value'=>$item['Item']['id'], 'name'=>'data[SolicitationItem]['.$key.'][item_id]'));?>
 					<td><?php echo h($item['Item']['name']); ?></td>
-					<td><?php echo h($item['Item']['description']); ?></td>
-					<?php 
-					/*if(empty($item['Item']['image_path'])){
-						echo '<td>'.$this->Html->image('no-image.gif').'</td>';
-					} else {
-						echo '<td>'.$this->Html->image('items'.DS.$item['Item']['image_path']).'</td>';
-					}*/
-					?>
 					<td>
 						<?php echo $this->Form->input('', array('maxLength'=>'4', 'value'=>'1', 'class'=>'input-mini', 'name'=>'data[SolicitationItem]['.$key.'][quantity]', 'type'=>'text', 'label'=>''));?>
 					</td>

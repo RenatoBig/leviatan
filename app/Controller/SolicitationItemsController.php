@@ -136,8 +136,7 @@ class SolicitationItemsController extends AppController {
  * 
  * Enter description here ...
  */
-	public function cart() {			
-		
+	public function cart() {		
 		$items = $this->Session->read('items');		
 		$this->set(compact('items'));		
 	}
@@ -175,7 +174,7 @@ class SolicitationItemsController extends AppController {
 			}			
 						
 			echo true;
-		}
+		}			
 	}
 	
 /**
@@ -255,21 +254,18 @@ class SolicitationItemsController extends AppController {
 	public function changeStatus($id, $status) {
 		
 		if($this->request->is('post')) {						
-			$this->SolicitationItem->recursive = -1;
 			$this->SolicitationItem->id = $id;
-			
+
+			debug($this->SolicitationItem->saveField('status_id', $status, false)); exit;
 			if($this->SolicitationItem->saveField('status_id', $status, false)) {
 				$this->Session->setFlash('<div class="alert alert-success">'.__('Item atualizado').'</div>');
 			}else {
 				$this->Session->setFlash('<div class="alert alert-error">'.__('O item não pode ser atualizado').'</div>');
 			}
-			
-			$this->redirect(array('action' => 'pendingSolicitations'));			
-		}
-	}
-	
 
-	
+			$this->redirect(array('action' => 'pendingSolicitations'));
+		}
+	}	
 	
 /**
  * 
