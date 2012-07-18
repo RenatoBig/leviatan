@@ -32,7 +32,6 @@ if(empty($items)) {
 	<thead>
 		<tr>
 			<th><?php echo __('Nome');?></th>
-			<th><?php echo __('Descrição');?></th>
 			<th><?php echo __('Quantidade');?></th>
 			<th><?php echo __('Status');?></th>
 		</tr>
@@ -42,7 +41,6 @@ if(empty($items)) {
 	foreach ($items as $item): ?>
 		<tr>
 			<td><?php echo h($item['Item']['name']); ?>&nbsp;</td>
-			<td><?php echo h($item['Item']['description']); ?>&nbsp;</td>
 			<td><?php echo h($item['SolicitationItem']['quantity']); ?>&nbsp;</td>
 			<td><?php echo $this->Utils->nameStatus($item['SolicitationItem']['status_id']); ?>&nbsp;</td>			
 		</tr>

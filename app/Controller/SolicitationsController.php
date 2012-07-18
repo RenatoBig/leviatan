@@ -19,10 +19,10 @@ class SolicitationsController extends AppController {
 	public function index() {
 		$this->Solicitation->recursive = 2;
 		
-		$user = $this->Auth->user();
+		$user_id = $this->Auth->user('id');
 		$conditions = array(
 			'conditions'=>array(
-				'User.group_id'=>$user['group_id']
+				'Solicitation.user_id'=>$user_id
 			),
 			'limit'=>5,
 			'order'=>array('Solicitation.name'=>'desc')
@@ -58,6 +58,12 @@ class SolicitationsController extends AppController {
  * @return void
  */
 	public function delete($id = null) {
+		
+		//Se não for via post sai do método
+		if(!$this->request->is('post')) {
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Requisição inválida').'</div>');
+			$this->redirect(array('action'=>'index'));
+		}
 		
 		$solicitation = $this->Solicitation->read(null, $id);
 				

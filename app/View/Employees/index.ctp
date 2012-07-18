@@ -7,13 +7,14 @@
 	</ul>
 </div>
 
-<?php 
-if(empty($employees)) {
-	echo "<div class='span4 alert alert-info'>";
-	echo "<h3>Não há funcionários</h3>";
-	echo "</div>";	
-} else{?>
 <div class="span8 index">
+	<?php 
+	if(empty($employees)) {
+		echo "<div class='span4 alert alert-info'>";
+		echo "<h3>Não há funcionários</h3>";
+		echo "</div>";	
+	} else{?>
+	
 	<h2><?php echo __('Funcionários');?></h2>
 	<table cellpadding="0" cellspacing="0" class="table">
 	<thead>
@@ -47,8 +48,8 @@ if(empty($employees)) {
 		</tbody>
 	</table>
 	
-	<?php echo $this->element('pagination');?>	
+	<?php 
+		echo $this->element('pagination');
+	}
+	?>	
 </div>
-<?php 
-}
-?>

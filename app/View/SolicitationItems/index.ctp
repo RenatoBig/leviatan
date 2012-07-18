@@ -1,7 +1,7 @@
 <div class="span2 actions">
 	<ul class="nav nav-list">
 		<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
-		<li><?php echo $this->Html->link(__('Carrinho'), array('controller' => 'solicitation_items', 'action' => 'cart'), array('class'=>'btn')); ?> </li>
+		<li><?php echo $this->Html->link(__('Carrinho'), array('controller' => 'cart_items', 'action' => 'index'), array('class'=>'btn')); ?> </li>
 	</ul>
 </div>
 
@@ -15,9 +15,9 @@
 	?>
 	
 	<h2><?php echo __('Itens');?></h2>
-	<ul class="unstyled grid" id="ul">
+	<ul class="unstyled">
 	<?php foreach($items as $key=>$item):?>
-		<li class="span4" id="li_<?php echo $key;?>">
+		<li class="span4 grid">
 			<div class="hitem">
 				<?php 
 				if(empty($item['Item']['image_path'])){
@@ -31,16 +31,21 @@
 					<?php echo $item['Item']['name']?>
 				</span>
 				<span class="title-item">
-					<?php echo $this->Form->button(__('Adicionar ao carrinho'), array('label'=>'', 'id'=>'button_'.$key, 'type'=>'button', 'value'=>$item['Item']['id'].'-'.$key, 'class'=>'addToCart btn btn-primary'));?>
+					<?php
+					if(in_array($item['Item']['id'], $cart_items)) { 
+						echo '<a href="#"><i class="icon-ok"></i></a>';
+					}else {
+						echo $this->Form->postLink('Adicionar ao carrinho', array('controller'=>'cart_items', 'action'=>'add', $item['Item']['id']), array('class'=>'btn btn-primary'));
+					}
+					?>
 				</span>
 			</div>
 			
 		</li>	
 		<?php endforeach;?>
 	</ul>	
-	<?php echo $this->element('pagination');?>
+	<?php 
+	echo $this->element('pagination');
+	}
+	?>
 </div>
-<?php 
-}
-?>	
-

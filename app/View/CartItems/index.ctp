@@ -16,8 +16,7 @@
 
 	<h2><?php echo __('Carrinho de compras');?></h2>
 	<div class="well">				
-		<?php echo $this->Form->create('SolicitationItem', array('action' => 'checkout')) ?>
-		<table class="table" id="table">		
+		<table class="table">		
 			<thead>
 				<tr>
 					<th><?php echo __('Nome')?></th>
@@ -26,23 +25,35 @@
 				</tr>
 			</thead>	
 			<tbody>
-				<?php foreach($items as $key=>$item): ?>
-				<tr id="tr_<?php echo $key; ?>">
+				<?php
+				foreach($items as $key=>$item): 
+				?>
+				<tr>
 					<?php echo $this->Form->input('id', array('type'=>'hidden', 'value'=>$item['Item']['id'], 'name'=>'data[SolicitationItem]['.$key.'][item_id]'));?>
 					<td><?php echo h($item['Item']['name']); ?></td>
 					<td>
-						<?php echo $this->Form->input('', array('maxLength'=>'4', 'value'=>'1', 'class'=>'input-mini', 'name'=>'data[SolicitationItem]['.$key.'][quantity]', 'type'=>'text', 'label'=>''));?>
+						<?php echo $this->Form->create('CartItem', array('url'=>'/cart_items/edit/'.$item['CartItem']['id']));?>
+						<?php echo $this->Form->input('', array('maxLength'=>'4', 'class'=>'input-mini', 'name'=>'data[CartItem][quantity]', 'value'=>$item['CartItem']['quantity'] ,'type'=>'text', 'label'=>''));?>
+						<?php echo $this->Form->button('Alterar quantidade')?>
+						<?php echo $this->Form->end();?>
 					</td>
 					<td>
-						<?php echo $this->Form->button('Remover', array('label'=>'', 'type'=>'button', 'value'=>$item['Item']['id'].'-'.$key, 'class'=>'removeFromCart btn btn-danger'));?>
+						<?php 
+						echo $this->Form->postLink('Remover', 
+								array('controller'=>'cart_items', 'action'=>'delete', $item['CartItem']['id']), 
+								array('class'=>'btn btn-danger'), 
+								"Deseja realmente retirar o item do carrinho?"
+						);
+						?>
 					</td>
 				</tr>
 				<?php endforeach; ?>
 			</tbody>		
 		</table>
-			<?php echo $this->Form->end(array('label'=>'Finalizar pedido', 'class'=>'btn btn-primary'));?>
+			<?php echo $this->element('pagination'); ?>
 	</div>	
 	<?php 
+		echo $this->Form->postLink('Finalizar pedido', array('controller'=>'cart_items', 'action'=>'checkout'), array('class'=>'btn btn-primary'));
 	}
 	?>
 </div>

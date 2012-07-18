@@ -8,7 +8,7 @@ App::uses('AppController', 'Controller');
 class SolicitationItemsController extends AppController {
 	
 	public $helpers = array('Utils');
-	var $uses = array('SolicitationItem', 'Solicitation', 'Item', 'User', 'UnitySector', 'Region', 'UnityType', 'HealthDistrict');
+	var $uses = array('SolicitationItem', 'Solicitation', 'Item', 'User', 'UnitySector', 'Region', 'UnityType', 'HealthDistrict', 'CartItem');
 	var $layout = "leviatan";
 	
 
@@ -20,13 +20,41 @@ class SolicitationItemsController extends AppController {
 	public function index() {
 		
 		$conditions = array(
-			'conditions'=>array('Item.status_id'=>ATIVO),
+			'conditions'=>array(
+					'Item.status_id'=>ATIVO
+			),
 			'order'=>array('Item.name'=>'asc'),
 			'limit'=>'6'			
 		);
 		$this->paginate = $conditions;
 		
-		$this->set('items', $this->paginate('Item'));
+		$items = $this->paginate('Item');
+		$cart_items = $this->__getCartItems();
+		
+		$this->set(compact('items', 'cart_items'));
+	}
+	
+/**
+ * Itens que estão no carrinho do usuário atual
+ */
+	private function __getCartItems() {
+		
+		$user_id = $this->Auth->user('id');
+		
+		$options['conditions'] = array(
+				'CartItem.user_id'=>$user_id
+		);
+		$options['fields'] = array(
+				'CartItem.item_id'
+		);
+		$cart_items = $this->CartItem->find('list', $options);
+		
+		$idItems = array();
+		foreach($cart_items as $item):
+			$idItems[] = $item;
+		endforeach;
+		
+		return $idItems;		
 	}
 	
 /**
@@ -134,121 +162,6 @@ class SolicitationItemsController extends AppController {
 	
 /**
  * 
- * Enter description here ...
- */
-	public function cart() {		
-		$items = $this->Session->read('items');		
-		$this->set(compact('items'));		
-	}
-	
-/**
- * 
- * Adiciona item ao carrinho
- * @param unknown_type $id
- */
-	public function addToCart($id) {
-		$this->autoRender = false;
-		if($this->request->is('ajax')) {			
-			$this->Item->recursive = -1;
-			$items = $this->Session->read('items');
-			if($items == null) {
-				$items = array();
-			}
-						
-			$item = $this->Item->find('first', array('conditions'=>array('Item.id'=>$id)));
-			
-			$flag = true;
-			$itemsSession = $this->Session->read('items');
-			
-			//Não adiciona no carrinho itens já adicionados
-			foreach($itemsSession as $i):
-				if($i['Item']['id'] == $id) {
-					$flag = false;
-					break;
-				}
-			endforeach;
-			
-			if($flag) {
-				$items = am($items, array($item));
-				$this->Session->write('items', $items);
-			}			
-						
-			echo true;
-		}			
-	}
-	
-/**
- * 
- * Remove item do carrinho
- * @param unknown_type $id
- */
-	public function removeFromCart($id) {
-		$this->autoRender = false;
-		if($this->request->is('ajax')) {			
-			$idDelete = -1;
-			$itemsSession = $this->Session->read('items');
-			foreach($itemsSession as $key=>$item):
-				if($item['Item']['id'] == $id) {
-					$idDelete = $key;
-					break;
-				}
-			endforeach;
-			
-			unset($itemsSession[$idDelete]);
-			
-			$items = $itemsSession;
-			$this->Session->write('items', $items);
-			
-			echo true;
-		}
-	}
-	
-/**
- * 
- * Adiciona os itens do carrinho em uma solicitação
- */
-	public function checkout() {
-		if($this->request->is('post')) {			
-			$flag = true;
-			$user = $this->Auth->user();
-			
-			$keycode = rand(0, time());
-
-			$this->Solicitation->create();
-			
-			$solicitation['Solicitation']['keycode'] = $keycode;
-			$solicitation['Solicitation']['user_id'] = $user['id'];
-			$solicitation['Solicitation']['status_id'] = PENDENTE;
-			
-			if(!$this->Solicitation->save($solicitation)) {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('Erro ao salvar o solicitação').'</div>');
-				$this->redirect(array('action'=>'cart'));
-			}			
-			$idSolicitation = $this->Solicitation->id;		
-			
-			$solicitationItem['SolicitationItem']['solicitation_id'] = $idSolicitation;
-			
-			foreach($this->request->data['SolicitationItem'] as $key=>$row):
-				$this->SolicitationItem->create();
-				$solicitationItem['SolicitationItem']['item_id'] = $row['item_id'];
-				$solicitationItem['SolicitationItem']['quantity'] = $row['quantity'];	
-				$solicitationItem['SolicitationItem']['status_id'] = PENDENTE;
-				if(!$this->SolicitationItem->save($solicitationItem)) {
-					$this->Solicitation->delete();
-					$this->Session->setFlash('<div class="alert alert-error">'.__('Erro ao salvar o item da solicitação').'</div>');
-					$this->redirect(array('action'=>'cart'));
-				}	
-			endforeach;
-			
-			$this->Session->write('items', null);
-			$this->Session->setFlash('<div class="alert alert-success">'.__('Solicitação feita com sucesso').'</div>');
-			$this->redirect(array('controller'=>'solicitations', 'action'=>'index'));
-		} 		
-	}
-	
-	
-/**
- * 
  * Muda o status do item da solicitação
  */
 	public function changeStatus($id, $status) {
@@ -256,7 +169,6 @@ class SolicitationItemsController extends AppController {
 		if($this->request->is('post')) {						
 			$this->SolicitationItem->id = $id;
 
-			debug($this->SolicitationItem->saveField('status_id', $status, false)); exit;
 			if($this->SolicitationItem->saveField('status_id', $status, false)) {
 				$this->Session->setFlash('<div class="alert alert-success">'.__('Item atualizado').'</div>');
 			}else {
@@ -332,7 +244,8 @@ class SolicitationItemsController extends AppController {
 		$op['fields'] = array('Solicitation.id', 'Solicitation.user_id');
 		$op['distinct'] = array('Solicitation.user_id');
 		$users = $this->Solicitation->find('all', $op);
-		
+
+		$user_ids = array();
 		foreach($users as $user):
 			$user_ids[] = $user['Solicitation']['user_id']; 
 		endforeach;
