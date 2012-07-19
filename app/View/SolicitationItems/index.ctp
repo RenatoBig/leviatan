@@ -33,7 +33,9 @@
 				<span class="title-item">
 					<?php
 					if(in_array($item['Item']['id'], $cart_items)) { 
-						echo '<a href="#"><i class="icon-ok"></i></a>';
+						echo '<i class="icon-shopping-cart"></i>';
+					}else if(array_key_exists($item['Item']['id'], $solicitation_items)) {
+						echo '<i class="icon-question-sign"></i>';
 					}else {
 						echo $this->Form->postLink('Adicionar ao carrinho', array('controller'=>'cart_items', 'action'=>'add', $item['Item']['id']), array('class'=>'btn btn-primary'));
 					}

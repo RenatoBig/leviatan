@@ -30,7 +30,6 @@
 		<tr>
 			<th><?php echo __('Solicitação');?></th>
 			<th><?php echo __('Item');?></th>
-			<th><?php echo __('Descrição');?></th>
 			<th><?php echo __('Quantidade');?></th>
 			<th><?php echo __('Funcionário');?></th>
 			<th><?php echo __('Unidade');?></th>
@@ -45,10 +44,6 @@
 				<?php echo h($item['Item']['name']);?>
 				&nbsp;
 			</td>		
-			<td>
-				<?php echo h($item['Item']['description']) ?>
-				&nbsp;
-			</td>
 			<td>
 				<?php echo h($item['SolicitationItem']['quantity'])?>
 				&nbsp;

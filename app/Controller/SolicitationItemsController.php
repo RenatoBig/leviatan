@@ -30,8 +30,8 @@ class SolicitationItemsController extends AppController {
 		
 		$items = $this->paginate('Item');
 		$cart_items = $this->__getCartItems();
-		
-		$this->set(compact('items', 'cart_items'));
+		$solicitation_items = $this->__getSolicitationItems();
+		$this->set(compact('items', 'cart_items', 'solicitation_items'));
 	}
 	
 /**
@@ -55,6 +55,34 @@ class SolicitationItemsController extends AppController {
 		endforeach;
 		
 		return $idItems;		
+	}
+	
+/**
+ * 
+ */
+	private function __getSolicitationItems() {
+		$user_id = $this->Auth->user('id');
+		
+		$options['conditions'] = array(
+				'Solicitation.user_id'=>$user_id,
+				'OR'=>array(
+					array('SolicitationItem.status_id'=>PENDENTE),
+					array('SolicitationItem.status_id'=>APROVADO)
+				)				
+		);
+		$options['fields'] = array(
+			'SolicitationItem.item_id',
+			'SolicitationItem.quantity' 	
+		);
+		
+		$solicitationItems = $this->SolicitationItem->find('all', $options);
+		
+		$items = array();
+		foreach($solicitationItems as $value):
+			$items[$value['SolicitationItem']['item_id']] = $value['SolicitationItem']['quantity'];
+		endforeach;
+
+		return $items;
 	}
 	
 /**

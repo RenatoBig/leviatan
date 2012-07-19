@@ -46,7 +46,7 @@ class CartItemsController extends AppController {
 				$this->Session->setFlash('<div class="alert alert-error">'."Não foi possível adicionar o item ao carrinho".'</div>');				
 			}
 			
-			$this->redirect(array('controller'=>'solicitation_items', 'action'=>'index'));				
+			$this->redirect($this->referer());				
 		}
 	}
 	
@@ -68,7 +68,7 @@ class CartItemsController extends AppController {
 				$this->Session->setFlash('<div class="alert alert-error">'.__('O item não pode ser deletado').'</div>');
 			}
 			
-			$this->redirect(array('action' => 'index'));
+			$this->redirect($this->referer());
 		}
 	}
 	
@@ -94,7 +94,7 @@ class CartItemsController extends AppController {
 				$this->Session->setFlash('<div class="alert alert-error">'.__('A quantidade não pode ser alterada.').'</div>');
 			}
 			
-			$this->redirect(array('action' => 'index'));				
+			$this->redirect($this->referer());				
 		} 
 	}
 	
@@ -112,7 +112,7 @@ class CartItemsController extends AppController {
 			
 			$items = $this->CartItem->find('all', $options);
 			
-			$keycode = $this->__getRandom();
+			$keycode = $this->__getRandomKeycode();
 			
 			$this->Solicitation->create();
 			$data['Solicitation']['keycode'] = $keycode;
@@ -143,7 +143,7 @@ class CartItemsController extends AppController {
 /**
  * 
  */
-	private function __getRandom() {
+	private function __getRandomKeycode() {
 		
 		$i = 0;
 		$random = '';

@@ -39,8 +39,8 @@ class User extends AppModel {
  * @var array
  */
 	public $hasMany = array(
-		'Order' => array(
-			'className' => 'Order',
+		'Solicitation' => array(
+			'className' => 'Solicitation',
 			'foreignKey' => 'user_id',
 			'dependent' => false,
 			'conditions' => '',
@@ -123,7 +123,7 @@ class User extends AppModel {
  */
 	public function beforeDelete() {
 		$register = $this->read(null, $this->id);
-		if(!empty($register['Order'])) {
+		if(!empty($register['Solicitation'])) {
 			return false;
 		}		
 	}

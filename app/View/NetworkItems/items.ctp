@@ -29,7 +29,6 @@
 	<thead>
 		<tr>
 			<th><?php echo __('Item');?></th>
-			<th><?php echo __('Descrição');?></th>
 			<th><?php echo __('Ação');?></th>
 		</tr>
 	</thead>
@@ -41,10 +40,6 @@
 				<?php echo h($item['Item']['name']);?>
 				&nbsp;
 			</td>		
-			<td>
-				<?php echo h($item['Item']['description'])?>
-				&nbsp;
-			</td>			
 			<td>		
 				<?php echo $this->Form->postLink('Jogar na rede', array('controller' => 'network_items', 'action' => 'add', $item['Item']['id']), array('class'=>'btn btn-info')); ?>
 			</td>

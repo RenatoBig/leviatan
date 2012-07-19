@@ -8,7 +8,7 @@ App::uses('AppController', 'Controller');
 class NetworkItemsController extends AppController {
 	
 	var $layout = 'leviatan';
-	var $uses = array('NetworkItem', 'Item', 'SolicitationItem', 'Solicitation');
+	var $uses = array('NetworkItem', 'CartItem', 'Item', 'SolicitationItem', 'Solicitation');
 
 /**
  * index method
@@ -17,27 +17,67 @@ class NetworkItemsController extends AppController {
  */
 	public function index() {
 		
-		$options['limit'] = 5;
+		$options['limit'] = 6;
+		$options['order'] = array('Item.name'=>'asc');
 		
 		$this->paginate = $options;		
 		$items = $this->paginate();
-
-		
-		$this->set(compact('items'));		
+		$cart_items = $this->__getCartItems();
+		$solicitation_items = $this->__getSolicitationItems();
+						
+		$this->set(compact('items', 'cart_items', 'solicitation_items'));
+		$this->render('/SolicitationItems/index');
+	}
+	
+/**
+ * Itens que estão no carrinho do usuário atual
+ */
+	private function __getCartItems() {
+	
+		$user_id = $this->Auth->user('id');
+	
+		$options['conditions'] = array(
+				'CartItem.user_id'=>$user_id
+		);
+		$options['fields'] = array(
+				'CartItem.item_id'
+		);
+		$cart_items = $this->CartItem->find('list', $options);
+	
+		$idItems = array();
+		foreach($cart_items as $item):
+		$idItems[] = $item;
+		endforeach;
+	
+		return $idItems;
 	}
 
 /**
- * view method
  *
- * @param string $id
- * @return void
  */
-	public function view($id = null) {
-		$this->NetworkItem->id = $id;
-		if (!$this->NetworkItem->exists()) {
-			throw new NotFoundException(__('Invalid network item'));
-		}
-		$this->set('networkItem', $this->NetworkItem->read(null, $id));
+	private function __getSolicitationItems() {
+		$user_id = $this->Auth->user('id');
+	
+		$options['conditions'] = array(
+				'Solicitation.user_id'=>$user_id,
+				'OR'=>array(
+						array('SolicitationItem.status_id'=>PENDENTE),
+						array('SolicitationItem.status_id'=>APROVADO)
+				)
+		);
+		$options['fields'] = array(
+				'SolicitationItem.item_id',
+				'SolicitationItem.quantity'
+		);
+	
+		$solicitationItems = $this->SolicitationItem->find('all', $options);
+	
+		$items = array();
+		foreach($solicitationItems as $value):
+		$items[$value['SolicitationItem']['item_id']] = $value['SolicitationItem']['quantity'];
+		endforeach;
+	
+		return $items;
 	}
 
 /**
