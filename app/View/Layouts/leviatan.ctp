@@ -46,7 +46,7 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 						<ul class="nav pull-right">							
 							<li class="dropdown">
 								<?php echo $this->Html->link(
-									'<i class="icon-user"></i>'.
+									'<i class="icon-user icon-white"></i>'.
 									$user['Employee']['name'].
 									'<b class="caret"></b>', 
 									"#", 
@@ -85,6 +85,10 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 		</div>
 		<?php echo $this->element('sql_dump'); ?>
 		<?php if(class_exists('JsHelper') && method_exists($this->Js, 'writeBuffer')) echo $this->Js->writeBuffer(); ?>
-		
+		<!-- <div class="footer">
+			<div class="imgFooter">
+				<div class="textFooter">Footer</div>
+			</div>
+		</div>  -->
 	</body>
 </html>

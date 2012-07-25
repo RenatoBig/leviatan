@@ -5,7 +5,7 @@ App::uses('AppModel', 'Model');
  *
  * @property ItemClass $ItemClass
  * @property PngcCode $PngcCode
- * @property OrderItem $OrderItem
+ * @property SolicitationItem $SolicitationItem
  */
 class Item extends AppModel {
 /**
@@ -45,8 +45,8 @@ class Item extends AppModel {
  * @var array
  */
 	public $hasMany = array(
-		'OrderItem' => array(
-			'className' => 'OrderItem',
+		'SolicitationItem' => array(
+			'className' => 'SolicitationItem',
 			'foreignKey' => 'item_id',
 			'dependent' => false,
 			'conditions' => '',
@@ -99,7 +99,7 @@ class Item extends AppModel {
 	public function beforeDelete() { 
 		
 		$item = $this->read(null, $this->id);
-		if(!empty($item['OrderItem'])) {
+		if(!empty($item['SolicitationItem'])) {
 			return false;
 		}
 	}

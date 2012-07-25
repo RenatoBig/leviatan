@@ -19,173 +19,103 @@ class SolicitationItemsController extends AppController {
  */
 	public function index() {
 		
-		$conditions = array(
-			'conditions'=>array(
-					'Item.status_id'=>ATIVO
-			),
-			'order'=>array('Item.name'=>'asc'),
-			'limit'=>'6'			
+		if($this->request->is('post')){
+			$term = $this->request->data['Search']['term'];
+		}else{
+			$term = '';
+		}
+		
+		$options['conditions'] = array(
+				'Item.name LIKE'=>'%'.$term.'%',
+				'Item.status_id'=>ATIVO
 		);
-		$this->paginate = $conditions;
+		$options['order'] = array('Item.name'=>'asc');
+		$options['limit'] = '10';
+		
+		$this->paginate = $options;
 		
 		$items = $this->paginate('Item');
 		$cart_items = $this->__getCartItems();
 		$solicitation_items = $this->__getSolicitationItems();
-		$this->set(compact('items', 'cart_items', 'solicitation_items'));
+		$action = 'index';
+		
+		$this->set(compact('items', 'cart_items', 'solicitation_items', 'action'));
+	}
+	
+	
+/**
+ * Itens que foram solicitados por todos por todos, sem repetição
+ */	 
+	public function requestedItems() {
+		
+		if($this->request->is('post')){
+			$term = $this->request->data['Search']['term'];
+		}else{
+			$term = '';
+		}
+		
+		$options['conditions'] = array(
+				'Item.name LIKE'=>'%'.$term.'%',
+			'SolicitationItem.status_id'=>APROVADO
+		);
+		$options['fields'] = array(
+			'Item.*'
+		);
+		$options['group'] = array('SolicitationItem.item_id');
+		$options['order'] = array('Item.name'=>'asc');
+		$options['limit'] = '10';
+		
+		$this->paginate = $options;
+		
+		$items = $this->paginate();
+		$cart_items = $this->__getCartItems();
+		$solicitation_items = $this->__getSolicitationItems();
+		$action = 'requestedItems';
+		
+		$this->set(compact('items', 'cart_items', 'solicitation_items', 'action'));
+		
+		$this->render('/SolicitationItems/index/');
 	}
 	
 /**
- * Itens que estão no carrinho do usuário atual
+ * Monta a pagina de itens de acordo com o seu status no banco de dados
+ * @param unknown_type $status
  */
-	private function __getCartItems() {
-		
-		$user_id = $this->Auth->user('id');
-		
-		$options['conditions'] = array(
-				'CartItem.user_id'=>$user_id
-		);
-		$options['fields'] = array(
-				'CartItem.item_id'
-		);
-		$cart_items = $this->CartItem->find('list', $options);
-		
-		$idItems = array();
-		foreach($cart_items as $item):
-			$idItems[] = $item;
-		endforeach;
-		
-		return $idItems;		
-	}
-	
-/**
- * 
- */
-	private function __getSolicitationItems() {
-		$user_id = $this->Auth->user('id');
-		
-		$options['conditions'] = array(
-				'Solicitation.user_id'=>$user_id,
-				'OR'=>array(
-					array('SolicitationItem.status_id'=>PENDENTE),
-					array('SolicitationItem.status_id'=>APROVADO)
-				)				
-		);
-		$options['fields'] = array(
-			'SolicitationItem.item_id',
-			'SolicitationItem.quantity' 	
-		);
-		
-		$solicitationItems = $this->SolicitationItem->find('all', $options);
-		
-		$items = array();
-		foreach($solicitationItems as $value):
-			$items[$value['SolicitationItem']['item_id']] = $value['SolicitationItem']['quantity'];
-		endforeach;
+	public function items($status) {
 
-		return $items;
-	}
-	
-/**
- * 
- * Enter description here ...
- */
-	public function pendingSolicitations() {
+		if(!in_array($status, array(PENDENTE, APROVADO, HOMOLOGADO, NEGADO))) {
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Inválido').'</div>');
+			$this->redirect($this->referer());
+		}
 		
 		$values = array('', '', '');
 		if($this->request->is('post')) {
 			$values = $this->__getDataPost($this->request->data);
-		}			
+		}
 		
 		$itemsSelect = $values[0];
 		$usersSelect = $values[1];
 		$solicitationsSelect = $values[2];
 		
 		$options['conditions'] = array(
-			'SolicitationItem.status_id'=>PENDENTE, 
-			$itemsSelect, 
-			$usersSelect,
-			$solicitationsSelect
+				'SolicitationItem.status_id'=>$status,
+				$itemsSelect,
+				$usersSelect,
+				$solicitationsSelect
 		);
 		$options['order'] = array('Item.name'=>'asc');
 		$options['limit'] = '5';
 		
 		$this->paginate = $options;
 		
-		$items = $this->__getItems(PENDENTE);
-		$users = $this->__getUsers();
-		$solicitations = $this->__getSolicitations();		
-		$allItems = $this->__getOthersDatas($this->paginate());
-		
-		$this->set(compact('allItems', 'items', 'users', 'solicitations'));
-	}
-	
-/**
- * 
- * Mostra registros que foram aprovados
- */
-	public function approvedSolicitations() {
-		
-		$values = array('', '', '');
-		if($this->request->is('post')) {
-			$values = $this->__getDataPost($this->request->data);
-		}			
-		
-		$itemsSelect = $values[0];
-		$usersSelect = $values[1];
-		$solicitationsSelect = $values[2];
-		
-		$options['conditions'] = array(
-			'SolicitationItem.status_id'=>APROVADO, 
-			$itemsSelect, 
-			$usersSelect,
-			$solicitationsSelect
-		);
-		$options['order'] = array('Item.name'=>'asc');
-		$options['limit'] = '5';
-		
-		$this->paginate = $options;
-		
-		$items = $this->__getItems(APROVADO);
-		$users = $this->__getUsers();
-		$solicitations = $this->__getSolicitations();
-		$allItems = $this->__getOthersDatas($this->paginate());		
-		
-		$this->set(compact('allItems', 'items', 'users', 'solicitations'));
-	}
-	
-	
-/**
- * 
- * Mostra as solicitações que foram negadas
- */
-	public function deniedSolicitations() {
-		
-		$values = array('', '', '');
-		if($this->request->is('post')) {
-			$values = $this->__getDataPost($this->request->data);
-		}			
-		
-		$itemsSelect = $values[0];
-		$usersSelect = $values[1];
-		$solicitationsSelect = $values[2];		
-		
-		$options['conditions'] = array(
-			'SolicitationItem.status_id'=>NEGADO, 
-			$itemsSelect, 
-			$usersSelect,
-			$solicitationsSelect
-		);
-		$options['order'] = array('Item.name'=>'asc');
-		$options['limit'] = '5';
-		
-		$this->paginate = $options;
-		
-		$items = $this->__getItems(NEGADO);
+		$items = $this->__getItems($status);
 		$users = $this->__getUsers();
 		$solicitations = $this->__getSolicitations();
 		$allItems = $this->__getOthersDatas($this->paginate());
 		
-		$this->set(compact('allItems', 'items', 'users', 'solicitations'));
+		$this->set(compact('allItems', 'items', 'users', 'solicitations', 'status'));
+		$this->render('/SolicitationItems/items');
+		
 	}
 	
 /**
@@ -193,7 +123,6 @@ class SolicitationItemsController extends AppController {
  * Muda o status do item da solicitação
  */
 	public function changeStatus($id, $status) {
-		
 		if($this->request->is('post')) {						
 			$this->SolicitationItem->id = $id;
 
@@ -203,7 +132,7 @@ class SolicitationItemsController extends AppController {
 				$this->Session->setFlash('<div class="alert alert-error">'.__('O item não pode ser atualizado').'</div>');
 			}
 
-			$this->redirect(array('action' => 'pendingSolicitations'));
+			$this->redirect($this->referer());
 		}
 	}	
 	
@@ -339,6 +268,5 @@ class SolicitationItemsController extends AppController {
 		$values = array($itemsSelect, $usersSelect, $solicitationsSelect);
 		
 		return $values;
-	}
-	
+	}	
 }

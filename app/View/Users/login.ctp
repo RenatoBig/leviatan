@@ -1,4 +1,4 @@
-<div class="span4 offset4">
+<div class="centerLogin">
 	<?php echo $this->Form->create('User', array('action'=>'login', 'class'=>'well'));?>
 		<fieldset>
 			<legend><?php echo __('Login'); ?></legend>
@@ -11,6 +11,3 @@
 		</fieldset>
 	<?php echo $this->Form->end(array('label'=>__('Login'), 'class'=>'btn btn-primary'));?>
 </div>
-
-
-

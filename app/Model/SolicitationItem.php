@@ -1,7 +1,7 @@
 <?php
 App::uses('AppModel', 'Model');
 /**
- * OrderItem Model
+ * SolicitationItem Model
  *
  * @property Solicitation $Solicitation
  * @property Item $Item
@@ -40,27 +40,6 @@ class SolicitationItem extends AppModel {
 			'order' => ''
 		)
 	);
-
-/**
- * hasMany associations
- *
- * @var array
- */
-	public $hasMany = array(
-		'Homologation' => array(
-			'className' => 'Homologation',
-			'foreignKey' => 'order_item_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		)
-	);
 	
 /**
  * 
@@ -68,7 +47,7 @@ class SolicitationItem extends AppModel {
  * @var unknown_type
  */
 	var $validate = array(
-		'order_id'=>array(
+		'solicitation_id'=>array(
 			'keycodeRule' => array(
 				'rule'=>'notEmpty',
 				'message'=>'É obrigatório escolher uma solicitação.'
@@ -100,10 +79,10 @@ class SolicitationItem extends AppModel {
  */
 	public function beforeDelete() { 
 		
-		$solicitationItem = $this->read(null, $this->id);
-		if(!empty($solicitationItem['Homologation'])) {
-			return false;
-		}
+	//	$solicitationItem = $this->read(null, $this->id);
+	//	if(!empty($solicitationItem['Homologation'])) {
+	//		return false;
+	//	}
 	}
 
 }

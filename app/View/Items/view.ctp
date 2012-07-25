@@ -39,6 +39,11 @@
 			<textarea disabled="disabled" id="ItemDescription" rows="" cols=""><?php echo h($item['Item']['description']); ?></textarea>
 			<?php  echo $this->Fck->load('ItemDescription', 'None');?>			
 		</dd>
+		<dt><?php echo __('Especificação'); ?></dt>
+		<dd>
+			<textarea disabled="disabled" id="ItemSpecification" rows="" cols=""><?php echo h($item['Item']['specification']); ?></textarea>
+			<?php  echo $this->Fck->load('ItemSpecification', 'None');?>			
+		</dd>
 		<dt><?php echo __('Imagem'); ?></dt>
 		<dd>
 			<?php 

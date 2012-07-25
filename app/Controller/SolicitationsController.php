@@ -99,5 +99,19 @@ class SolicitationsController extends AppController {
 		$this->Session->setFlash('<div class="alert alert-success">'.__('Solicitação deletada com sucesso.').'</div>');
 		$this->redirect(array('controller'=>'solicitations', 'action'=>'index'));
 	}	
+	
+	
+	
+	public function solicitations() {
+		
+		$options['conditions'] = array(
+					
+				);
+		
+		$solicitations = $this->Solicitation->find('all', $options);
+		
+		debug($solicitations);exit;
+		
+	}
 
 }

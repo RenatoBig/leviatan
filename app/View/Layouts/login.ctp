@@ -12,7 +12,7 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 		<?php
 			echo $this->Html->meta('icon');
 	
-			echo $this->Html->css(array('jquery-ui-1.8.21.custom', 'bootstrap', 'bootstrap.min', 'bootstrap-responsive', 'bootstrap-responsive.min'));
+			echo $this->Html->css(array('jquery-ui-1.8.21.custom', 'bootstrap', 'bootstrap.min', 'bootstrap-responsive', 'bootstrap-responsive.min', 'leviatan'));
 	
 			echo $this->fetch('meta');
 			echo $this->fetch('css');

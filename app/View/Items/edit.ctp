@@ -22,6 +22,8 @@
 		echo $this->Form->input('name', array('label'=>__('Nome')));
 		echo $this->Form->input('description', array('label'=>__('Descrição')));
 		echo $this->Fck->load('ItemDescription');
+		echo $this->Form->input('specification', array('label'=>__('Especificação')));
+		echo $this->Fck->load('ItemSpecification');
 		echo $this->Form->input('image_path', array('label'=>__('Imagem'), 'type'=>'file'));
 		echo '<p>Imagem atual: </p>';
 		if(empty($item['Item']['image_path'])){

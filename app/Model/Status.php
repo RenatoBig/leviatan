@@ -22,8 +22,8 @@ class Status extends AppModel {
  * @var array
  */
 	public $hasMany = array(
-		'OrderItem' => array(
-			'className' => 'OrderItem',
+		'SolicitationItem' => array(
+			'className' => 'SolicitationItem',
 			'foreignKey' => 'status_id',
 			'dependent' => false,
 			'conditions' => '',
@@ -35,8 +35,8 @@ class Status extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'Order' => array(
-			'className' => 'Order',
+		'Solicitation' => array(
+			'className' => 'Solicitation',
 			'foreignKey' => 'status_id',
 			'dependent' => false,
 			'conditions' => '',
@@ -69,7 +69,7 @@ class Status extends AppModel {
  */
 	public function beforeDelete() {
 		$status = $this->read(null, $this->id);
-		if(!empty($status['Order']) || !empty($status['OrderItem'])) {
+		if(!empty($status['Solicitation']) || !empty($status['SolicitationItem'])) {
 			return false;
 		}	
 	}

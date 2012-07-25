@@ -11,6 +11,7 @@ class ItemsController extends AppController {
 	public $components = array('Upload');
 	public $elements = array('pagination');
 	var $layout = 'leviatan';
+	var $uses = array('Item', 'CartItem', 'SolicitationItem');
 	 
 /**
  * index method
@@ -41,6 +42,25 @@ class ItemsController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('item', $this->Item->read(null, $id));
+	}
+	
+	
+/**
+ * 
+ * @param unknown_type $id
+ */
+	public function details($id) {
+		$this->Item->id = $id;
+		if (!$this->Item->exists()) {
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Item inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
+		}
+		
+		$item = $this->Item->read(null, $id);
+		$cart_items = $this->__getCartItems();
+		$solicitation_items = $this->__getSolicitationItems();
+		
+		$this->set(compact('item', 'cart_items', 'solicitation_items'));		
 	}
 
 /**
@@ -190,6 +210,7 @@ class ItemsController extends AppController {
 		$this->Upload->image_x = 150;
 		//$this->Upload->image_ratio_y = true;
 		$this->Upload->jpeg_quality = 100;
+		$this->file_max_size = '3000';
 		
 		$this->Upload->allowed = array('image/jpeg','image/jpg','image/gif','image/png');
 		$this->Upload->process('img/items/');
@@ -197,7 +218,7 @@ class ItemsController extends AppController {
 		if($this->Upload->processed) {
 			$this->Upload->clean();
 		} else {
-			//debug($this->Upload->error);exit;
+			debug($this->Upload->error);exit;
 			//$this->erro = $this->Upload->error;
 			return false;
 		}
@@ -298,8 +319,7 @@ class ItemsController extends AppController {
 		}else {
 			echo false;
 			exit;
-		}
-		
+		}		
 	}
 	
 }

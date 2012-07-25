@@ -31,14 +31,14 @@
 				<tr>
 					<td><?php echo h($solicitation['Solicitation']['keycode']); ?>&nbsp;</td>
 					<td>
-						<?php echo $this->Html->link($solicitation['User']['Employee']['name'], array('controller' => 'users', 'action' => 'view', $solicitation['User']['id'])); ?>
+						<?php echo h(__($solicitation['User']['Employee']['name'])); ?>
 					</td>		
 					<td>
-						<?php echo $this->Html->link($solicitation['Status']['name'], array('controller' => 'statuses', 'action' => 'view', $solicitation['Status']['id'])); ?>
+						<?php echo h(__($solicitation['Status']['name'])); ?>
 					</td>
 					<td>
 						<?php echo $this->Html->link(__('Visualizar'), array('controller'=>'solicitations','action' => 'view', $solicitation['Solicitation']['id']), array('class'=>'btn btn-primary')); ?>
-						<?php echo $this->Form->postLink(__('Deletar'), array('controller'=>'solicitations', 'action' => 'delete', $solicitation['Solicitation']['id']), array('class'=>'btn btn-danger'), __('Deseja realmente deletar o pedido #%s?', $solicitation['Solicitation']['keycode'])); ?>
+						<?php //echo $this->Form->postLink(__('Deletar'), array('controller'=>'solicitations', 'action' => 'delete', $solicitation['Solicitation']['id']), array('class'=>'btn btn-danger'), __('Deseja realmente deletar o pedido #%s?', $solicitation['Solicitation']['keycode'])); ?>
 					</td>
 				</tr>
 			<?php endforeach; ?>

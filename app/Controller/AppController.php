@@ -43,7 +43,7 @@ class AppController extends Controller {
         'Session'
     );
     public $helpers = array('Html', 'Form', 'Session', 'Js');
-    public $uses = array('User', 'Employee');
+    public $uses = array('User', 'Employee', 'CartItem', 'SolicitationItem');
 
     public function beforeFilter() {
     	    	
@@ -58,6 +58,74 @@ class AppController extends Controller {
         	
         	$this->set(compact('user'));
         }
+    }
+    
+    /**
+     * Gera seis números aleatórios seguido de /ano corrente
+     */
+    protected function __getRandomKeycode() {
+    
+    	$i = 0;
+    	$random = '';
+    	while($i < 3) {
+    		$random .= rand(10, 99);
+    		$i++;
+    	}
+    
+    	$random = $random.'/'.date('y');
+    
+    	return $random;
+    }
+    
+/**
+ * Itens que estão no carrinho do usuário atual
+ */
+    protected function __getCartItems() {
+    
+    	$user_id = $this->Auth->user('id');
+    
+    	$options['conditions'] = array(
+    			'CartItem.user_id'=>$user_id
+    	);
+    	$options['fields'] = array(
+    			'CartItem.item_id'
+    	);
+    	$cart_items = $this->CartItem->find('list', $options);
+    
+    	$idItems = array();
+    	foreach($cart_items as $item):
+    		$idItems[] = $item;
+    	endforeach;
+    
+    	return $idItems;
+    }
+    
+/**
+ * Itens que estão em algum processo de pendência
+ */
+    protected function __getSolicitationItems() {
+    	$user_id = $this->Auth->user('id');
+    
+    	$options['conditions'] = array(
+    			'Solicitation.user_id'=>$user_id,
+    			'OR'=>array(
+    					array('SolicitationItem.status_id'=>PENDENTE),
+    					array('SolicitationItem.status_id'=>APROVADO),
+    					array('SolicitationItem.status_id'=>HOMOLOGADO)
+    			)
+    	);
+    	$options['fields'] = array(
+    			'SolicitationItem.item_id',
+    	);
+    
+    	$solicitationItems = $this->SolicitationItem->find('all', $options);
+
+    	$items = array();
+    	foreach($solicitationItems as $value):
+    		$items[] = $value['SolicitationItem']['item_id'];
+    	endforeach;
+    
+    	return $items;
     }
 	
 }

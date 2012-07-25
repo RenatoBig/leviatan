@@ -139,22 +139,5 @@ class CartItemsController extends AppController {
 			}			
 		}
 	}
-	
-/**
- * 
- */
-	private function __getRandomKeycode() {
-		
-		$i = 0;
-		$random = '';
-		while($i < 3) {
-			$random .= rand(10, 99);
-			$i++;
-		}
-		
-		$random = $random.'/'.date('y');
-
-		return $random;
-	}
 
 }
