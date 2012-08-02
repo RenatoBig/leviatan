@@ -1,26 +1,20 @@
-<div class="span2 actions">
-	<ul class="nav nav-list">
-		<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
-		<li class="divider"></li>
-		<li><?php echo $this->Html->link(__('Fazer solicitação'), array('controller'=>'solicitation_items', 'action' => 'index'), array('class'=>'btn')); ?></li>
-	</ul>
-</div>
+<?php echo $this->element('menu'); ?>
 	
-<div class="span10 index">
+<div class="span9 well">
 	<?php 
 	if(empty($solicitations)) {
-		echo "<div class='span4 alert alert-info'>";
+		echo "<div class='alert alert-info'>";
 		echo "<h3>Não há solicitações</h3>";
 		echo "</div>";
 	}else {?>
 	
-		<h2><?php echo __('Solicitações');?></h2>
+		<h2><?php echo __('Minhas Solicitações');?></h2>
 			
 		<table cellpadding="0" cellspacing="0" class="table">
 			<thead>
 				<tr>
-					<th><?php echo __('Código');?></th>
-					<th><?php echo __('Usuário');?></th>
+					<th><?php echo __('Número');?></th>
+					<th><?php echo __('Data')?></th>
 					<th><?php echo __('Status');?></th>
 					<th><?php echo __('Ações');?></th>
 				</tr>
@@ -31,14 +25,13 @@
 				<tr>
 					<td><?php echo h($solicitation['Solicitation']['keycode']); ?>&nbsp;</td>
 					<td>
-						<?php echo h(__($solicitation['User']['Employee']['name'])); ?>
-					</td>		
+						<?php echo $solicitation['Solicitation']['created'];?>
+					</td>
 					<td>
 						<?php echo h(__($solicitation['Status']['name'])); ?>
 					</td>
 					<td>
 						<?php echo $this->Html->link(__('Visualizar'), array('controller'=>'solicitations','action' => 'view', $solicitation['Solicitation']['id']), array('class'=>'btn btn-primary')); ?>
-						<?php //echo $this->Form->postLink(__('Deletar'), array('controller'=>'solicitations', 'action' => 'delete', $solicitation['Solicitation']['id']), array('class'=>'btn btn-danger'), __('Deseja realmente deletar o pedido #%s?', $solicitation['Solicitation']['keycode'])); ?>
 					</td>
 				</tr>
 			<?php endforeach; ?>

@@ -225,8 +225,18 @@ ul{list-style:none outside;}
 .grid .li{display:-moz-inline-box;display:inline-block;vertical-align:top;word-spacing:0;}
 
 body{
-/* 	background: url("../img/wallpaper.png") !important; */
+	font-family:Tahoma, Geneva, sans-serif !important; color:#000; background:#fff url(../img/bg.jpg) repeat-x scroll 0 -200px;
 }
+
+.wrapper {
+	background: url("../img/wash-white-30.png") repeat scroll 0 0 transparent;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 54px 14px 15px;
+    position: relative;
+    width: 920px;	
+}
+
 .centerLogin {
     top: 50%;
     left: 50%;
@@ -236,3 +246,5 @@ body{
     height: 225px;
     position: absolute;
 }
+
+#busy-indicator { display:none; }

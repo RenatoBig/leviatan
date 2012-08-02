@@ -7,7 +7,8 @@ App::uses('AppController', 'Controller');
  */
 class OrdersController extends AppController {
 	
-	var $uses = array('Order', 'OrderItem', 'SolicitationItem');
+	public $uses = array('Order', 'OrderItem', 'Solicitation');
+	public $layout = 'leviatan';
 
 /**
  * index method
@@ -16,47 +17,52 @@ class OrdersController extends AppController {
  */
 	public function index() {
 		$this->Order->recursive = 0;
-		$this->set('orders', $this->paginate());
-	}
-
-/**
- * view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->Order->id = $id;
-		if (!$this->Order->exists()) {
-			throw new NotFoundException(__('Invalid order'));
-		}
-		$this->set('order', $this->Order->read(null, $id));
+		
+		$options['limit'] = 10;
+		$options['order'] = array('Order.created'=>'desc');
+		
+		$this->paginate = $options;
+		
+		$orders = $this->paginate();
+		
+		$this->set(compact('orders'));
 	}
 
 /**
  * add method
  *
- * Gera um pedido e modifica o status da dos registros da tavela solicitation_items,
- * que são pendentes ou homologados, para concluído 
+ * Gera um pedido e modifica o status dos registros da tabela solicitations,
+ * que são pendentes para concluído 
  *
  * @return void
  */
 	public function add() {
 		if(!$this->request->is('post')) {
-			echo 'Requisição inválida';
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Requisição inválida').'</div>');
 			$this->redirect($this->referer());
 		}
 		
-		$options['conditions'] = array('SolicitationItem.status_id'=>APROVADO);
-		$approvedSolicitations = $this->SolicitationItem->find('list', $options);
+		//Verifica se existe alguma solicitação pendente
+		if($this->__getCountPendingSolicitations() == 0) {
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Não existe solicitações pendentes.').'</div>');
+			$this->redirect($this->referer());
+		}
+		//Verifica se tem algum item das solicitações com pendência
+		$pending = $this->__getPendingSolicitationItems();
+		if(!empty($pending)) {
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Possui algum item pendente nas solicitações. Por favor verfique e tente novamente.').'</div>');
+			$this->redirect($this->referer());
+		}
+
+		$options['conditions'] = array('Solicitation.status_id'=>PENDENTE);
+		$pendingSolicitations = $this->Solicitation->find('list', $options);
 		
 		$this->Order->create();
 		$data['Order']['keycode'] = $this->__getRandomKeycode();
 		
-		foreach($approvedSolicitations as $key=>$item):
+		foreach($pendingSolicitations as $key=>$solicitation):
 			$this->OrderItem->create();
-			$data['OrderItem'][$key]['solicitation_item_id'] = $item;
+			$data['OrderItem'][$key]['solicitation_id'] = $solicitation;
 		endforeach;
 		
 		if(!$this->Order->saveAll($data)) {		
@@ -64,63 +70,58 @@ class OrdersController extends AppController {
 			$this->redirect($this->referer());
 		}		
 		
-		foreach($approvedSolicitations as $key=>$value):
-			$this->SolicitationItem->id = $value;
-			if(!$this->SolicitationItem->saveField('status_id', CONCLUIDO)) {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('o pedido não pode ser concluído.').'</div>');
-				$this->redirect($this->referer());
-			}
-		endforeach;
+		$conditions = array(
+				'Solicitation.status_id'=>PENDENTE
+		);
+		$fields = array(
+				'Solicitation.status_id'=>CONCLUIDO
+		);
+		
+		$status = $this->Solicitation->updateAll($fields, $conditions);
+		
+		if(!$status) {
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Não foi possível concluir o pedido.').'</div>');
+		}
 		
 		$this->Session->setFlash('<div class="alert alert-success">'.__('Pedido concluído.').'</div>');
-		$this->redirect($this->referer());
+		$this->redirect(array('controller'=>'orders', 'action'=>'index'));
 	}
-
+	
 /**
- * edit method
  *
- * @throws NotFoundException
- * @param string $id
- * @return void
  */
-	public function edit($id = null) {
-		$this->Order->id = $id;
-		if (!$this->Order->exists()) {
-			throw new NotFoundException(__('Invalid order'));
+	private function __getPendingSolicitationItems() {
+	
+		$this->Solicitation->recursive = -1;
+	
+		$pending = array();
+		$options['conditions'] = array('Solicitation.status_id'=>PENDENTE);
+		$pendingSolicitations = $this->Solicitation->find('list', $options);
+	
+		foreach($pendingSolicitations as $value):
+		$options['conditions'] = array(
+				'SolicitationItem.solicitation_id'=>$value,
+				'SolicitationItem.status_id'=>PENDENTE
+		);
+		$solicitationItem = $this->SolicitationItem->find('count', $options);
+	
+		if($solicitationItem != 0) {
+			$pending[] = $value;
 		}
-		if ($this->request->is('post') || $this->request->is('put')) {
-			if ($this->Order->save($this->request->data)) {
-				$this->Session->setFlash(__('The order has been saved'));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The order could not be saved. Please, try again.'));
-			}
-		} else {
-			$this->request->data = $this->Order->read(null, $id);
-		}
+		endforeach;
+	
+		return $pending;
 	}
-
+	
 /**
- * delete method
- *
- * @throws MethodNotAllowedException
- * @throws NotFoundException
- * @param string $id
- * @return void
+ * 
  */
-	public function delete($id = null) {
-		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
-		}
-		$this->Order->id = $id;
-		if (!$this->Order->exists()) {
-			throw new NotFoundException(__('Invalid order'));
-		}
-		if ($this->Order->delete()) {
-			$this->Session->setFlash(__('Order deleted'));
-			$this->redirect(array('action' => 'index'));
-		}
-		$this->Session->setFlash(__('Order was not deleted'));
-		$this->redirect(array('action' => 'index'));
+	private function __getCountPendingSolicitations() {
+		
+		$options['conditions'] = array('Solicitation.status_id'=>PENDENTE);
+		
+		$count = $this->Solicitation->find('count', $options);
+		
+		return $count;
 	}
 }

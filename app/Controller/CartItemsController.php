@@ -7,8 +7,9 @@ App::uses('AppController', 'Controller');
  */
 class CartItemsController extends AppController {
 	
-	var $layout = 'leviatan';
-	var $uses = array('CartItem', 'Solicitation', 'SolicitationItem');
+	public $layout = 'leviatan';
+	public $uses = array('CartItem', 'Solicitation', 'SolicitationItem');
+	public $helpers = array('Fck', 'Js');
 	
 /**
  * 
@@ -16,7 +17,7 @@ class CartItemsController extends AppController {
 	public function index() {
 		$user_id = $this->Auth->user('id');
 		
-		$options['limit'] = 4;
+		$options['limit'] = 2;
 		$options['conditions'] = array(
 			'CartItem.user_id'=>$user_id
 		);
@@ -25,6 +26,11 @@ class CartItemsController extends AppController {
 		$items = $this->paginate();
 
 		$this->set(compact('items'));
+			
+		if($this->request->is('ajax')) {
+			$this->layout = 'ajax_js';
+			$this->render('ajax');
+		}	
 	}
 	
 /**
@@ -77,9 +83,9 @@ class CartItemsController extends AppController {
  * @param unknown_type $id
  */
 	public function edit($id) {
-		
-		if ($this->request->is('post') || $this->request->is('put')) {
-
+		if($this->request->is('ajax')) {
+			$this->autoRender = false;
+			
 			$this->CartItem->id = $id;
 			if (!$this->CartItem->exists()) {
 				$this->Session->setFlash('<div class="alert alert-error">'.__('Item inválido').'</div>');
@@ -89,13 +95,11 @@ class CartItemsController extends AppController {
 			$quantity = $this->request->data['CartItem']['quantity'];
 			
 			if ($this->CartItem->saveField('quantity', $quantity)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('Quantidade alterada com sucesso').'</div>');
+				echo '<div class="alert alert-success">'.__('Quantidade alterada com sucesso').'</div>'; 
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('A quantidade não pode ser alterada.').'</div>');
+				echo '<div class="alert alert-error">'.__('A quantidade não pode ser alterada.').'</div>';
 			}
-			
-			$this->redirect($this->referer());				
-		} 
+		}
 	}
 	
 /**
@@ -103,6 +107,7 @@ class CartItemsController extends AppController {
  */
 	public function checkout() {
 		if($this->request->is('post')) {
+			
 			$user_id = $this->Auth->user('id');
 			
 			$this->CartItem->recursive = -1;
@@ -116,6 +121,7 @@ class CartItemsController extends AppController {
 			
 			$this->Solicitation->create();
 			$data['Solicitation']['keycode'] = $keycode;
+			$data['Solicitation']['description'] = $this->request->data['description'];
 			$data['Solicitation']['user_id'] = $user_id;
 			$data['Solicitation']['status_id'] = PENDENTE;
 			
@@ -125,17 +131,20 @@ class CartItemsController extends AppController {
 				$data['SolicitationItem'][$key]['quantity'] = $item['CartItem']['quantity'];
 				$data['SolicitationItem'][$key]['status_id'] = PENDENTE;
 			endforeach;
-			
+
 			if($this->Solicitation->saveAll($data)) {				
 				if(!$this->CartItem->deleteAll(array('CartItem.user_id'=>$user_id), false)) {
 					$this->Session->setFlash('<div class="alert alert-error">'.__('Erro ao remover os itens do carrinho.').'</div>');
-					$this->redirect(array('controller'=>'cart_items', 'action'=>'index'));
+					echo '0';
+					exit;
 				}				
 				$this->Session->setFlash('<div class="alert alert-success">'.__('A solicitação foi concluída.').'</div>');
-				$this->redirect(array('controller'=>'solicitations', 'action'=>'index'));
+				echo true;
+				exit;
 			}else {
 				$this->Session->setFlash('<div class="alert alert-error">'.__('A solicitação não pode ser concluída.').'</div>');
-				$this->redirect(array('controller'=>'cart_items', 'action'=>'index'));
+				echo '0';
+				exit;
 			}			
 		}
 	}

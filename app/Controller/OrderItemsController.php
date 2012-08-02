@@ -6,6 +6,8 @@ App::uses('AppController', 'Controller');
  * @property OrderItem $OrderItem
  */
 class OrderItemsController extends AppController {
+	
+	public $layout = 'leviatan';
 
 /**
  * index method
@@ -18,88 +20,43 @@ class OrderItemsController extends AppController {
 	}
 
 /**
- * view method
  *
- * @throws NotFoundException
- * @param string $id
- * @return void
+ * 
  */
-	public function view($id = null) {
-		$this->OrderItem->id = $id;
-		if (!$this->OrderItem->exists()) {
-			throw new NotFoundException(__('Invalid order item'));
-		}
-		$this->set('orderItem', $this->OrderItem->read(null, $id));
+	public function view($order_id = null) {
+		
+		$options['conditions'] = array('Order.id'=>$order_id);
+		$options['fields'] = array('Solicitation.*');
+		$options['limit'] = '10';
+		$options['order'] = array('Solicitation.created'=>'desc');
+		
+		$this->paginate = $options;
+		
+		$solicitations = $this->paginate();
+		
+		$solicitations = $this->__getEmployeesSolicitationss($solicitations);
+		
+		$this->set(compact('solicitations'));				
 	}
-
+	
 /**
- * add method
- *
- * @return void
+ * 
+ * @param unknown_type $solicitations
  */
-	public function add() {
-		if ($this->request->is('post')) {
-			$this->OrderItem->create();
-			if ($this->OrderItem->save($this->request->data)) {
-				$this->Session->setFlash(__('The order item has been saved'));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The order item could not be saved. Please, try again.'));
-			}
+	private function __getEmployeesSolicitationss($solicitations) {
+		
+		foreach($solicitations as $key=>$solicitation) {
+			$user = $this->__getTable('User', $solicitation['Solicitation']['user_id']);
+			$employee = $this->__getTable('Employee', $user['User']['employee_id']);
+			$unity_sector = $this->__getTable('UnitySector', $employee['Employee']['unity_sector_id']);
+			$sector = $this->__getTable('Sector', $unity_sector['UnitySector']['sector_id']);
+			$unity = $this->__getTable('Unity', $unity_sector['UnitySector']['unity_id']);
+						
+			$solicitationsFull[] = array_merge($solicitation, $user, $employee, $unity);
 		}
-		$orders = $this->OrderItem->Order->find('list');
-		$solicitationItems = $this->OrderItem->SolicitationItem->find('list');
-		$this->set(compact('orders', 'solicitationItems'));
+		
+		return $solicitationsFull;
 	}
-
-/**
- * edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function edit($id = null) {
-		$this->OrderItem->id = $id;
-		if (!$this->OrderItem->exists()) {
-			throw new NotFoundException(__('Invalid order item'));
-		}
-		if ($this->request->is('post') || $this->request->is('put')) {
-			if ($this->OrderItem->save($this->request->data)) {
-				$this->Session->setFlash(__('The order item has been saved'));
-				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The order item could not be saved. Please, try again.'));
-			}
-		} else {
-			$this->request->data = $this->OrderItem->read(null, $id);
-		}
-		$orders = $this->OrderItem->Order->find('list');
-		$solicitationItems = $this->OrderItem->SolicitationItem->find('list');
-		$this->set(compact('orders', 'solicitationItems'));
-	}
-
-/**
- * delete method
- *
- * @throws MethodNotAllowedException
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function delete($id = null) {
-		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
-		}
-		$this->OrderItem->id = $id;
-		if (!$this->OrderItem->exists()) {
-			throw new NotFoundException(__('Invalid order item'));
-		}
-		if ($this->OrderItem->delete()) {
-			$this->Session->setFlash(__('Order item deleted'));
-			$this->redirect(array('action' => 'index'));
-		}
-		$this->Session->setFlash(__('Order item was not deleted'));
-		$this->redirect(array('action' => 'index'));
-	}
+	
 }
+

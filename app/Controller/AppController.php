@@ -43,7 +43,11 @@ class AppController extends Controller {
         'Session'
     );
     public $helpers = array('Html', 'Form', 'Session', 'Js');
-    public $uses = array('User', 'Employee', 'CartItem', 'SolicitationItem');
+    public $uses = array(
+    		'User', 'Group', 'Employee', 'UnitySector', 'Sector', 'Unity',
+    		'UnityType', 'HealthDistrict', 'Region', 'City', 'Area', 
+    		'CartItem', 'SolicitationItem'
+    	);
 
     public function beforeFilter() {
     	    	
@@ -58,6 +62,25 @@ class AppController extends Controller {
         	
         	$this->set(compact('user'));
         }
+        
+        $menus = $this->__getMenus();
+        $this->set(compact('menus'));
+    }
+    
+    /**
+     *
+     * Muda o status do item da solicitação
+     */
+    public function changeStatus($id, $status) {
+    	$this->SolicitationItem->id = $id;
+    
+    	if($this->SolicitationItem->saveField('status_id', $status, false)) {
+    		$this->Session->setFlash('<div class="alert alert-success">'.__('Item atualizado').'</div>');
+    	}else {
+    		$this->Session->setFlash('<div class="alert alert-error">'.__('O item não pode ser atualizado').'</div>');
+    	}
+    
+   		$this->redirect($this->referer());
     }
     
     /**
@@ -103,17 +126,14 @@ class AppController extends Controller {
 /**
  * Itens que estão em algum processo de pendência
  */
-    protected function __getSolicitationItems() {
+    protected function __getSolicitationItems($status=null) {
     	$user_id = $this->Auth->user('id');
     
     	$options['conditions'] = array(
     			'Solicitation.user_id'=>$user_id,
-    			'OR'=>array(
-    					array('SolicitationItem.status_id'=>PENDENTE),
-    					array('SolicitationItem.status_id'=>APROVADO),
-    					array('SolicitationItem.status_id'=>HOMOLOGADO)
-    			)
+    			'Solicitation.status_id'=>PENDENTE
     	);
+    	
     	$options['fields'] = array(
     			'SolicitationItem.item_id',
     	);
@@ -128,4 +148,35 @@ class AppController extends Controller {
     	return $items;
     }
 	
+    
+/**
+ * retorna os dados da tabela passada como parâmetro
+ */
+    protected function __getTable($model, $id) {
+    	
+    	$this->$model->recursive = -1;
+    	$table = $this->$model->read(null, $id);
+    	
+    	return $table;
+    }    
+    
+/**
+ *
+ */
+    private function __getMenus() {
+    
+    	$menus[] = array('name'=>'Minhas solicitações', 'link'=>array('controller'=>'solicitations', 'action'=>'index'));
+    	$menus[] = array('name'=>'Fazer solicitação', 'link'=>array('controller'=>'solicitation_items', 'action'=>'index'));
+    	$menus[] = array('name'=>'Meu carrinho', 'link'=>array('controller'=>'cart_items', 'action'=>'index'));
+    
+    	if($this->Auth->user('group_id') == NDE_A || $this->Auth->user('group_id') == ADMIN) {
+    		$menus[] = array('name'=>'Solicitações pendentes', 'link'=>array('controller'=>'solicitations', 'action'=>'solicitations'));
+    		$menus[] = array('name'=>'Pedidos', 'link'=>array('controller'=>'orders', 'action'=>'index'));
+    		$menus[] = array('name'=>'Itens', 'link'=>array('controller'=>'items', 'action'=>'index'));    		
+    		$menus[] = array('name'=>'Adicionar Item', 'link'=>array('controller'=>'items', 'action'=>'add'));
+    	}
+    
+    	return $menus;
+    }
+    
 }

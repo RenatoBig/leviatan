@@ -18,16 +18,17 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 	
 			echo $this->Html->css(array('autocomplete', 'jquery-ui-1.8.21.custom', 'bootstrap', 'bootstrap-responsive', 'leviatan'));
 			
-			echo $this->Html->script(array('jquery-1.7.2', 'jquery-ui-1.8.21.custom.min', 'jquery.validate', 'bootstrap', 'bootstrap.min', 'bootstrap-modal', 'bootstrap-dropdown', 'autocomplete', 'validate', 'functions', 'ckeditor/ckeditor'));
+			echo $this->Html->script(array('jquery-1.7.2', 'jquery-ui-1.8.21.custom.min', 
+							'jquery.validate', 'bootstrap', 'bootstrap.min', 
+							'bootstrap-modal', 'bootstrap-tab', 'bootstrap-dropdown', 'autocomplete', 
+							'validate', 'functions', 'ckeditor/ckeditor'
+						)
+					);
 		?>
 		
 		<script type="text/javascript">
 		   $("#flashMessage, #alert-message").fadeIn();		   
-		   window.setTimeout(escondeMsg, 2500);   
-		   
-		   function escondeMsg() {   		
-			$("#flashMessage, #alert-message").fadeOut();
-		   }	
+		   window.setTimeout(escondeMsg, 2500);		   	
 		</script>
 		
 	</head>
@@ -72,23 +73,23 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 		<!-- /navbar -->
 		</div>
 				
-		<div class="container">
+		<div class="container-fluid">
 			<div id="alert-message">
 				<?php echo $this->Session->flash(); ?>
 				<?php echo $this->Session->flash('auth'); ?>
 			</div>	
-			<div class="row-fluid">	
+			<div class="row-fluid wrapper">  	
 				<?php echo $this->fetch('content'); ?>
-			</div>
+			</div> 
 			<div id="page-heaer">
 			</div>
 		</div>
-		<?php echo $this->element('sql_dump'); ?>
-		<?php if(class_exists('JsHelper') && method_exists($this->Js, 'writeBuffer')) echo $this->Js->writeBuffer(); ?>
 		<!-- <div class="footer">
 			<div class="imgFooter">
 				<div class="textFooter">Footer</div>
 			</div>
 		</div>  -->
+		<?php echo $this->element('sql_dump'); ?>
+		<?php if(class_exists('JsHelper') && method_exists($this->Js, 'writeBuffer')) echo $this->Js->writeBuffer(); ?>
 	</body>
 </html>

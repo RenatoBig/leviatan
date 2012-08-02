@@ -66,6 +66,12 @@ class Solicitation extends AppModel {
 				'message'=>'É obrigatório preencher o código.'
 			)
 		),
+		'description'=>array(
+				'descriptionRule' => array(
+						'rule'=>'notEmpty',
+						'message'=>'É obrigatório preencher uma descrição.'
+				)
+		),
 		'user_id'=>array(
 			'userRule' => array(
 				'rule'=>'notEmpty',

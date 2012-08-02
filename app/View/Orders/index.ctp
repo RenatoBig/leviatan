@@ -1,48 +1,38 @@
-<div class="orders index">
-	<h2><?php echo __('Orders'); ?></h2>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
-			<th><?php echo $this->Paginator->sort('id'); ?></th>
-			<th><?php echo $this->Paginator->sort('keycode'); ?></th>
-			<th><?php echo $this->Paginator->sort('created'); ?></th>
-			<th><?php echo $this->Paginator->sort('modified'); ?></th>
-			<th class="actions"><?php echo __('Actions'); ?></th>
-	</tr>
+<?php echo $this->element('menu'); ?>
+	
+<div class="span9 well">
+	<?php 
+	if(empty($orders)) {
+		echo "<div class='span4 alert alert-info'>";
+		echo "<h3>Não há pedidos</h3>";
+		echo "</div>";
+	}else {?>
+	
+		<h2><?php echo __('Pedidos');?></h2>
+			
+		<table cellpadding="0" cellspacing="0" class="table">
+			<thead>
+				<tr>
+					<th><?php echo __('Código');?></th>
+					<th><?php echo __('Data');?>
+					<th><?php echo __('Ação');?></th>
+				</tr>
+			</thead>
+			<tbody>
+			<?php	
+			foreach ($orders as $order): ?>
+				<tr>
+					<td><?php echo h($order['Order']['keycode']); ?>&nbsp;</td>
+					<td><?php echo $order['Order']['created'];?></td>
+					<td>
+						<?php echo $this->Html->link(__('Visualizar'), array('controller'=>'order_items','action' => 'view', $order['Order']['id']), array('class'=>'btn btn-primary')); ?>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+			</tbody>
+		</table>
 	<?php
-	foreach ($orders as $order): ?>
-	<tr>
-		<td><?php echo h($order['Order']['id']); ?>&nbsp;</td>
-		<td><?php echo h($order['Order']['keycode']); ?>&nbsp;</td>
-		<td><?php echo h($order['Order']['created']); ?>&nbsp;</td>
-		<td><?php echo h($order['Order']['modified']); ?>&nbsp;</td>
-		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $order['Order']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $order['Order']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $order['Order']['id']), null, __('Are you sure you want to delete # %s?', $order['Order']['id'])); ?>
-		</td>
-	</tr>
-<?php endforeach; ?>
-	</table>
-	<p>
-	<?php
-	echo $this->Paginator->counter(array(
-	'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
-	));
-	?>	</p>
-
-	<div class="paging">
-	<?php
-		echo $this->Paginator->prev('< ' . __('previous'), array(), null, array('class' => 'prev disabled'));
-		echo $this->Paginator->numbers(array('separator' => ''));
-		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
+		echo $this->element('pagination'); 
+	}
 	?>
-	</div>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New Order'), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Order Items'), array('controller' => 'order_items', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Order Item'), array('controller' => 'order_items', 'action' => 'add')); ?> </li>
-	</ul>
 </div>

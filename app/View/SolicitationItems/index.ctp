@@ -1,30 +1,24 @@
-<div class="menu center well SearchWell">
+<!--  <div class="menu center well SearchWell">
 	<div class="input-append">
 		<?php 
-			echo $this->Form->create('Search', array(
+			/*echo $this->Form->create('Search', array(
 				'url'=> array(
 							'controller'=>'solicitation_items',
 							'action'=>$action
 						),
 				'style'=>'margin-bottom:0px'));
 			echo $this->Form->input('term',array('label'=>'','class'=>'span4','div'=>false));
-			echo $this->Form->end(array('label'=>'Buscar', 'class'=>'btn', 'div'=>false));
+			echo $this->Form->end(array('label'=>'Buscar', 'class'=>'btn', 'div'=>false));*/
 		?>
 	</div>
-</div>	
-<div class="span2 actions">
-	<ul class="nav nav-list">
-		<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
-		<li class="divider"></li>
-		<li><?php echo $this->Html->link('Solicitados por todos', array('controller'=>'solicitation_items', 'action'=>'requestedItems'), array('class'=>'btn'));?></li>
-		<li><?php echo $this->Html->link('Fazer solicitação', array('controller'=>'solicitation_items', 'action'=>'index'), array('class'=>'btn'));?></li>
-		<li><?php echo $this->Html->link('Carrinho', array('controller'=>'cart_items', 'action'=>'index'), array('class'=>'btn'));?></li>
-	</ul>	
-</div>
-<div class="span6 index">	
+</div>-->
+			
+<?php echo $this->element('menu'); ?>
+
+<div class="span9 well">	
 	<?php 
 	if(empty($items)) {
-		echo "<div class='span6 alert alert-info'>";
+		echo "<div class='alert alert-info'>";
 		echo "<h3>Não há itens</h3>";
 		echo "</div>";
 	}else {?>	
@@ -53,7 +47,7 @@
 							h($item['Item']['name']),
 							array(
 								'controller'=>'items',
-								'action'=>'details',
+								'action'=>'view',
 								$item['Item']['id']
 							)
 					);

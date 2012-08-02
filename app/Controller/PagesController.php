@@ -44,6 +44,7 @@ class PagesController extends AppController {
  * @var array
  */
 	public $helpers = array('Html', 'Session');
+	public $elements = array();
 
 /**
  * This controller does not use a model
@@ -86,7 +87,8 @@ class PagesController extends AppController {
  */
 	public function home() {		
 		$this->layout = 'leviatan';
-
+		
+		
 	}
 	
 }

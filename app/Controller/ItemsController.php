@@ -41,26 +41,12 @@ class ItemsController extends AppController {
 			$this->Session->setFlash('<div class="alert alert-error">'.__('Item inválido').'</div>');
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->set('item', $this->Item->read(null, $id));
-	}
-	
-	
-/**
- * 
- * @param unknown_type $id
- */
-	public function details($id) {
-		$this->Item->id = $id;
-		if (!$this->Item->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Item inválido').'</div>');
-			$this->redirect(array('action'=>'index'));
-		}
 		
 		$item = $this->Item->read(null, $id);
 		$cart_items = $this->__getCartItems();
 		$solicitation_items = $this->__getSolicitationItems();
 		
-		$this->set(compact('item', 'cart_items', 'solicitation_items'));		
+		$this->set(compact('item', 'cart_items', 'solicitation_items'));
 	}
 
 /**
@@ -309,15 +295,14 @@ class ItemsController extends AppController {
 			}
 			
 			if($this->Item->saveField('status_id', $status_id, false)) {
-				echo true;
+				echo '1';
 			}else {
-				echo '<div class="alert alert-error">Não foi possível alterar o status. </div>';				
-			}
-			
+				echo '0';				
+			}			
 			exit;
 		
 		}else {
-			echo false;
+			echo '-1';				
 			exit;
 		}		
 	}

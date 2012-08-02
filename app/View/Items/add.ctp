@@ -1,17 +1,6 @@
-<div class="span2">	
-	<div class="well" style="padding: 8px 0;">
-		<ul class="nav nav-list">
-			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
-			<li class="divider"></li>
-			<li><?php echo $this->Html->link(__('Itens'), array('action' => 'index')); ?></li>
-			<li><?php echo $this->Html->link(__('PNGC'), array('controller' => 'pngc_codes', 'action' => 'index')); ?> </li>
-			<li><?php echo $this->Html->link(__('Classe do item'), array('controller' => 'item_classes', 'action' => 'index')); ?> </li>
-			<li><?php echo $this->Html->link(__('Pedidos'), array('controller' => 'orders', 'action' => 'index')); ?> </li>
-		</ul>
-	</div>
-</div>
+<?php echo $this->element('menu'); ?>
 
-<div class="span6">
+<div class="span9 well">
 <?php echo $this->Form->create('Item', array('type'=>'file', 'class'=>'well'));?>
 	<fieldset>
 		<legend><?php echo __('Adicionar Item'); ?></legend>
