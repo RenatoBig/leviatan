@@ -114,7 +114,6 @@ foreach($roles as $role)
             		
         	    	echo '</td>';
 		    	}
-	    		
 		    	echo '</tr>
 		    	';
 			}

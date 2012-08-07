@@ -10,8 +10,18 @@ class ItemsController extends AppController {
 	public $helpers = array('Fck');
 	public $components = array('Upload');
 	public $elements = array('pagination');
-	var $layout = 'leviatan';
-	var $uses = array('Item', 'CartItem', 'SolicitationItem');
+	public $layout = 'leviatan';
+	public $uses = array('Item', 'CartItem', 'SolicitationItem');
+	
+	
+/**
+ * (non-PHPdoc)
+ * @see Controller::beforeFilter()
+ */
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow('view');
+	}
 	 
 /**
  * index method
@@ -43,10 +53,32 @@ class ItemsController extends AppController {
 		}
 		
 		$item = $this->Item->read(null, $id);
+		
+		$this->set(compact('item'));
+		
+		if($this->Auth->user() == null) {
+			$this->layout = 'login';
+		}else {
+			$this->layout = 'leviatan';
+		}
+	}
+	
+/**
+ * 
+ * @param unknown_type $id
+ */
+	public function detail($id = null) {
+		$this->Item->id = $id;
+		if (!$this->Item->exists()) {
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Item inválido').'</div>');
+			$this->redirect(array('action'=>'index'));
+		}
+		
+		$item = $this->Item->read(null, $id);
 		$cart_items = $this->__getCartItems();
 		$solicitation_items = $this->__getSolicitationItems();
 		
-		$this->set(compact('item', 'cart_items', 'solicitation_items'));
+		$this->set(compact('item', 'cart_items', 'solicitation_items'));		
 	}
 
 /**

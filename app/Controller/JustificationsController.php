@@ -35,8 +35,8 @@ class JustificationsController extends AppController {
 	public function view($solicitation_item_id) {
 		
 		if(!$this->request->is('ajax')) {
-			echo 'fudeu';
-			return 0;
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Requisição inválida').'</div>');
+			echo 0;
 		}
 		
 		$this->layout = 'ajax';
@@ -44,9 +44,7 @@ class JustificationsController extends AppController {
 		$options['conditions'] = array('Justification.solicitation_item_id'=>$solicitation_item_id);
 		$justification = $this->Justification->find('first', $options);
 		
-				
-		$this->set(compact('justification'));
-		
+		$this->set(compact('justification'));		
 	}
 
 }

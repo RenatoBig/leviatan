@@ -84,6 +84,12 @@ class Item extends AppModel {
 				'message'=> 'É obrigátorio informar um nome para o item.',
 			)
 		),
+		'keycode' => array(
+				'registrationRule1' => array(
+						'rule' => 'notEmpty',
+						'message'=> 'É obrigátorio informar um códogo para o item.',
+				)
+		),
 		'description' => array(
 			'registrationRule1' => array(
 				'rule' => 'notEmpty',

@@ -7,7 +7,8 @@
 	<?php
 		echo $this->Form->input('item_class_id', array('label'=>__('Classe do item')));
 		echo $this->Form->input('pngc_code_id', array('label'=>__('PNGC')));
-		echo $this->Form->input('name', array('label'=>__('Nome')));
+		echo $this->Form->input('keycode', array('label'=>__('Código'), 'class'=>'input-small'));
+		echo $this->Form->input('name', array('label'=>__('Nome')));		
 		echo $this->Form->input('description', array('label'=>__('Descrição')));
 		echo $this->Fck->load('ItemDescription');
 		echo $this->Form->input('specification', array('label'=>__('Especificação')));

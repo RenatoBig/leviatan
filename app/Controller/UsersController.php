@@ -9,6 +9,16 @@ class UsersController extends AppController {
 	
 	var $layout = 'leviatan';
 	
+	
+/**
+ * (non-PHPdoc)
+ * @see AppController::beforeFilter()
+ */
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow('login');
+	}
+	
 /**
  * index method
  *
@@ -32,6 +42,14 @@ class UsersController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('user', $this->User->read(null, $id));
+		
+		$params = array(
+				'download' => true,
+				'name' => 'example.pdf',
+				'paperOrientation' => 'portrait',
+				'paperSize' => 'legal'
+		);
+		$this->set($params);
 	}
 
 /**
@@ -132,12 +150,13 @@ class UsersController extends AppController {
  * Enter description here ...
  */
 	public function login() {
-		$this->layout = 'login';
+		$this->autoRender = false;
 	    if ($this->request->is('post')) {
-	        if ($this->Auth->login()) {
+	    	if ($this->Auth->login()) {
 	            $this->redirect($this->Auth->redirect());
 	        } else {
 	            $this->Session->setFlash('<div class="alert alert-error">'.__('Usuário ou senha incorretos.').'</div>');
+	            $this->redirect($this->referer());
 	        }
 	    }
 	}

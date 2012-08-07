@@ -58,9 +58,9 @@ if(empty($items)) {
 					<td>
 						<?php 
 						if($item['SolicitationItem']['status_id'] == PENDENTE) {
-							echo '<i title="Item pendente" class="icon-question-sign"></i>';
+							echo '<i title="Item pendente" alt="Pendente" class="icon-question-sign"></i>';
 						}else if($item['SolicitationItem']['status_id'] == APROVADO) {
-							echo '<i title="Item aprovado" class="icon-thumbs-up"></i>';	
+							echo '<i title="Item aprovado" alt="Aprovado" class="icon-thumbs-up"></i>';	
 						}else if($item['SolicitationItem']['status_id'] == NEGADO) {
 							echo $this->Html->link(
 								'<i class="icon-thumbs-down"></i>',
@@ -68,6 +68,7 @@ if(empty($items)) {
 								array('class'=>'denyVisualization', 
 									  'value'=>$item['SolicitationItem']['id'],
 									  'title'=>'Item negado. Clique para ver a justificativa.',
+									  'alt'=>'Negado',
 									  'escape'=>false
 								)	
 							);

@@ -11,11 +11,11 @@ class AclAppController extends AppController
     
     function beforeFilter()
 	{
-	    parent :: beforeFilter();
+	    parent::beforeFilter();
 	    
 	 	if($this->Auth->user('group_id') != ADMIN) {
 			$this->Session->setFlash('<div class="alert alert-error">'.__('Área restrita!').'</div>');
-			$this->redirect('/orders/index');
+			$this->redirect('/pages/home');
 		}
 	    
 		$this->_check_config();

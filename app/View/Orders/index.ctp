@@ -25,7 +25,8 @@
 					<td><?php echo h($order['Order']['keycode']); ?>&nbsp;</td>
 					<td><?php echo $order['Order']['created'];?></td>
 					<td>
-						<?php echo $this->Html->link(__('Visualizar'), array('controller'=>'order_items','action' => 'view', $order['Order']['id']), array('class'=>'btn btn-primary')); ?>
+						<?php echo $this->Html->link(__('Visualizar'), array('controller'=>'order_items','action' => 'view', $order['Order']['id']), array('class'=>'btn')); ?>
+						<?php echo $this->Form->postLink(__('Imprimir'), array('controller'=>'orders','action' => 'view', $order['Order']['id'].'.pdf'), array('class'=>'btn')); ?>
 					</td>
 				</tr>
 			<?php endforeach; ?>

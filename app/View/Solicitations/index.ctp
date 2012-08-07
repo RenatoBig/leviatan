@@ -31,7 +31,15 @@
 						<?php echo h(__($solicitation['Status']['name'])); ?>
 					</td>
 					<td>
-						<?php echo $this->Html->link(__('Visualizar'), array('controller'=>'solicitations','action' => 'view', $solicitation['Solicitation']['id']), array('class'=>'btn btn-primary')); ?>
+						<?php 
+						echo $this->Html->link(__('Visualizar'), 
+							array('controller'=>'solicitations','action' => 'view', $solicitation['Solicitation']['id']), 
+							array('class'=>'btn btn-primary',
+								'title'=>'Visualizar solicitação',
+								'alt'=>'Visualizar'
+							)							
+						); 
+						?>
 					</td>
 				</tr>
 			<?php endforeach; ?>

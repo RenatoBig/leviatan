@@ -37,29 +37,32 @@ class AppController extends Controller {
         'Acl',
         'Auth' => array(
             'authorize' => array(
-                'Actions' => array('actionPath' => 'controllers')
+                'Actions' => array('actionPath' => 'controllers/')
             )
         ),
-        'Session'
+        'Session',
+		'RequestHandler'
     );
     public $helpers = array('Html', 'Form', 'Session', 'Js');
     public $uses = array(
     		'User', 'Group', 'Employee', 'UnitySector', 'Sector', 'Unity',
     		'UnityType', 'HealthDistrict', 'Region', 'City', 'Area', 
-    		'CartItem', 'SolicitationItem'
+    		'CartItem', 'Solicitation', 'SolicitationItem', 'Order', 'OrderItem'
     	);
 
     public function beforeFilter() {
     	    	
         //Configure AuthComponent
-        $this->Auth->loginAction = array('controller' => 'users', 'action' => 'login');
-        $this->Auth->logoutRedirect = array('controller' => 'users', 'action' => 'login');
-        $this->Auth->loginRedirect = array('controller' => 'pages', 'action' => 'display');
-
+        $this->Auth->loginAction = array('controller' => 'pages', 'action' => 'home');
+        $this->Auth->logoutRedirect = array('controller' => 'pages', 'action' => 'home');
+        $this->Auth->loginRedirect = array('controller' => 'pages', 'action' => 'home');
+        // Mensagens de erro
+        $this->Auth->loginError = '<div class="alert alert-error">'.__('Usuário e/ou senha incorreto(s)', true).'</div>';
+        $this->Auth->authError = '<div class="alert alert-error">'.__('Você precisa fazer login para acessar esta página', true).'</div>';
+        
         $u = $this->Auth->user();
         if($u != null) {
-        	$user = $this->User->read(null, $u['id']);
-        	
+        	$user = $this->User->read(null, $u['id']);        	
         	$this->set(compact('user'));
         }
         
@@ -67,25 +70,9 @@ class AppController extends Controller {
         $this->set(compact('menus'));
     }
     
-    /**
-     *
-     * Muda o status do item da solicitação
-     */
-    public function changeStatus($id, $status) {
-    	$this->SolicitationItem->id = $id;
-    
-    	if($this->SolicitationItem->saveField('status_id', $status, false)) {
-    		$this->Session->setFlash('<div class="alert alert-success">'.__('Item atualizado').'</div>');
-    	}else {
-    		$this->Session->setFlash('<div class="alert alert-error">'.__('O item não pode ser atualizado').'</div>');
-    	}
-    
-   		$this->redirect($this->referer());
-    }
-    
-    /**
-     * Gera seis números aleatórios seguido de /ano corrente
-     */
+/**
+ * Gera seis números aleatórios seguido de /ano corrente
+ */
     protected function __getRandomKeycode() {
     
     	$i = 0;
@@ -164,16 +151,20 @@ class AppController extends Controller {
  *
  */
     private function __getMenus() {
+    	
+    	if($this->Auth->user() == null) {
+    		$menus[] = array('name'=>'Itens', 'link'=>array('controller'=>'pages', 'action'=>'home'));
+    	}else {
+    		$menus[] = array('name'=>'Minhas solicitações', 'link'=>array('controller'=>'solicitations', 'action'=>'index'));
+    		$menus[] = array('name'=>'Fazer solicitação', 'link'=>array('controller'=>'solicitation_items', 'action'=>'index'));
+    		$menus[] = array('name'=>'Meu carrinho', 'link'=>array('controller'=>'cart_items', 'action'=>'index'));
     
-    	$menus[] = array('name'=>'Minhas solicitações', 'link'=>array('controller'=>'solicitations', 'action'=>'index'));
-    	$menus[] = array('name'=>'Fazer solicitação', 'link'=>array('controller'=>'solicitation_items', 'action'=>'index'));
-    	$menus[] = array('name'=>'Meu carrinho', 'link'=>array('controller'=>'cart_items', 'action'=>'index'));
-    
-    	if($this->Auth->user('group_id') == NDE_A || $this->Auth->user('group_id') == ADMIN) {
-    		$menus[] = array('name'=>'Solicitações pendentes', 'link'=>array('controller'=>'solicitations', 'action'=>'solicitations'));
-    		$menus[] = array('name'=>'Pedidos', 'link'=>array('controller'=>'orders', 'action'=>'index'));
-    		$menus[] = array('name'=>'Itens', 'link'=>array('controller'=>'items', 'action'=>'index'));    		
-    		$menus[] = array('name'=>'Adicionar Item', 'link'=>array('controller'=>'items', 'action'=>'add'));
+    		if($this->Auth->user('group_id') == NDE_A || $this->Auth->user('group_id') == ADMIN) {
+    			$menus[] = array('name'=>'Solicitações pendentes', 'link'=>array('controller'=>'solicitations', 'action'=>'solicitations'));
+    			$menus[] = array('name'=>'Pedidos', 'link'=>array('controller'=>'orders', 'action'=>'index'));
+    			$menus[] = array('name'=>'Itens', 'link'=>array('controller'=>'items', 'action'=>'index'));    		
+    			$menus[] = array('name'=>'Adicionar Item', 'link'=>array('controller'=>'items', 'action'=>'add'));
+    		}
     	}
     
     	return $menus;

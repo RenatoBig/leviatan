@@ -17,7 +17,7 @@ class CartItemsController extends AppController {
 	public function index() {
 		$user_id = $this->Auth->user('id');
 		
-		$options['limit'] = 2;
+		$options['limit'] = 6;
 		$options['conditions'] = array(
 			'CartItem.user_id'=>$user_id
 		);

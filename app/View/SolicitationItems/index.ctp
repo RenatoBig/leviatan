@@ -47,7 +47,7 @@
 							h($item['Item']['name']),
 							array(
 								'controller'=>'items',
-								'action'=>'view',
+								'action'=>'detail',
 								$item['Item']['id']
 							)
 					);

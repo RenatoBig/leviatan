@@ -250,8 +250,8 @@ class ArosController extends AclAppController
         	    $methods['app'][$controller_name][] = array('name' => $action);
             }
     	}
-    	
-	    $this->set('roles', $roles);
+		
+    	$this->set('roles', $roles);
 	    $this->set('actions', $methods);
 	}
 	
@@ -549,7 +549,6 @@ class ArosController extends AclAppController
 	        $plugin_name        = isset($this->params['named']['plugin']) ? $this->params['named']['plugin'] : '';
 	        $controller_name    = $this->params['named']['controller'];
 	        $controller_actions = $this->AclReflector->get_controller_actions($controller_name);
-	        
 	        $role_controller_permissions = array();
 	        
 	        foreach($controller_actions as $action_name)

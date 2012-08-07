@@ -56,27 +56,6 @@ $(document).ready(function() {
 	$("#UserEditForm #UserEmployeeId").attr('disabled', true);
 	$("#UserEditForm #UserUsername").attr('disabled', true);
 	
-	//Login
-	//validação de formulário
-	$("#UserLoginForm").validate({ 
-    	rules: { 			
-			'data[User][username]':{
-				required: true
-			},
-			'data[User][password]':{
-				required: true
-			}
-		},
-		messages: {
-			'data[User][username]':{
-				required: "Campo obrigatório"
-			},
-			'data[User][password]':{
-				required: "Campo obrigatório"
-			}
-		}
-	});
-	
 	//Areas
 	//validação de formulário
 	$("#AreaAddForm, #AreaEditForm").validate({ 

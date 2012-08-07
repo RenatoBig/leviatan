@@ -51,9 +51,19 @@ class PagesController extends AppController {
  *
  * @var array
  */
-	public $uses = array();
-
+	public $uses = array('Item');
+	
+	
 /**
+ * (non-PHPdoc)
+ * @see AppController::beforeFilter()
+ */
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow('home');
+	}
+
+/** 
  * Displays a view
  *
  * @param mixed What page to display
@@ -83,12 +93,25 @@ class PagesController extends AppController {
 	
 /**
  * 
- * Enter description here ...
  */
-	public function home() {		
-		$this->layout = 'leviatan';
+	public function home() {
+		$options['conditions'] = array(
+				'Item.status_id'=>ATIVO
+		);
+		$options['limit'] = 10;
+		$options['order'] = array(
+				'Item.name'=>'asc'
+		);
 		
+		$this->paginate = $options;
+		$items = $this->paginate();
 		
+		$this->set(compact('items'));
+		if($this->Auth->user() == null) {
+			$this->layout = 'login';
+		}else {
+			$this->layout = 'leviatan';
+		}
 	}
-	
+
 }

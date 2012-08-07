@@ -131,8 +131,8 @@ Cache::config('default', array('engine' => 'File'));
  */
 
 CakePlugin::load('AclExtras');
-
 CakePlugin::load('Acl', array('bootstrap' => true));
+CakePlugin::load('cakephp-dompdf-view', array('bootstrap' => true));
 
 /*
  * The model name used for the user role (typically 'Role' or 'Group')
@@ -162,5 +162,6 @@ define("NDE_B", "5");
 define("NDC_A", "6");
 define("NDC_B", "7");
 define("DIRETOR", "9");
+
 
 
