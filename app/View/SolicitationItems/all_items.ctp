@@ -1,14 +1,6 @@
 <?php echo $this->element('menu'); ?>
 
 <div class="span9 well">
-	
-	<?php 
-	if(empty($solicitationItems)) {
-		echo "<div class='alert alert-info'>";
-		echo "<h3>Não há itens</h3>";
-		echo "</div>";
-	}else {?>	
-	
 	<?php 
 	echo $this->Form->create('SolicitationItem', array('class'=>''));
 	 	echo $this->Form->input('status', array('label'=>'','options'=>$statuses));
@@ -16,6 +8,13 @@
 	?>
 	
 	<h2><?php echo __('Itens');?></h2>
+	
+	<?php 
+	if(empty($solicitationItems)) {
+		echo "<div class='alert alert-info'>";
+		echo "<h3>Não há itens</h3>";
+		echo "</div>";
+	}else {?>	
 			
 	<table cellpadding="0" cellspacing="0" class="table">
 		<thead>
@@ -57,7 +56,6 @@
 	</table>
 	<?php
 		echo $this->element('pagination');
-		echo $this->Html->link('Voltar', array('controller'=>'solicitations', 'action'=>'solicitations'), array('class'=>'btn btn-primary'));
 	}	
 	?>
 </div>

@@ -120,7 +120,7 @@ function init_register_role_controller_toggle_right(app_root_url, role_id, plugi
 					permissions = jQuery.parseJSON(data);
 					
 					for(var action in permissions)
-					{						
+					{
 						var start_granted = false;
 						var span_id       = "right_" + plugin + "_" + role_id + "_" + controller + "_" + action; 
 						

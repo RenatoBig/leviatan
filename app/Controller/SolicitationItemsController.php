@@ -81,7 +81,7 @@ class SolicitationItemsController extends AppController {
  * Monta a pagina de itens de acordo com a solicitação
  * @param unknown_type $status
  */
-	public function items($solicitation_id) {
+	public function all_items($solicitation_id) {
 
 		if($this->request->is('post')){
 			$status = $this->request->data['SolicitationItem']['status'];

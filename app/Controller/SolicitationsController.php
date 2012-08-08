@@ -57,7 +57,7 @@ class SolicitationsController extends AppController {
 /**
  * 
  */
-	public function solicitations() {
+	public function all() {
 		
 		$this->Solicitation->recursive = -1;
 		$options['conditions'] = array(

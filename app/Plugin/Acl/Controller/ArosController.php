@@ -558,6 +558,7 @@ class ArosController extends AclAppController
 		        $aco_path .= '/' . $action_name;
 		        
 		        $aco_node = $this->Acl->Aco->node($aco_path);
+		        
         	    if(!empty($aco_node))
         	    {
         	        $authorized = $this->Acl->check($role_data, $aco_path);

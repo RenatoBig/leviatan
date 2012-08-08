@@ -27,7 +27,7 @@
 					<td>
 						<?php echo $this->Html->link(
 								h($solicitation['Solicitation']['keycode']),
-								array('controller'=>'solicitation_items', 'action'=>'items', $solicitation['Solicitation']['id'])
+								array('controller'=>'solicitation_items', 'action'=>'all_items', $solicitation['Solicitation']['id'])
 								);?>
 						&nbsp;
 					</td>
