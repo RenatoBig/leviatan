@@ -39,13 +39,22 @@
 				<td>
 				<?php 
 				if($item['SolicitationItem']['status_id'] == PENDENTE) {
-					echo $this->Form->postLink('Aprovar', array('controller'=>'solicitation_items', 'action'=>'changeStatus', $item['SolicitationItem']['id'], APROVADO), array('class'=>'btn btn-primary'));
+					echo $this->Form->postLink('Aprovar', array('controller'=>'solicitation_items', 'action'=>'changeStatus', $item['SolicitationItem']['id'], APROVADO), array('class'=>'btn btn-primary', 'title'=>'Aprova o item'));
 					echo '&nbsp';					
-					echo $this->Html->link('Negar', '#', array('class'=>'btn btn-danger deny', 'value'=>$item['SolicitationItem']['id']));
+					echo $this->Html->link('Negar', '#', array('class'=>'btn btn-danger deny', 'title'=>'Negar o item', 'value'=>$item['SolicitationItem']['id']));
 				}else if($item['SolicitationItem']['status_id'] == APROVADO) {
-					echo '<i class="icon-thumbs-up"></i>';	
+					echo '<i title="Item aprovado" class="icon-thumbs-up"></i>';	
 				}else if($item['SolicitationItem']['status_id'] == NEGADO) {
-					echo '<i class="icon-thumbs-down"></i>';
+					echo $this->Html->link(
+						'<i class="icon-thumbs-down"></i>',
+						'#',
+						array('class'=>'denyVisualization', 
+							  'value'=>$item['SolicitationItem']['id'],
+							  'title'=>'Item negado. Clique para ver a justificativa.',
+							  'alt'=>'Negado',
+							  'escape'=>false
+						)	
+					);
 				}
 				?>
 				</td>
@@ -55,6 +64,7 @@
 		</tbody>
 	</table>
 	<?php
+		echo $this->Html->link('Voltar', array('controller'=>'solicitations', 'action'=>'all'), array('class'=>'btn btn-primary'));
 		echo $this->element('pagination');
 	}	
 	?>

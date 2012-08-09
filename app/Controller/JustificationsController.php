@@ -46,5 +46,23 @@ class JustificationsController extends AppController {
 		
 		$this->set(compact('justification'));		
 	}
+	
+/**
+ *
+ * Muda o status do item da solicitação
+ */
+	public function changeStatus($id, $status) {
+		if($this->request->is('post')) {
+			$this->SolicitationItem->id = $id;
+	
+			if($this->SolicitationItem->saveField('status_id', $status, false)) {
+				$this->Session->setFlash('<div class="alert alert-success">'.__('Item atualizado').'</div>');
+			}else {
+				$this->Session->setFlash('<div class="alert alert-error">'.__('O item não pode ser atualizado').'</div>');
+			}
+	
+			$this->redirect($this->referer());
+		}
+	}
 
 }

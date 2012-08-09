@@ -34,7 +34,7 @@
 						<?php 
 						echo $this->Form->postLink('Remover', 
 								array('controller'=>'cart_items', 'action'=>'delete', $item['CartItem']['id']), 
-								array('class'=>'btn btn-danger'), 
+								array('class'=>'btn btn-danger', 'title'=>'Remover item'), 
 								"Deseja realmente retirar o item do carrinho?"
 						);
 						?>
@@ -50,7 +50,7 @@
 			);  
 		echo $this->element('pagination'); 
 		echo '<br><br>';
-		echo $this->Form->button('Finalizar solicitação', array('type'=>'button', 'class'=>'btn btn-primary', 'id'=>'submitSolicitation'));
+		echo $this->Form->button('Finalizar solicitação', array('type'=>'button', 'title'=>'Finaliza a solicitação', 'class'=>'btn btn-primary', 'id'=>'submitSolicitation'));
 		?>	
 	</div>
 </div>	

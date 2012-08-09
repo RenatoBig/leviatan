@@ -44,7 +44,43 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 					</a>
 		    		<?php echo $this->Html->link('Leviatan', array('controller'=>'pages', 'action'=>'home'), array('class'=>'brand'));?>
 					<div class="nav-collapse">
-						<ul class="nav pull-right">							
+						<ul class="nav pull-right">	
+							<?php 
+							if($countSolicitations!= 0) {
+							?>
+							<li class="active">
+								<?php								
+								echo $this->Html->link(
+									'<i class="icon-white icon-exclamation-sign"></i>',
+									array('controller'=>'solicitations', 'action'=>'all'),
+									array(
+										'escape'=>false,
+										'title'=>'Você possui solicitações pendentes',
+										'alt'=>'pendencia'
+									)		
+								)
+								?>
+							</li>
+							<?php 
+							}	
+							if($countCartItems!= 0) {
+							?>
+							<li class="active">
+								<?php								
+								echo $this->Html->link(
+									'<i class="icon-white icon-shopping-cart"></i>',
+									array('controller'=>'cart_items', 'action'=>'index'),
+									array(
+										'escape'=>false,
+										'title'=>'Você possui Itens no carrinho',
+										'alt'=>'pendencia'
+									)		
+								)
+								?>
+							</li>
+							<?php 
+							}
+							?>											
 							<li class="dropdown">
 								<?php echo $this->Html->link(
 									'<i class="icon-user icon-white"></i>'.

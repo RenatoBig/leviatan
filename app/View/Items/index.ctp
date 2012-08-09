@@ -28,11 +28,12 @@
 		}
 	?>
 		<tr>
-			<td><input type="checkbox" class="enable" <?php echo $checked;?> <?php echo $disabled;?> value="<?php echo $item['Item']['id'] ?>" /></td>
+			<td><input title="Habilita/desabilita item para solicitação" type="checkbox" class="enable" <?php echo $checked;?> <?php echo $disabled;?> value="<?php echo $item['Item']['id'] ?>" /></td>
 			<td>
 				<?php echo $this->Html->link(
 						h($item['Item']['name']), 
-						array('action' => 'view', $item['Item']['id'])
+						array('action' => 'view', $item['Item']['id']),
+						array('title'=>'Clique para ver detalhes do item')
 					); 
 				?>
 			</td>
@@ -43,8 +44,8 @@
 				<?php echo $this->Html->link($item['PngcCode']['keycode'], array('controller' => 'pngc_codes', 'action' => 'view', $item['PngcCode']['id'])); ?>
 			</td>			
 			<td class="actions">
-				<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $item['Item']['id']), array('class'=>'btn  btn-primary')); ?>
-				<?php echo $this->Form->postLink(__('Deletar'), array('action' => 'delete', $item['Item']['id']), array('class'=>'btn  btn-danger'), __('Deseja realmente deletar o item #%s?', $item['Item']['name'])); ?>
+				<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $item['Item']['id']), array('class'=>'btn  btn-primary', 'title'=>'Editar o item')); ?>
+				<?php echo $this->Form->postLink(__('Deletar'), array('action' => 'delete', $item['Item']['id']), array('class'=>'btn  btn-danger', 'title'=>'Deletar o item'), __('Deseja realmente deletar o item #%s?', $item['Item']['name'])); ?>
 			</td>
 		</tr>		
 	<?php endforeach; ?>

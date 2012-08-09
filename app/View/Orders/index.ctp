@@ -3,7 +3,7 @@
 <div class="span9 well">
 	<?php 
 	if(empty($orders)) {
-		echo "<div class='span4 alert alert-info'>";
+		echo "<div class='alert alert-info'>";
 		echo "<h3>Não há pedidos</h3>";
 		echo "</div>";
 	}else {?>

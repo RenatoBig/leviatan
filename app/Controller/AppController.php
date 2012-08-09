@@ -58,7 +58,7 @@ class AppController extends Controller {
         $this->Auth->loginRedirect = array('controller' => 'pages', 'action' => 'home');
         // Mensagens de erro
         $this->Auth->loginError = '<div class="alert alert-error">'.__('Usuário e/ou senha incorreto(s)', true).'</div>';
-        $this->Auth->authError = '<div class="alert alert-error">'.__('Você precisa fazer login para acessar esta página', true).'</div>';
+        $this->Auth->authError = '<div class="alert alert-error">'.__('Você precisa fazer login ou não tem autorização para acessar esta página', true).'</div>';
         
         $u = $this->Auth->user();
         if($u != null) {
@@ -67,7 +67,10 @@ class AppController extends Controller {
         }
         
         $menus = $this->__getMenus();
-        $this->set(compact('menus'));
+        $countSolicitations = $this->__getCountPendingSolicitations();
+        $countCartItems = $this->__getCountCartItems();
+        
+        $this->set(compact('menus', 'countSolicitations', 'countCartItems'));
     }
     
 /**
@@ -134,7 +137,6 @@ class AppController extends Controller {
     
     	return $items;
     }
-	
     
 /**
  * retorna os dados da tabela passada como parâmetro
@@ -170,4 +172,35 @@ class AppController extends Controller {
     	return $menus;
     }
     
+/**
+ * 
+ */
+    private function __getCountPendingSolicitations() {
+    	
+    	$options['conditions'] = array(
+    		'Solicitation.status_id'=>PENDENTE,
+    	);    	
+    	
+    	if($this->Auth->user('group_id') == ADMIN) {
+    		$pending = $this->Solicitation->find('count', $options);
+    	}else {
+    		$pending = 0;
+    	}
+
+    	return $pending;
+    }
+    
+/**
+ * 
+ */
+    private function __getCountCartItems() {
+    	
+    	$options['conditions'] = array(
+    		'CartItem.user_id'=>$this->Auth->user('id')
+    	);
+    	
+    	$pending = $this->CartItem->find('count', $options);
+    	
+    	return $pending;
+    }
 }

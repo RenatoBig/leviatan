@@ -27,7 +27,8 @@
 					<td>
 						<?php echo $this->Html->link(
 								h($solicitation['Solicitation']['keycode']),
-								array('controller'=>'solicitation_items', 'action'=>'all_items', $solicitation['Solicitation']['id'])
+								array('controller'=>'solicitation_items', 'action'=>'all_items', $solicitation['Solicitation']['id']),
+								array('title'=>'Clique para ver os itens solicitados')
 								);?>
 						&nbsp;
 					</td>
@@ -46,7 +47,7 @@
 					<td>
 						<?php 
 						if(in_array($solicitation['Solicitation']['id'], $pendingSolicitations)){
-							echo '<i title="Posssui itens pendentes" class="icon-question-sign"></i>';
+							echo '<i title="Posssui itens pendentes nesta solicitação" class="icon-question-sign"></i>';
 						} else{
 							echo '<i title="Não possui itens pendentes" class="icon-ok"></i>';								
 						}
@@ -58,7 +59,7 @@
 		</table>
 	<?php		 
 		echo $this->element('pagination'); 
-		echo $this->Form->postLink('Gerar pedido', array('controller'=>'orders', 'action'=>'add'), array('class'=>'btn'));	
+		echo $this->Form->postLink('Gerar pedido', array('controller'=>'orders', 'action'=>'add'), array('class'=>'btn', 'title'=>'Gera o pedido'));	
 	}
 	?>
 	

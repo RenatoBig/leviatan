@@ -8,8 +8,8 @@ if(empty($items)) {
 }else {?>
 <div class="span9 well">	
 	<ul class="nav nav-tabs" id="myTab">
-		<li class="active"><a href="#solicitation"><?php echo __('Solicitação')?></a></li>
-		<li><a href="#items"><?php echo __('Itens')?></a></li>
+		<li class="active"><a title="Descrição da solicitação" href="#solicitation"><?php echo __('Solicitação')?></a></li>
+		<li><a title="Itens da solicitação" href="#items"><?php echo __('Itens')?></a></li>
 	</ul>
 	<div class="tab-content">
 		<div class="tab-pane active" id="solicitation">
@@ -34,7 +34,7 @@ if(empty($items)) {
 				<tr>
 					<th><?php echo __('Nome');?></th>
 					<th><?php echo __('Quantidade');?></th>
-					<th><?php echo __('Status');?></th>
+					<th><?php echo __('Situação');?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -44,12 +44,15 @@ if(empty($items)) {
 					<td>
 						<?php 
 						echo $this->Form->postLink(
-								h($item['Item']['name']),
-								array(
-									'controller'=>'items',
-									'action'=>'view',
-									$item['Item']['id']
-								)
+							h($item['Item']['name']),
+							array(
+								'controller'=>'items',
+								'action'=>'view',
+								$item['Item']['id']
+							),
+							array(
+								'title'=>'Clique para ver detalhes sobre o item'
+							)
 						);
 						?>
 						&nbsp;
@@ -58,7 +61,7 @@ if(empty($items)) {
 					<td>
 						<?php 
 						if($item['SolicitationItem']['status_id'] == PENDENTE) {
-							echo '<i title="Item pendente" alt="Pendente" class="icon-question-sign"></i>';
+							echo '<i title="Item pendente, aguardando aprovação" alt="Pendente" class="icon-question-sign"></i>';
 						}else if($item['SolicitationItem']['status_id'] == APROVADO) {
 							echo '<i title="Item aprovado" alt="Aprovado" class="icon-thumbs-up"></i>';	
 						}else if($item['SolicitationItem']['status_id'] == NEGADO) {

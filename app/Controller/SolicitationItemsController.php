@@ -85,18 +85,16 @@ class SolicitationItemsController extends AppController {
 
 		if($this->request->is('post')){
 			$status = $this->request->data['SolicitationItem']['status'];
-			if(!empty($status)) {
-				$status_condition = array('SolicitationItem.status_id'=>$status);
-			}else {
-				$status_condition = '';
+			if(!empty($status)) {				
+				$this->request->params['named'] = array();
+				$options['conditions'][] = array(
+						'SolicitationItem.status_id'=>$status
+				);
 			}
-		}else{
-			$status_condition = '';
 		}
 		
-		$options['conditions'] = array(
-					'SolicitationItem.solicitation_id'=>$solicitation_id,
-					$status_condition
+		$options['conditions'][] = array(
+					'SolicitationItem.solicitation_id'=>$solicitation_id
 				);
 		$options['order'] = array('Solicitation.keycode'=>'asc');
 		$options['limit'] = 10;
@@ -110,21 +108,21 @@ class SolicitationItemsController extends AppController {
 	}
 	
 /**
- * 
+ *
  * Muda o status do item da solicitação
  */
 	public function changeStatus($id, $status) {
-		if($this->request->is('post')) {						
+		if($this->request->is('post')) {
 			$this->SolicitationItem->id = $id;
-
+	
 			if($this->SolicitationItem->saveField('status_id', $status, false)) {
 				$this->Session->setFlash('<div class="alert alert-success">'.__('Item atualizado').'</div>');
 			}else {
 				$this->Session->setFlash('<div class="alert alert-error">'.__('O item não pode ser atualizado').'</div>');
 			}
-
+	
 			$this->redirect($this->referer());
 		}
 	}
-	
+		
 }

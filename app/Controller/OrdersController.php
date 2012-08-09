@@ -97,16 +97,17 @@ class OrdersController extends AppController {
 		endforeach;
 		$this->set(compact('data'));
 		
+		$this->layout = 'print';
 		if(isset($data[0]['solicitations'])){		
 			$params = array(
 					'download' => false,
 					'name' => 'pedido.pdf',
 					'paperOrientation' => 'portrait',
-					'paperSize' => 'legal'
+					'paperSize' => 'A4'
 			);
 			$this->set($params);
 		}else {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Este pedidio não possui itens aprovados.').'</div>');
+			$this->Session->setFlash('<div class="alert alert-error">'.__('Este pedido não possui itens aprovados.').'</div>');
 			$this->redirect(array('action'=>'index'));
 		}		
 	}

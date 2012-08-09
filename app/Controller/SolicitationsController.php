@@ -7,7 +7,7 @@ App::uses('AppController', 'Controller');
  */
 class SolicitationsController extends AppController {
 	
-	public $helpers = array('Utils', 'Js', 'Fck');
+	public $helpers = array('Utils', 'Js', 'Fck', 'Time');
 	public $uses = array('Solicitation', 'SolicitationItem', 'User');
 	public $layout = 'leviatan';
 	
@@ -17,20 +17,30 @@ class SolicitationsController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->Solicitation->recursive = 2;
 		
-		$user_id = $this->Auth->user('id');
-		$conditions = array(
-			'conditions'=>array(
-				'Solicitation.user_id'=>$user_id
-			),
-			'limit'=>5,
-			'order'=>array('Solicitation.created'=>'desc')
+		if($this->request->is('post')){
+			$status = $this->request->data['Solicitation']['status_id'];
+			if(!empty($status)) {
+				$this->request->params['named'] = array();
+				$options['conditions'][] = array(
+					'Solicitation.status_id'=>$status		
+				);
+			}
+		}
+
+		$user_id = $this->Auth->user('id');		
+		$options['conditions'][] = array(
+			'Solicitation.user_id'=>$user_id	
 		);
-		$this->paginate = $conditions;
-		$solicitations = $this->paginate();
+		$options['limit'] = 5;
+		$options['order'] = array('Solicitation.created'=>'desc');
 		
-		$this->set(compact('solicitations'));
+		$this->paginate = $options;
+		$solicitations = $this->paginate();
+
+		$statuses = array(''=>'Todas as solicitações', PENDENTE=>'Pendentes', CONCLUIDO=>'Concluídos');
+		
+		$this->set(compact('solicitations', 'statuses'));
 	}
 	
 /**
@@ -52,7 +62,32 @@ class SolicitationsController extends AppController {
 		$items = $this->paginate('SolicitationItem');
 		
 		$this->set(compact('items'));
-	}	
+		
+	}
+
+/**
+ * 
+ */
+	public function printout($id) {
+		
+		$this->layout = 'print';
+		
+		$options['conditions'] = array(
+			'SolicitationItem.solicitation_id'=>$id	
+		);
+		
+		$data = $this->SolicitationItem->find('all', $options);
+
+		$this->set(compact('data'));
+		
+		$params = array(
+				'download' => false,
+				'name' => 'solicitacao_'.$id.'.pdf',
+				'paperOrientation' => 'portrait',
+				'paperSize' => 'A4'
+		);
+		$this->set($params);
+	}
 	
 /**
  * 

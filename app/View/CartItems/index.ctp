@@ -13,8 +13,8 @@
 	<h2><?php echo __('Solicitação');?></h2>	
 		
 	<ul class="nav nav-tabs" id="myTab">
-		<li class="active"><a href="#description"><?php echo __('Descrição')?></a></li>
-		<li><a href="#items"><?php echo __('Itens')?></a></li>
+		<li class="active"><a title="Descrição da solicitação" href="#description"><?php echo __('Descrição')?></a></li>
+		<li><a title="Itens da solicitação" href="#items"><?php echo __('Itens')?></a></li>
 	</ul>		
 	
 	<div class="tab-content">
@@ -61,7 +61,7 @@
 							<?php 
 							echo $this->Form->postLink('Remover', 
 									array('controller'=>'cart_items', 'action'=>'delete', $item['CartItem']['id']), 
-									array('class'=>'btn btn-danger'), 
+									array('class'=>'btn btn-danger', 'title'=>'Remover item'), 
 									"Deseja realmente retirar o item do carrinho?"
 							);
 							?>
@@ -77,7 +77,7 @@
 			); 
 			echo $this->element('pagination'); 
 			echo '<br><br>';
-			echo $this->Form->button('Finalizar solicitação', array('type'=>'button', 'class'=>'btn btn-primary', 'id'=>'submitSolicitation'));
+			echo $this->Form->button('Finalizar solicitação', array('type'=>'button', 'class'=>'btn btn-primary', 'id'=>'submitSolicitation', 'title'=>'Finaliza a solicitação'));
 			?>			
 		</div>		
 		
