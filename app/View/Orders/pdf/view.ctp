@@ -1,39 +1,139 @@
 <?php
-echo '<h3 align="center">PEDIDO</h3>';
-echo '<br><br>';
-foreach($data as $value):
-	echo 'Solicitante: '.$value['Employee']['name'];
-	echo '<br>';
-	echo 'Unidade: '.$value['Unity']['name'];
-	echo '<br><br>';
+$unities = array();
+$quantitites = array();
+$sum = array();
+foreach($data as $master_key=>$value):
+	$unities[] = $value;
+
+	echo '<div class="title">';
+	echo '<p>Ofício: '.$value['Unity']['name'];	
 	foreach($value['solicitations'] as $key=>$solicitation):
-		echo 'DESCRIÇÃO DA SOLICITAÇÃO : ';
-		echo '<br><br>';
-		echo $solicitation['Solicitation']['description'];	
-		echo '<br><br>';
-		echo 'ITENS SOLICITADOS';
-		echo '<br><br>';
-		echo '<table border="1">';
+		echo ', '.$solicitation['Solicitation']['memo_number'].'</p>';
+		echo '<p>'.$this->Utils->full_date($solicitation['Solicitation']['created']).'</p>';
+		echo '</div>';
+		
+		//----------------------------------
+		echo '<div class="general_information">';
+			echo '<p>Da '.$value['Sector']['name'].'</p>';
+			echo '<p>A Secretaria de Saúde</p>';
+			echo '<p>nome_da_secretária</p>';
+		echo '</div>';
+		//-----------------------------------
+		echo '<div class="treatment">';
+			echo 'Ilma Secretaria,';
+		echo '</div>';
+		//-----
+		echo '<div class="description_memo">';
+			echo $solicitation['Solicitation']['description'];
+		echo '</div>';
+		//-------	
+		echo '<div class="respectfully">';
+			echo 'Respeitosamente,';
+		echo '</div>';
+		//-----------------------
+		echo '<div class="signature">';
+			echo $value['Employee']['name'].' '.$value['Employee']['surname'];
+		echo '</div>';
+		//--------------------
+		//Pula página
+		echo '<div class="page-break"></div>';
+		//------
+		//Itens da solicitação
+		//----------------
+		echo '<div class="title">';
+			echo '<p>Unidade : '.$value['Unity']['name'].'</p>';
+			echo '<p>Setor: '.$value['Sector']['name'].'</p>';
+			echo '<p>Nº do ofício: '.$solicitation['Solicitation']['memo_number'].'</p>';
+		echo'</div>';
+		echo '<table class="table table-bordered">';
 			echo '<thead>';
 				echo '<tr>';
 					echo '<th>Código</th>';
 					echo '<th>Item</th>';
-					echo '<th>Descrição</th>';
 					echo '<th>Quantidade</th>';
 				echo '</tr>';
 			echo '</thead>';
 			echo '<tbody>';
 			foreach($value['solicitation_items'][$key] as $item):
 				echo '<tr>';
-					echo '<td align="center">'.$item['Item']['keycode'].'</td>';
-					echo '<td align="center">'.$item['Item']['name'].'</td>';
-					echo '<td>'.$item['Item']['description'].'</td>';
-					echo '<td align="center">'.$item['SolicitationItem']['quantity'].'</td>';
+					echo '<td>'.$item['Item']['keycode'].'</td>';
+					echo '<td>'.$item['Item']['name'].'</td>';
+					echo '<td>'.$item['SolicitationItem']['quantity'].'</td>';
+					$quantities[$item['Item']['keycode']] = array($item['SolicitationItem']['id'], $item['SolicitationItem']['quantity']);
 				echo '</tr>';
 			endforeach;
 			echo '</tbody>';
 		echo '</table>';
 	endforeach;	
-	echo '<br><br>';
+	if($master_key < count($data)) {
+		echo '<div class="page-break"></div>';
+	}	
 endforeach;
+//Consolidado
+//--------------------------------
+echo '<div class="title-center">';
+	echo '<h3>Consolidado das solicitações</h3>';
+echo'</div>';
+echo '<table class="table table-bordered table-condesed">';
+	echo '<thead>';
+		echo '<tr>';
+			echo '<th>COD</th>';
+			echo '<th>Nome</th>';
+			foreach($unities as $unity):
+				echo '<th>'.$unity['Unity']['name'].'</th>';
+			endforeach;
+			echo '<th>Total</th>';
+		echo '</tr>';
+	echo '</thead>';
+	echo '<tbody>';	
+		foreach($distinct_items as $key=>$i):
+			echo '<tr>';
+				echo '<td>'.$i['Item']['keycode'].'</td>';
+				echo '<td id="description">'.$i['Item']['name'].'</td>';
+				$total = 0;
+				for($j = 0; $j < count($unities); $j++) {
+					$flag = true;
+					foreach($t[$i['Item']['id']] as $v):						
+						if($v['Unity']['id'] == $unities[$j]['Unity']['id']) {
+							echo '<td>'.$v['SolicitationItem']['quantity'].'</td>';
+							$total += $v['SolicitationItem']['quantity'];
+							$flag = false;
+						}
+					endforeach;
+					if($flag) {
+						echo '<td> - </td>';
+					}
+				}	
+				$sum[] = $total;			
+				echo '<td>'.$total.'</td>';
+			echo '</tr>';
+		endforeach;
+	echo '</tbody>';
+echo '</table>';
+//fim consolidado
+//--------------------
+echo '<div class="page-break"></div>';
+//Descrição dos itens
+//-------------------
+echo '<div class="title-center">';
+	echo '<h3>Descrição dos itens</h3>';
+echo'</div>';
+echo '<table class="table table-bordered table-condesed">';
+	echo '<thead>';
+		echo '<tr>';
+			echo '<th>COD</th>';
+			echo '<th>Descrição</th>';
+			echo '<th>Total</th>';
+		echo '</tr>';
+	echo '</thead>';
+	echo '<tbody>';
+		foreach($distinct_items as $key=>$i):
+			echo '<tr>';
+				echo '<td>'.$i['Item']['keycode'].'</td>';
+				echo '<td id="description">'.$i['Item']['description'].'</td>';
+				echo '<td>'.$sum[$key].'</td>';
+			echo '</tr>';
+		endforeach;
+	echo '</tbody>';
+echo '</table>';
 ?>

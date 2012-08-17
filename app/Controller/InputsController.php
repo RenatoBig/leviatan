@@ -7,7 +7,8 @@ App::uses('AppController', 'Controller');
  */
 class InputsController extends AppController {
 
-	var $uses = array('Input', 'InputSubcategory');
+	public $layout = 'leviatan';
+	public $uses = array('Input', 'InputSubcategory');
 	
 /**
  * index method
@@ -16,21 +17,13 @@ class InputsController extends AppController {
  */
 	public function index() {
 		$this->Input->recursive = 0;
+		
+		$options['order'] = array('Input.id'=>'asc');
+		$options['limit'] = 10;
+		
+		$this->paginate = $options;
+		
 		$this->set('inputs', $this->paginate());
-	}
-
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->Input->id = $id;
-		if (!$this->Input->exists()) {
-			throw new NotFoundException(__('Insumo inválido'));
-		}
-		$this->set('input', $this->Input->read(null, $id));
 	}
 
 /**
@@ -42,14 +35,14 @@ class InputsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Input->create();
 			if ($this->Input->save($this->request->data)) {
-				$this->Session->setFlash(__('O insumo foi cadastrado'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O insumo não pode ser alterado. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		}
 		
-		$inicio = array(''=>'Selecione um item');		
+		$inicio = array(''=>__('Selecione um item'));		
 		$inputCategories = $this->Input->InputCategory->find('list');
 		//$inputSubcategories = $this->Input->InputSubcategory->find('list');
 		//-------------
@@ -67,20 +60,21 @@ class InputsController extends AppController {
 	public function edit($id = null) {
 		$this->Input->id = $id;
 		if (!$this->Input->exists()) {
-			throw new NotFoundException(__('Insumo inválido'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Input->save($this->request->data)) {
-				$this->Session->setFlash(__('O insumo foi alterado'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O insumo não pode ser alterado. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			$this->request->data = $this->Input->read(null, $id);
 		}
 		
-		$inicio = array(''=>'Selecione um item');
+		$inicio = array(''=>__('Selecione um item'));
 		$inputCategories = $this->Input->InputCategory->find('list');
 		//$inputSubcategories = $this->Input->InputSubcategory->find('list');
 		//-------------
@@ -147,18 +141,20 @@ class InputsController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('action' => 'index'));
 		}
 		$this->Input->id = $id;
 		if (!$this->Input->exists()) {
-			throw new NotFoundException(__('Insumo inválido'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action' => 'index'));
 		}
 				
 		if ($this->Input->delete()) {
-			$this->Session->setFlash(__('Insumo deletado'));
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else {
+			$this->__getMessage(ERROR_DELETE);
 		}
-		$this->Session->setFlash(__('O insumo não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}	
 

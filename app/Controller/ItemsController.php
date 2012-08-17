@@ -31,11 +31,11 @@ class ItemsController extends AppController {
 	public function index() {
 		
 		$this->Item->recursive = 0;
-		$conditions = array(
-			'limit'=>'6',
-			'order'=>array('Item.name'=>'asc')
-		);
-		$this->paginate = $conditions;
+		
+		$options['order'] = array('Item.name'=>'asc');
+		$options['limit'] = 10;
+
+		$this->paginate = $options;
 		$this->set('items', $this->paginate());
 	}
 
@@ -48,7 +48,7 @@ class ItemsController extends AppController {
 	public function view($id = null) {
 		$this->Item->id = $id;
 		if (!$this->Item->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Item inválido').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		
@@ -70,7 +70,7 @@ class ItemsController extends AppController {
 	public function detail($id = null) {
 		$this->Item->id = $id;
 		if (!$this->Item->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Item inválido').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		
@@ -103,11 +103,11 @@ class ItemsController extends AppController {
 				$this->request->data['Item']['image_path'] = '';
 			}
 
-			if ($this->Item->save($this->request->data)) {				
-				$this->Session->setFlash('<div class="alert alert-success">'.__('O item foi cadastrado').'</div>');
+			if ($this->Item->save($this->request->data)) {	
+				$this->__getMessage(SUCCESS);			
 				$this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('O item não pode ser cadastrado. Por favor, tente novamente.').'</div>');
+			} else {				
+				$this->__getMessage(ERROR);
 				if($imagem != '') {
 					$this->__removeImage($this->request->data['Item']['image_path']);
 				}
@@ -140,7 +140,7 @@ class ItemsController extends AppController {
 	public function edit($id = null) {
 		$this->Item->id = $id;
 		if (!$this->Item->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Item inválido').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		
@@ -164,10 +164,10 @@ class ItemsController extends AppController {
 			}		
 			
 			if ($this->Item->save($this->request->data)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('O item foi alterado').'</div>');
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('O item não pode ser alterado. Por favor, tente novamente.').'</div>');
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			$this->request->data = $this->Item->read(null, $id);
@@ -184,10 +184,9 @@ class ItemsController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('action'=>'index'));
 		}
-		$this->Item->id = $id;
-		
 		//Recupera o item caso de algum probla ao excluir a imagem, salva o item novamente
 		$item = $this->Item->read(null, $id);
 		
@@ -201,15 +200,16 @@ class ItemsController extends AppController {
 			}	
 		}		
 		
+		$this->Item->id = $id;
 		if (!$this->Item->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Item inválido').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
-		if ($this->Item->delete()) {						
-			$this->Session->setFlash('<div class="alert alert-success">'.__('Item deletado').'</div>');
-			$this->redirect(array('action' => 'index'));
+		if ($this->Item->delete()) {		
+			$this->__getMessage(SUCCESS);				
+		}else {
+			$this->__getMessage(ERROR_DELETE);			
 		}
-		$this->Session->setFlash('<div class="alert alert-error">'.__('O item não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.').'</div>');
 		$this->redirect(array('action' => 'index'));
 	}
 	

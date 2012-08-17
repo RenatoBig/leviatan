@@ -7,7 +7,7 @@ App::uses('AppController', 'Controller');
  */
 class CitiesController extends AppController {
 	
-	var $layout = "leviatan";
+	public $layout = "leviatan";
 
 /**
  * index method
@@ -15,23 +15,14 @@ class CitiesController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->City->recursive = 0;
+		$this->City->recursive = -1;
+		
+		$options['order'] = array('City.name'=>'asc');
+		$options['limit'] = 10;
+		
+		$this->paginate = $options;
+		
 		$this->set('cities', $this->paginate());
-	}
-
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->City->id = $id;
-		if (!$this->City->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Cidade inválida').'</div>');
-			$this->redirect(array('action'=>'index'));
-		}
-		$this->set('city', $this->City->read(null, $id));
 	}
 
 /**
@@ -43,10 +34,10 @@ class CitiesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->City->create();
 			if ($this->City->save($this->request->data)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('A cidade foi cadastrada.').'</div>');
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('A cidade não pode ser cadastrada. Por favor tente novamente.').'</div>');
+				$this->__getMessage(ERROR);
 			}
 		}
 	}
@@ -60,15 +51,15 @@ class CitiesController extends AppController {
 	public function edit($id = null) {
 		$this->City->id = $id;
 		if (!$this->City->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Cidade inválida').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->City->save($this->request->data)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('A cidade foi alterada.').'</div>');
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('A cidade não pode ser alterada. Por favor, tente novamente.').'</div>');
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			$this->request->data = $this->City->read(null, $id);
@@ -83,20 +74,21 @@ class CitiesController extends AppController {
  */
 	public function delete($id = null) {
 		if(!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('action'=>'index'));
 		}
 		$this->City->id = $id;
 		if (!$this->City->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Cidade inválida').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		
 		if($this->City->delete()) {
-			$this->Session->setFlash('<div class="alert alert-success">'.__('Cidade deletada.').'</div>');
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else {
+			$this->__getMessage(ERROR_DELETE);
 		}
 
-		$this->Session->setFlash('<div class="alert alert-error">'.__('A cidade não pode ser deletada. Possivelmente o registro está cadastrado em outra tabela.').'</div>');
 		$this->redirect(array('action' => 'index'));
 	}
 }

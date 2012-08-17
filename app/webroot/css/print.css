@@ -1,0 +1,96 @@
+@CHARSET "UTF-8";
+
+table {
+  max-width: 100%;
+  background-color: transparent;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.table {
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.table th,
+.table td {
+  padding: 8px;
+  line-height: 18px;
+  text-align: center;
+  vertical-align: top;
+  border-top: 1px solid #dddddd;
+}
+
+#description {
+  text-align: left;
+}
+
+.table th {
+  font-weight: bold;
+}
+
+.table thead th {
+  vertical-align: bottom;
+}
+
+.table-bordered {
+  border: 1px solid #dddddd;
+  border-collapse: separate;
+  *border-collapse: collapsed;
+  border-left: 0;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+}
+
+.table-bordered th,
+.table-bordered td {
+  border-left: 1px solid #dddddd;
+}
+
+.table-condensed th,
+.table-condensed td {
+  padding: 4px 5px;
+}
+
+.title-center {
+	margin-left: 40%;
+	margin-bottom: 40px;
+}
+
+.title {
+  float: left;
+  line-height: 4px;
+  margin-bottom: 40px;
+}
+
+.general_information {  
+  line-height: 4px;
+  text-align: left;
+}
+
+.treatment {
+	margin-top: 30px;
+	margin-left:50%;
+}
+
+.description_memo {
+  margin-top: 40px;
+  text-align:justify;
+  margin-left:10%; 
+  margin-right:10%;
+}
+
+.respectfully {
+	margin-top: 30px;
+	margin-left:50%;
+}
+
+.signature {
+	margin-top: 40px;
+	margin-left:60%;
+}
+
+.page-break {
+  page-break-before: always;
+}

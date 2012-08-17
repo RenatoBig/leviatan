@@ -1,5 +1,3 @@
-<?php echo $this->element('menu'); ?>
-
 <div class="span9 well">
 	<?php 
 	echo $this->Form->create('SolicitationItem', array('class'=>''));
@@ -29,7 +27,11 @@
 		foreach ($solicitationItems as $key=>$item): ?>
 			<tr>
 				<td>
-					<?php echo h($item['Item']['name']);?>
+					<?php echo $this->Html->link(
+							$item['Item']['name'],
+							array('controller'=>'items', 'action'=>'view', $item['Item']['id'])
+						);
+					?>
 					&nbsp;
 				</td>		
 				<td>

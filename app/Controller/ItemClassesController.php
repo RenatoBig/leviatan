@@ -6,7 +6,8 @@ App::uses('AppController', 'Controller');
  * @property ItemClass $ItemClass
  */
 class ItemClassesController extends AppController {
-
+	
+	public $layout = 'leviatan';
 
 /**
  * index method
@@ -15,21 +16,13 @@ class ItemClassesController extends AppController {
  */
 	public function index() {
 		$this->ItemClass->recursive = 0;
+		
+		$options['order'] = array('ItemClass.name'=>'asc');
+		$options['limit'] = 10;
+		
+		$this->paginate = $options;
+		
 		$this->set('itemClasses', $this->paginate());
-	}
-
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->ItemClass->id = $id;
-		if (!$this->ItemClass->exists()) {
-			throw new NotFoundException(__('Classe do item inválida'));
-		}
-		$this->set('itemClass', $this->ItemClass->read(null, $id));
 	}
 
 /**
@@ -41,10 +34,10 @@ class ItemClassesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->ItemClass->create();
 			if ($this->ItemClass->save($this->request->data)) {
-				$this->Session->setFlash(__('Classe do item inválida'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('A classe do item não foi cadastrada. por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		}
 		$inicio = array(''=>'Selecione um item');
@@ -62,14 +55,15 @@ class ItemClassesController extends AppController {
 	public function edit($id = null) {
 		$this->ItemClass->id = $id;
 		if (!$this->ItemClass->exists()) {
-			throw new NotFoundException(__('Classe do item inválida'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->ItemClass->save($this->request->data)) {
-				$this->Session->setFlash(__('A classe do item foi alterada'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('A classe do item não pode ser alterada. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			$this->request->data = $this->ItemClass->read(null, $id);
@@ -88,18 +82,21 @@ class ItemClassesController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('action' => 'index'));
 		}
 		$this->ItemClass->id = $id;
 		if (!$this->ItemClass->exists()) {
-			throw new NotFoundException(__('Classe do item inválida'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action' => 'index'));
 		}
 		
 		if ($this->ItemClass->delete()) {
-			$this->Session->setFlash(__('Classe do item deletada'));
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else {
+			$this->__getMessage(ERROR);
 		}
-		$this->Session->setFlash(__('A classe do item não pode ser deletada. Possivelmente o registro está cadastrado em outra tabela.'));
+		
 		$this->redirect(array('action' => 'index'));
 	}
 }

@@ -1,4 +1,4 @@
-<div class="span3 well">
+<div class="span2 well">
 	<?php if($item['Item']['image_path']){
 		echo $this->Html->image('items/'.$item['Item']['image_path'], array('class'=>'space','width'=>'170px','height'=>'127px'));
 	}else{

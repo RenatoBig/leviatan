@@ -17,23 +17,14 @@ class SectorsController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->Sector->recursive = 0;
+		$this->Sector->recursive = -1;
+		
+		$options['order'] = array('Sector.name'=>'asc');
+		$options['limit'] = 10;
+		
+		$this->paginate = $options;
+		
 		$this->set('sectors', $this->paginate());
-	}
-
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->Sector->id = $id;
-		if (!$this->Sector->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Setor inválido').'</div>');
-			$this->redirect(array('action'=>'index'));
-		}
-		$this->set('sector', $this->Sector->read(null, $id));
 	}
 
 /**
@@ -45,10 +36,10 @@ class SectorsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Sector->create();
 			if ($this->Sector->save($this->request->data)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('O setor foi cadastrado').'</div>');
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('O setor não pode ser cadastrado. Por favor, tente novamente.').'</div>');
+				$this->__getMessage(ERROR);
 			}
 		}
 	}
@@ -62,15 +53,15 @@ class SectorsController extends AppController {
 	public function edit($id = null) {
 		$this->Sector->id = $id;
 		if (!$this->Sector->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Setor inválido').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Sector->save($this->request->data)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('Setor alterado').'</div>');
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('O setor não pode ser alterado. Por favor, tente novamente.').'</div>');
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			$this->request->data = $this->Sector->read(null, $id);
@@ -85,19 +76,19 @@ class SectorsController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
 		}
 		$this->Sector->id = $id;
 		if (!$this->Sector->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Setor inválido').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		
 		if ($this->Sector->delete()) {
-			$this->Session->setFlash('<div class="alert alert-success">'.__('Setor deletado').'</div>');
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else {
+			$this->__getMessage(ERROR_DELETE);
 		}
-		$this->Session->setFlash('<div class="alert alert-error">'.__('O setor não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.').'</div>');
 		$this->redirect(array('action' => 'index'));
 	}
 	

@@ -1,13 +1,4 @@
-<div class="span2 actions">	
-	<ul class="nav nav-list">
-		<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
-		<li><?php echo $this->Html->link(__('Funcionários'), array('action' => 'index'), array('class'=>'btn')); ?></li>
-		<li><?php echo $this->Html->link(__('Usuários'), array('controller' => 'users', 'action' => 'index'), array('class'=>'btn')); ?> </li>
-		<li><?php echo $this->Html->link(__('Unidades setores'), array('controller' => 'unity_sectors', 'action' => 'index'), array('class'=>'btn')); ?> </li>
-	</ul>
-</div>
-
-<div class="span6 view well">
+<div class="span9 well">
 	<h2><?php  echo __('Funcionário');?></h2>
 	<dl>
 		<dt><?php echo __('ID'); ?></dt>
@@ -27,7 +18,7 @@
 		</dd>
 		<dt><?php echo __('Data de aniversário'); ?></dt>
 		<dd>
-			<?php echo h($employee['Employee']['birth_date']); ?>
+			<?php echo $this->Time->format('d/m/Y', $employee['Employee']['birth_date']); ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Email'); ?></dt>

@@ -86,9 +86,14 @@ $(document).ready(function() {
 	//----------------------------------------
 	//Submita os itens do carrinho para gerar a solicitação
 	$('#submitSolicitation').click(function(){
-	
+		
+		var memo_number = $('#SolicitationMemoNumber').val();
 		var description = CKEDITOR.instances.SolicitationDescription.getData();
-
+		
+		if(memo_number == '') {
+			alert('É obrigatório preencher o número do memorando');
+			return;
+		}
 		if(description == '') {
 			alert('É obigatório preencher uma descrição');
 			return;
@@ -107,7 +112,7 @@ $(document).ready(function() {
 	
 		$.ajax({
 			type: 'post',
-		    data: {'description':description},
+		    data: {'memo_number':memo_number, 'description':description},
 		    url:url,
 		    success: function(retorno){
 		    	if(retorno == 1) {

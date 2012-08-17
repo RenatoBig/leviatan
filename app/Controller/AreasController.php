@@ -8,7 +8,7 @@ App::uses('AppController', 'Controller');
 class AreasController extends AppController {
 	
 	public $uses = array('Area', 'Region');
-	var $layout = 'leviatan';
+	public $layout = 'leviatan';
 
 /**
  * index method
@@ -16,23 +16,16 @@ class AreasController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->Area->recursive = 0;
-		$this->set('areas', $this->paginate());
-	}
+		
+		$this->recursive = -1;
+		$options['order'] = array(
+			'Area.name'=>'asc'	
+		);
+		$options['limit'] = 10;
+		
+		$this->paginate = $options;
 
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->Area->id = $id;
-		if (!$this->Area->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Área inválida').'</div>');
-			$this->redirect(array('action'=>'index'));
-		}
-		$this->set('area', $this->Area->read(null, $id));
+		$this->set('areas', $this->paginate());
 	}
 
 /**
@@ -44,10 +37,10 @@ class AreasController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Area->create();
 			if ($this->Area->save($this->request->data)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('A área foi cadastrada.').'</div>');
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('A área não pode ser cadastrada. Por favor, tente novamente.').'</div>');
+				$this->__getMessage(ERROR);
 			}
 		}
 	}
@@ -61,15 +54,15 @@ class AreasController extends AppController {
 	public function edit($id = null) {
 		$this->Area->id = $id;
 		if (!$this->Area->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Área inválida').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Area->save($this->request->data)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('A área foi alterada').'</div>');
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('A área não pode ser alterada. Por favor, tente novamente.').'</div>');
+				$this->__getMessage(ERROR_DELETE);
 			}
 		} else {
 			$this->request->data = $this->Area->read(null, $id);
@@ -84,19 +77,20 @@ class AreasController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('action'=>'index'));
 		}
 		$this->Area->id = $id;
 		if (!$this->Area->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Área inválida').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 
 		if ($this->Area->delete()) {
-			$this->Session->setFlash('<div class="alert alert-success">'.__('Área deletada').'</div>');
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else {
+			$this->__getMessage(ERROR_DELETE);			
 		}
-		$this->Session->setFlash('<div class="alert alert-error">'.__('A área não pode ser deletada. Possivelmente o registro está cadastrado em outra tabela.').'</div>');
 		$this->redirect(array('action' => 'index'));
 	}
 	

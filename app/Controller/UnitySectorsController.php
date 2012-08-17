@@ -7,8 +7,8 @@ App::uses('AppController', 'Controller');
  */
 class UnitySectorsController extends AppController {
 	
-	var $uses = array('UnitySector', 'Sector', 'Unity');
-	var $layout = 'leviatan';
+	public $uses = array('UnitySector', 'Sector', 'Unity');
+	public $layout = 'leviatan';
 	
 /**
  * index method
@@ -17,22 +17,13 @@ class UnitySectorsController extends AppController {
  */
 	public function index() {
 		$this->UnitySector->recursive = 0;
+		
+		$options['order'] = array('UnitySector.id'=>'asc');
+		$options['limit'] = 10;
+		
+		$this->paginate = $options;
+		
 		$this->set('unitySectors', $this->paginate());
-	}
-
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->UnitySector->id = $id;
-		if (!$this->UnitySector->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Unidade setor inválido').'</div>');
-			$this->redirect(array('action'=>'index'));
-		}
-		$this->set('unitySector', $this->UnitySector->read(null, $id));
 	}
 
 /**
@@ -44,10 +35,10 @@ class UnitySectorsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->UnitySector->create();
 			if ($this->UnitySector->save($this->request->data)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('A unidade_setor foi cadastrada').'</div>');
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('A unidade_setor não pode ser cadastrada. por favor, tente novamente.').'</div>');
+				$this->__getMessage(ERROR);
 			}
 		}
 		
@@ -67,15 +58,15 @@ class UnitySectorsController extends AppController {
 	public function edit($id = null) {
 		$this->UnitySector->id = $id;
 		if (!$this->UnitySector->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Unidade setor inválida').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->UnitySector->save($this->request->data)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('A unidade_setor foi alterada').'</div>');
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('A unidade_setor foi alterada. Por favor, tente novamente.').'</div>');
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			$this->request->data = $this->UnitySector->read(null, $id);
@@ -147,19 +138,20 @@ class UnitySectorsController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('action'=>'index'));
 		}
 		$this->UnitySector->id = $id;
 		if (!$this->UnitySector->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Unidade setor inválida').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 
 		if ($this->UnitySector->delete()) {
-			$this->Session->setFlash('<div class="alert alert-success">'.__('Unidade_setor foi deletada').'</div>');
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else {
+			$this->__getMessage(ERROR_DELETE);
 		}
-		$this->Session->setFlash('<div class="alert alert-error">'.__('A unidade_setor não pode ser deletada. Possivelmente o registro está cadastrado em outra tabela.').'</div>');
 		$this->redirect(array('action' => 'index'));
 	}
 	

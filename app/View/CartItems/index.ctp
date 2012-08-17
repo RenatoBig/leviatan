@@ -1,5 +1,3 @@
-<?php echo $this->element('menu'); ?>
-
 <div class="span9 well">
 	
 	<?php 
@@ -21,6 +19,7 @@
 		
 		<div class="tab-pane active" id="description">			
 			<?php 
+			echo $this->Form->input('Solicitation.memo_number', array('label'=>'Nº do memorando', 'class'=>'input-small'));						
 			echo $this->Form->input('SolicitationDescription', array('label'=>''));
 			echo $this->Fck->load('SolicitationDescription');
 			?>				

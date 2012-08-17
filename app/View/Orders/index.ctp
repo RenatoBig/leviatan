@@ -1,5 +1,3 @@
-<?php echo $this->element('menu'); ?>
-	
 <div class="span9 well">
 	<?php 
 	if(empty($orders)) {
@@ -13,8 +11,8 @@
 		<table cellpadding="0" cellspacing="0" class="table">
 			<thead>
 				<tr>
-					<th><?php echo __('Código');?></th>
-					<th><?php echo __('Data');?>
+					<th><?php echo $this->Paginator->sort('keycode', 'Número');?></th>
+					<th><?php echo $this->Paginator->sort('created', 'Data');?>
 					<th><?php echo __('Ação');?></th>
 				</tr>
 			</thead>
@@ -26,7 +24,7 @@
 					<td><?php echo $order['Order']['created'];?></td>
 					<td>
 						<?php echo $this->Html->link(__('Visualizar'), array('controller'=>'order_items','action' => 'view', $order['Order']['id']), array('class'=>'btn')); ?>
-						<?php echo $this->Form->postLink(__('Imprimir'), array('controller'=>'orders','action' => 'view', $order['Order']['id'].'.pdf'), array('class'=>'btn')); ?>
+						<?php echo $this->Form->postLink(__('Imprimir'), array('controller'=>'orders','action' => 'view', $order['Order']['id'], 'ext'=>'pdf'), array('class'=>'btn')); ?>
 					</td>
 				</tr>
 			<?php endforeach; ?>

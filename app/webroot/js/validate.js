@@ -356,5 +356,281 @@ $(document).ready(function() {
 			}
 		}
 	}); 
+	//---------------------------------------
+	//Statuses
+	$("#StatusAddForm, #StatusEditForm").validate({ 
+    	rules: { 
+			'data[Status][name]':{
+				required: true
+			}
+		},
+		messages: {
+			'data[Status][name]':{
+				required: "Campo obrigatório."
+			}
+		}
+	});
+	//--------------------------------------------
+	//PNGC
+	//Combobox
+	$('#PngcCodeAddForm #PngcCodeInputSubcategoryId').parent().hide();
 	
+	$('#PngcCodeInputCategoryId').change(function() {
+		if($(this).val() == 0) {
+			$('#PngcCodeInputSubcategoryId').parent().hide('slow');
+		}else {
+			$('#PngcCodeInputSubcategoryId').parent().show('slow');
+		}
+	});	
+
+	//validação de formulário
+	$("#PngcCodeAddForm, #PngcCodeEditForm").validate({ 
+    	rules: { 
+			'data[PngcCode][keycode]':{
+				required: true,
+			},
+			'data[PngcCode][expense_group_id]':{
+				required: true
+			},
+			'data[PngcCode][functional_unit_id]':{
+				required: true
+			},
+			'data[PngcCode][input_category_id]':{
+				required: true
+			},
+			'data[PngcCode][input_subcategory_id]':{
+				required: true
+			},
+			'data[PngcCode][measure_type_id]':{
+				required: true
+			}
+		},
+		messages: {
+			'data[PngcCode][keycode]':{
+				required: "Este campo é obrigatório",
+			},
+			'data[PngcCode][expense_group_id]':{
+				required: "Este campo é obrigatório"
+			},
+			'data[PngcCode][functional_unit_id]':{
+				required: "Este campo é obrigatório"
+			},
+			'data[PngcCode][input_category_id]':{
+				required: "Este campo é obrigatório"
+			},
+			'data[PngcCode][input_subcategory_id]':{
+				required: "Este campo é obrigatório"
+			},
+			'data[PngcCode][measure_type_id]':{
+				required: "Este campo é obrigatório"
+			}
+		}
+	}); 
+	
+	//-----------------------------
+	//MeasureType
+	//validação de formulário
+	$("#MeasureTypeAddForm, #MeasureTypeEditForm").validate({ 
+    	rules: { 
+			'data[MeasureType][name]':{
+				required: true,
+			},
+			'data[MeasureType][description]':{
+				required: true,
+			}
+		},
+		messages: {
+			'data[MeasureType][name]':{
+				required: "Campo obrigatório.",
+			},
+			'data[MeasureType][description]':{
+				required: "Campo obrigatório.",
+			}
+		}
+	}); 
+	//--------------------------------------
+	//ItemGroup
+	//validação de formulário
+	$("#ItemGroupAddForm, #ItemGroupEditForm").validate({ 
+    	rules: { 
+			'data[ItemGroup][group_type_id]':{
+				required: true,
+			},
+			'data[ItemGroup][name]':{
+				required: true
+			},
+			'data[ItemGroup][keycode]':{
+				required: true
+			}
+		},
+		messages: {
+			'data[ItemGroup][group_type_id]':{
+				required: "Este campo é obrigatório"
+			},
+			'data[ItemGroup][name]':{
+				required: "Este campo é obrigatório"
+			},
+			'data[ItemGroup][keycode]':{
+				required: "Este campo é obrigatório"
+			}
+		}
+	});
+	//---------------------------------
+	//ItemClass
+	//validação de formulário
+	$("#ItemClassAddForm, #ItemClassEditForm").validate({ 
+    	rules: { 
+			'data[ItemClass][item_group_id]':{
+				required: true,
+			},
+			'data[ItemClass][name]':{
+				required: true
+			},
+			'data[ItemClass][keycode]':{
+				required: true
+			}
+		},
+		messages: {
+			'data[ItemClass][item_group_id]':{
+				required: "Este campo é obrigatório"
+			},
+			'data[ItemClass][name]':{
+				required: "Este campo é obrigatório"
+			},
+			'data[ItemClass][keycode]':{
+				required: "Este campo é obrigatório"
+			}
+		}
+	});
+	//-----------------------------------
+	//InputSubcategory
+	//validação de formulário
+	$("#InputSubcategoryAddForm, #InputSubcategoryEditForm").validate({ 
+    	rules: { 			
+			'data[InputSubcategory][name]':{
+				required: true
+			},
+			'data[InputSubcategory][description]':{
+				required: true
+			}
+		},
+		messages: {
+			'data[InputSubcategory][name]':{
+				required: "Campo obrigatório"
+			},
+			'data[InputSubcategory][description]':{
+				required: "Campo obrigatório"
+			}
+		}
+	});
+	//---------------------------
+	//InputCategory
+	//validação de formulário
+	$("#InputCategoryAddForm, #InputCategoryEditForm").validate({ 
+    	rules: { 			
+			'data[InputCategory][name]':{
+				required: true
+			},
+			'data[InputCategory][description]':{
+				required: true
+			}
+		},
+		messages: {
+			'data[InputCategory][name]':{
+				required: "Campo obrigatório"
+			},
+			'data[InputCategory][description]':{
+				required: "Campo obrigatório"
+			}
+		}
+	}); 
+	//------------------------------
+	//Input
+	//Combobox
+	$('#InputAddForm #InputInputSubcategoryId').parent().hide();
+	
+	$('#InputInputCategoryId').change(function() {
+		if($(this).val() == 0) {
+			$('#InputInputSubcategoryId').parent().hide('slow');
+		}else {
+			$('#InputInputSubcategoryId').parent().show('slow');
+		}
+	});	
+
+	//validação de formulário
+	$("#InputAddForm, #InputEditForm").validate({ 
+    	rules: { 			
+			'data[Input][input_category_id]':{
+				required: true
+			},
+			'data[Input][input_subcategory_id]':{
+				required: true
+			}
+		},
+		messages: {
+			'data[Input][input_category_id]':{
+				required: "Campo obrigatório"
+			},
+			'data[Input][input_subcategory_id]':{
+				required: "Campo obrigatório"
+			}
+		}
+	}); 
+	//-------------------
+	//GroupType
+	//validação de formulário
+	$("#GroupTypeAddForm, #GroupTypeEditForm").validate({ 
+    	rules: { 
+			'data[GroupType][name]':{
+				required: true,
+			}
+		},
+		messages: {
+			'data[GroupType][name]':{
+				required: "Campo obrigatório.",
+			}
+		}
+	}); 
+	//-------------------------------------
+	//FunctionalUnity
+	//validação de formulário
+	$("#FunctionalUnitAddForm, #FunctionalUnitEditForm").validate({ 
+    	rules: { 
+			'data[FunctionalUnit][name]':{
+				required: true,
+			},
+			'data[FunctionalUnit][description]':{
+				required: true,
+			}
+		},
+		messages: {
+			'data[FunctionalUnit][name]':{
+				required: "Campo obrigatório.",
+			},
+			'data[FunctionalUnit][description]':{
+				required: "Campo obrigatório.",
+			}
+		}
+	}); 
+	//---------------------------------
+	//ExpenseGroup
+	//validação de formulário
+	$("#ExpenseGroupAddForm, #ExpenseGroupEditForm").validate({ 
+    	rules: { 
+			'data[ExpenseGroup][name]':{
+				required: true,
+			},
+			'data[ExpenseGroup][description]':{
+				required: true,
+			}
+		},
+		messages: {
+			'data[ExpenseGroup][name]':{
+				required: "Campo obrigatório.",
+			},
+			'data[ExpenseGroup][description]':{
+				required: "Campo obrigatório.",
+			}
+		}
+	}); 
 });

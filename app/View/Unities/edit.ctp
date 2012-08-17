@@ -1,19 +1,5 @@
-<div class="span2">
-	<div class="well" style="padding: 8px 0;">
-		<ul class="nav nav-list">
-			<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
-			<li class="divider"></li>
-			<li><?php echo $this->Html->link(__('Unidades'), array('action' => 'index')); ?></li>
-			<li><?php echo $this->Html->link(__('Tipos das unidades'), array('controller'=>'unity_types', 'action' => 'index')); ?></li>
-			<li><?php echo $this->Html->link(__('Distritos sanitários'), array('controller'=>'health_districts', 'action' => 'index')); ?></li>
-			<li><?php echo $this->Html->link(__('Unidades setor'), array('controller'=>'unity_sectors', 'action' => 'index')); ?></li>
-			<li><?php echo $this->Html->link(__('Regiões'), array('controller'=>'regions', 'action' => 'index')); ?></li>
-		</ul>
-	</div>
-</div>
-
-<div class="span4">
-<?php echo $this->Form->create('Unity', array('class'=>'well'));?>
+<div class="span9 well">
+<?php echo $this->Form->create('Unity');?>
 	<fieldset>
 		<legend><?php echo __('Editar unidade'); ?></legend>
 	<?php
@@ -56,5 +42,7 @@
 		echo $this->Form->input('unity_type_id', array('label'=>__('Tipo da unidade')));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(array('label'=>__('Alterar'), 'class'=>'btn btn-primary'));?>
+	<?php echo $this->Form->button(__('Alterar'), array('class'=>'btn btn-primary', 'title'=>__('Alterar unidade')));?>
+	<?php echo $this->Html->link(__('Cancelar'), array('controller'=>'unities', 'action'=>'index'), array('class'=>'btn', 'title'=>__('Cancelar')));?>
+<?php echo $this->Form->end();?>
 </div>

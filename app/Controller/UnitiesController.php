@@ -6,9 +6,9 @@ App::uses('AppController', 'Controller');
  * @property Unity $Unity
  */
 class UnitiesController extends AppController {
-
-	var $uses = array('Unity', 'Region', 'City');
-	var $layout = 'leviatan';
+	
+	public $layout = 'leviatan';
+	public $uses = array('Unity', 'Region', 'City');
 	
 /**
  * index method
@@ -17,6 +17,12 @@ class UnitiesController extends AppController {
  */
 	public function index() {
 		$this->Unity->recursive = 0;
+		
+		$options['order'] = array('Unity.name'=>'asc');
+		$options['limit'] = 10;
+		
+		$this->paginate = $options;
+		
 		$this->set('unities', $this->paginate());
 	}
 
@@ -29,7 +35,7 @@ class UnitiesController extends AppController {
 	public function view($id = null) {
 		$this->Unity->id = $id;
 		if (!$this->Unity->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Unidade inválida').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('unity', $this->Unity->read(null, $id));
@@ -44,10 +50,10 @@ class UnitiesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Unity->create();
 			if ($this->Unity->save($this->request->data)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('A unidade foi cadastrada').'</div>');
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('A unidade não pode ser cadastrada. Por favor, tente novamente.').'</div>');
+				$this->__getMessage(ERROR);
 			}
 		}
 		
@@ -102,15 +108,15 @@ class UnitiesController extends AppController {
 	public function edit($id = null) {
 		$this->Unity->id = $id;
 		if (!$this->Unity->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Unidade inválida').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Unity->save($this->request->data)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('A unidade foi alterada').'</div>');
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('A unidade não pode ser alterada. por favor, tente novamente.').'</div>');
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			$this->request->data = $this->Unity->read(null, $id);
@@ -168,19 +174,20 @@ class UnitiesController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('action'=>'index'));
 		}
 		$this->Unity->id = $id;
 		if (!$this->Unity->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Unidade inválida').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		
 		if ($this->Unity->delete()) {
-			$this->Session->setFlash('<div class="alert alert-success">'.__('Unidade deletada').'</div>');
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else {
+			$this->__getMessage(ERROR_DELETE);
 		}
-		$this->Session->setFlash('<div class="alert alert-error">'.__('A unidade não pode ser deletada. Possivelmente o registro está cadastrado em outra tabela.').'</div>');
 		$this->redirect(array('action' => 'index'));
 	}
 }

@@ -6,6 +6,8 @@ App::uses('AppController', 'Controller');
  * @property GroupType $GroupType
  */
 class GroupTypesController extends AppController {
+	
+	public $layout = 'leviatan';
 
 
 /**
@@ -14,22 +16,14 @@ class GroupTypesController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->GroupType->recursive = 0;
+		$this->GroupType->recursive = -1;
+		
+		$options['order'] = array('GroupType.name'=>'asc');
+		$options['limit'] = 10;
+		
+		$this->paginate = $options;
+		
 		$this->set('groupTypes', $this->paginate());
-	}
-
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->GroupType->id = $id;
-		if (!$this->GroupType->exists()) {
-			throw new NotFoundException(__('Tipo do grupo inválido'));
-		}
-		$this->set('groupType', $this->GroupType->read(null, $id));
 	}
 
 /**
@@ -41,10 +35,10 @@ class GroupTypesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->GroupType->create();
 			if ($this->GroupType->save($this->request->data)) {
-				$this->Session->setFlash(__('O tipo de grupo foi cadastrado'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O tipo de grupo não pode ser cadastrado. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		}
 	}
@@ -58,14 +52,15 @@ class GroupTypesController extends AppController {
 	public function edit($id = null) {
 		$this->GroupType->id = $id;
 		if (!$this->GroupType->exists()) {
-			throw new NotFoundException(__('Tipo do grupo inválido'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->GroupType->save($this->request->data)) {
-				$this->Session->setFlash(__('O tipo do grupo foi alterado'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O tipo do grupo não pode ser alterado. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			$this->request->data = $this->GroupType->read(null, $id);
@@ -80,18 +75,20 @@ class GroupTypesController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('action' => 'index'));
 		}
 		$this->GroupType->id = $id;
 		if (!$this->GroupType->exists()) {
-			throw new NotFoundException(__('Tipo do grupo inválido'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action' => 'index'));
 		}
 		
 		if ($this->GroupType->delete()) {
-			$this->Session->setFlash(__('Tipo do grupo deletado'));
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else {
+			$this->__getMessage(ERROR_DELETE);
 		}
-		$this->Session->setFlash(__('Tipo do grupo não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

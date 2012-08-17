@@ -9,6 +9,7 @@ App::uses('AppController', 'Controller');
 class InputSubcategoriesController extends AppController {
 	
 	public $uses = array('InputSubcategory', 'Input');
+	public $layout = 'leviatan';
 	
 /**
  * index method
@@ -16,22 +17,14 @@ class InputSubcategoriesController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->InputSubcategory->recursive = 0;
+		$this->InputSubcategory->recursive = -1;
+		
+		$options['order'] = array('InputSubcategory.name'=>'asc');
+		$options['limit'] = 10;
+		
+		$this->paginate = $options;
+		
 		$this->set('inputSubcategories', $this->paginate());
-	}
-
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->InputSubcategory->id = $id;
-		if (!$this->InputSubcategory->exists()) {
-			throw new NotFoundException(__('Subcategoria inválida'));
-		}
-		$this->set('inputSubcategory', $this->InputSubcategory->read(null, $id));
 	}
 
 /**
@@ -43,10 +36,10 @@ class InputSubcategoriesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->InputSubcategory->create();
 			if ($this->InputSubcategory->save($this->request->data)) {
-				$this->Session->setFlash(__('A subcategoria foi cadastrada'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('A subcategoria não pode ser cadastrada. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		}
 	}
@@ -60,14 +53,15 @@ class InputSubcategoriesController extends AppController {
 	public function edit($id = null) {
 		$this->InputSubcategory->id = $id;
 		if (!$this->InputSubcategory->exists()) {
-			throw new NotFoundException(__('Subcategoria inválida'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->InputSubcategory->save($this->request->data)) {
-				$this->Session->setFlash(__('A subcategoria foi alterada'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('A subcategoria não pode ser alterada. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			$this->request->data = $this->InputSubcategory->read(null, $id);
@@ -82,18 +76,20 @@ class InputSubcategoriesController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('action' => 'index'));
 		}
 		$this->InputSubcategory->id = $id;
 		if (!$this->InputSubcategory->exists()) {
-			throw new NotFoundException(__('Subcategoria inválida'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action' => 'index'));
 		}
 		
 		if ($this->InputSubcategory->delete()) {
-			$this->Session->setFlash(__('Subcategoria deletada'));
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else{
+			$this->__getMessage(ERROR_DELETE);
 		}
-		$this->Session->setFlash(__('A subcategoria não pode ser deletada. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 	

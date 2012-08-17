@@ -1,14 +1,5 @@
-<div class="span2 actions">	
-	<ul class="nav nav-list">
-		<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
-		<li><?php echo $this->Html->link(__('Funcionários'), array('action' => 'index'), array('class'=>'btn')); ?></li>
-		<li><?php echo $this->Html->link(__('Usuários'), array('controller' => 'users', 'action' => 'index'), array('class'=>'btn')); ?> </li>
-		<li><?php echo $this->Html->link(__('Unidades setores'), array('controller' => 'unity_sectors', 'action' => 'index'), array('class'=>'btn')); ?> </li>
-	</ul>
-</div>
-
-<div class="span4 form">
-<?php echo $this->Form->create('Employee', array('class'=>'well'));?>
+<div class="span9 well">
+<?php echo $this->Form->create('Employee');?>
 	<fieldset>
 		<legend><?php echo __('Adicionar funcionário'); ?></legend>
 	<?php
@@ -54,5 +45,7 @@
 		echo $this->Form->input('account', array('label'=>__('Conta corrente')));		
 	?>
 	</fieldset>
-<?php echo $this->Form->end(array('label'=>__('Cadastrar'), 'class'=>'btn btn-primary'));?>
+	<?php echo $this->Form->button(__('Cadastrar'), array('class'=>'btn btn-primary', 'title'=>__('cadastrar funcionário')));?>
+	<?php echo $this->Html->link(__('Cancelar'), array('controller'=>'employees', 'action'=>'index'), array('class'=>'btn', 'title'=>__('Cancelar')))?>
+<?php echo $this->Form->end();?>
 </div>

@@ -1,9 +1,7 @@
-<?php echo $this->element('menu'); ?>
-
 <div class="span9 well">
 	<?php 
 	if(empty($items)) {
-		echo "<div class='span4 alert alert-info'>";
+		echo "<div class='alert alert-info'>";
 		echo "<h3>Não há items</h3>";
 		echo "</div>";	
 	} else{?>

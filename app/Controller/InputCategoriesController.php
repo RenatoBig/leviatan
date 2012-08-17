@@ -7,7 +7,8 @@ App::uses('AppController', 'Controller');
  */
 class InputCategoriesController extends AppController {
 
-
+	public $layout = 'leviatan';
+	
 /**
  * index method
  *
@@ -15,21 +16,13 @@ class InputCategoriesController extends AppController {
  */
 	public function index() {
 		$this->InputCategory->recursive = 0;
+		
+		$options['order'] = array('InputCategory.name'=>'asc');
+		$options['limit'] = 10;
+		
+		$this->paginate = $options;
+		
 		$this->set('inputCategories', $this->paginate());
-	}
-
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->InputCategory->id = $id;
-		if (!$this->InputCategory->exists()) {
-			throw new NotFoundException(__('Categoria inválida'));
-		}
-		$this->set('inputCategory', $this->InputCategory->read(null, $id));
 	}
 
 /**
@@ -41,10 +34,10 @@ class InputCategoriesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->InputCategory->create();
 			if ($this->InputCategory->save($this->request->data)) {
-				$this->Session->setFlash(__('A categoria foi cadastrada'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('A categoria não pode ser cadastrada. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		}
 	}
@@ -58,14 +51,15 @@ class InputCategoriesController extends AppController {
 	public function edit($id = null) {
 		$this->InputCategory->id = $id;
 		if (!$this->InputCategory->exists()) {
-			throw new NotFoundException(__('Categoria inválida'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->InputCategory->save($this->request->data)) {
-				$this->Session->setFlash(__('A categoria foi alterada'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('A categoria não pode ser alterada. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			$this->request->data = $this->InputCategory->read(null, $id);
@@ -80,18 +74,20 @@ class InputCategoriesController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('action' => 'index'));
 		}
 		$this->InputCategory->id = $id;
 		if (!$this->InputCategory->exists()) {
-			throw new NotFoundException(__('Categoria inválida'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action' => 'index'));
 		}
 		
 		if ($this->InputCategory->delete()) {
-			$this->Session->setFlash(__('Categoria deletada'));
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else {
+			$this->__getMessage(ERROR_DELETE);
 		}
-		$this->Session->setFlash(__('A categoria não pode ser deletada. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

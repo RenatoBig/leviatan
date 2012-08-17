@@ -7,7 +7,7 @@ App::uses('AppController', 'Controller');
  */
 class UsersController extends AppController {
 	
-	var $layout = 'leviatan';
+	public $layout = 'leviatan';
 	
 	
 /**
@@ -26,30 +26,13 @@ class UsersController extends AppController {
  */
 	public function index() {
 		$this->User->recursive = 0;
-		$this->set('users', $this->paginate());
-	}
-
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->User->id = $id;
-		if (!$this->User->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Usuário inválido').'</div>');
-			$this->redirect(array('action'=>'index'));
-		}
-		$this->set('user', $this->User->read(null, $id));
 		
-		$params = array(
-				'download' => true,
-				'name' => 'example.pdf',
-				'paperOrientation' => 'portrait',
-				'paperSize' => 'legal'
-		);
-		$this->set($params);
+		$options['order'] = array('User.id'=>'asc');
+		$options['limit'] = 10;
+		
+		$this->paginate = $options;
+		
+		$this->set('users', $this->paginate());
 	}
 
 /**
@@ -75,10 +58,10 @@ class UsersController extends AppController {
 			
 			$this->User->create();			
 			if ($this->User->save($this->request->data)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('O usuário foi cadastrado.').'</div>');
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('O usuário não pode ser cadastrado. Por favor, tente novamente.').'</div>');
+				$this->__getMessage(ERROR);
 			}
 		}
 		$inicio = array(''=>'Selecione um item');
@@ -99,15 +82,15 @@ class UsersController extends AppController {
 	public function edit($id = null) {
 		$this->User->id = $id;
 		if (!$this->User->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Usuário inválido').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));			
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {			
-			if ($this->User->save($this->request->data)) {				
-				$this->Session->setFlash('<div class="alert alert-success">'.__('o usuário foi alterado').'</div>');
+			if ($this->User->save($this->request->data)) {
+				$this->__getMessage(SUCCESS);				
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('O usuário não pode ser alterado. por favor, tente novamente.').'</div>');
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			$this->request->data = $this->User->read(null, $id);
@@ -130,18 +113,19 @@ class UsersController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('action'=>'index'));
 		}
 		$this->User->id = $id;
 		if (!$this->User->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Usuário inválido').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->User->delete()) {
-			$this->Session->setFlash('<div class="alert alert-success">'.__('Usuário deletado').'</div>');
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else {
+			$this->__getMessage(ERROR_DELETE);
 		}
-		$this->Session->setFlash('<div class="alert alert-error">'.__('O usuário não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.').'</div>');
 		$this->redirect(array('action' => 'index'));
 	}
 	
@@ -168,7 +152,7 @@ class UsersController extends AppController {
 	public function logout() {
 		// Destruindo a sessão
 		if ($this->Session->valid()) {
-			$this->Session->destroy(); // Destrói
+			$this->Session->destroy(); 
 		    $this->Session->setFlash('<div class="alert alert-success">'.__('Adeus').'</div>');
 			$this->redirect('/');
 		}

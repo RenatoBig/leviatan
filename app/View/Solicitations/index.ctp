@@ -1,5 +1,3 @@
-<?php echo $this->element('menu'); ?>
-	
 <div class="span9 well">
 	
 	<?php 
@@ -18,7 +16,7 @@
 			<thead>
 				<tr>
 					<th><?php echo __('Número');?></th>
-					<th><?php echo __('Data')?></th>
+					<th><?php echo __('Data');?></th>
 					<th><?php echo __('Situação');?></th>
 					<th><?php echo __('Ações');?></th>
 				</tr>

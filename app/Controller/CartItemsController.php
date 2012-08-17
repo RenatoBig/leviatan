@@ -47,9 +47,9 @@ class CartItemsController extends AppController {
 			$data['CartItem']['item_id'] = $id;
 			
 			if($this->CartItem->save($data)) {
-				$this->Session->setFlash('<div class="alert alert-success">'."Produto adicionado com sucesso".'</div>');
+				$this->__getMessage(SUCCESS);
 			}else {
-				$this->Session->setFlash('<div class="alert alert-error">'."Não foi possível adicionar o item ao carrinho".'</div>');				
+				$this->__getMessage(ERROR);
 			}
 			
 			$this->redirect($this->referer());				
@@ -64,14 +64,14 @@ class CartItemsController extends AppController {
 		if($this->request->is('post')) {
 			$this->CartItem->id = $id;
 			if (!$this->CartItem->exists()) {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('Item inválido').'</div>');
+				$this->__getMessage(INVALID_RECORD);
 				$this->redirect(array('action'=>'index'));
 			}
 			
 			if ($this->CartItem->delete()) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('O item foi removido').'</div>');
+				$this->__getMessage(SUCCESS);
 			}else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('O item não pode ser deletado').'</div>');
+				$this->__getMessage(ERROR_DELETE);
 			}
 			
 			$this->redirect($this->referer());
@@ -88,13 +88,13 @@ class CartItemsController extends AppController {
 			
 			$this->CartItem->id = $id;
 			if (!$this->CartItem->exists()) {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('Item inválido').'</div>');
+				$this->__getMessage(INVALID_RECORD);
 				$this->redirect(array('action'=>'index'));
 			}
 			
 			$quantity = $this->request->data['CartItem']['quantity'];
 			
-			if ($this->CartItem->saveField('quantity', $quantity)) {
+			if ($this->CartItem->saveField('quantity', $quantity)) {				
 				echo '<div class="alert alert-success">'.__('Quantidade alterada com sucesso').'</div>'; 
 			} else {
 				echo '<div class="alert alert-error">'.__('A quantidade não pode ser alterada.').'</div>';
@@ -118,9 +118,10 @@ class CartItemsController extends AppController {
 			$items = $this->CartItem->find('all', $options);
 			
 			$keycode = $this->__getRandomKeycode();
-			
+
 			$this->Solicitation->create();
 			$data['Solicitation']['keycode'] = $keycode;
+			$data['Solicitation']['memo_number'] = $this->request->data['memo_number'];
 			$data['Solicitation']['description'] = $this->request->data['description'];
 			$data['Solicitation']['user_id'] = $user_id;
 			$data['Solicitation']['status_id'] = PENDENTE;
@@ -134,15 +135,15 @@ class CartItemsController extends AppController {
 
 			if($this->Solicitation->saveAll($data)) {				
 				if(!$this->CartItem->deleteAll(array('CartItem.user_id'=>$user_id), false)) {
-					$this->Session->setFlash('<div class="alert alert-error">'.__('Erro ao remover os itens do carrinho.').'</div>');
+					$this->__getMessage(ERROR);
 					echo '0';
 					exit;
-				}				
-				$this->Session->setFlash('<div class="alert alert-success">'.__('A solicitação foi concluída.').'</div>');
+				}
+				$this->__getMessage(SUCCESS);				
 				echo true;
 				exit;
 			}else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('A solicitação não pode ser concluída.').'</div>');
+				$this->__getMessage(ERROR);
 				echo '0';
 				exit;
 			}			

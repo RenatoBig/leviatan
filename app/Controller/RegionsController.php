@@ -7,8 +7,8 @@ App::uses('AppController', 'Controller');
  */
 class RegionsController extends AppController {
 
-	var $uses = array('Region', 'Area');
-	var $layout = "leviatan";
+	public $uses = array('Region', 'Area');
+	public $layout = "leviatan";
 
 /**
  * index method
@@ -17,22 +17,13 @@ class RegionsController extends AppController {
  */
 	public function index() {
 		$this->Region->recursive = 0;
+		
+		$options['order'] = array('Region.id'=>'asc');
+		$options['limit'] = 10;
+		
+		$this->paginate = $options;
+		
 		$this->set('regions', $this->paginate());
-	}
-
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->Region->id = $id;
-		if (!$this->Region->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Região inválida').'</div>');
-			$this->redirect(array('action'=>'index'));
-		}
-		$this->set('region', $this->Region->read(null, $id));
 	}
 
 /**
@@ -44,10 +35,10 @@ class RegionsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Region->create();
 			if ($this->Region->save($this->request->data)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('A região foi cadastrada').'</div>');
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('A região não pode ser cadastrada. Por favor, tente novamente').'</div>');
+				$this->__getMessage(ERROR);
 			}
 		}
 		$inicio = array(''=>'Selecione um item');
@@ -68,15 +59,15 @@ class RegionsController extends AppController {
 	public function edit($id = null) {
 		$this->Region->id = $id;
 		if (!$this->Region->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Região inválida').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Region->save($this->request->data)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('A região foi alterada').'</div>');
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('A região não pode ser alterada. Por favor, tente novamente.').'</div>');
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			$this->request->data = $this->Region->read(null, $id);
@@ -146,19 +137,20 @@ class RegionsController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('action'=>'index'));
 		}
 		$this->Region->id = $id;
 		if (!$this->Region->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Região inválida').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		
 		if ($this->Region->delete()) {
-			$this->Session->setFlash('<div class="alert alert-success">'.__('Região deletada').'</div>');
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else {
+			$this->__getMessage(ERROR_DELETE);
 		}
-		$this->Session->setFlash('<div class="alert alert-error">'.__('A região não pode ser deletada. Possivelmente o registro está cadastrado em outra tabela.').'</div>');
 		$this->redirect(array('action' => 'index'));
 	}
 	

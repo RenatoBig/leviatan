@@ -6,7 +6,8 @@ App::uses('AppController', 'Controller');
  * @property ExpenseGroup $ExpenseGroup
  */
 class ExpenseGroupsController extends AppController {
-
+	
+	public $layout = 'leviatan';
 
 /**
  * index method
@@ -14,22 +15,14 @@ class ExpenseGroupsController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->ExpenseGroup->recursive = 0;
+		$this->ExpenseGroup->recursive = -1;
+		
+		$options['order'] = array('ExpenseGroup.name'=>'asc');
+		$options['limit'] = 10;
+		
+		$this->paginate = $options;
+		
 		$this->set('expenseGroups', $this->paginate());
-	}
-
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->ExpenseGroup->id = $id;
-		if (!$this->ExpenseGroup->exists()) {
-			throw new NotFoundException(__('Grupo de gastos inválido'));
-		}
-		$this->set('expenseGroup', $this->ExpenseGroup->read(null, $id));
 	}
 
 /**
@@ -41,10 +34,10 @@ class ExpenseGroupsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->ExpenseGroup->create();
 			if ($this->ExpenseGroup->save($this->request->data)) {
-				$this->Session->setFlash(__('O grupo de gastos foi cadastrado'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O grupo de gastos não pode ser cadastrado. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		}
 	}
@@ -58,14 +51,15 @@ class ExpenseGroupsController extends AppController {
 	public function edit($id = null) {
 		$this->ExpenseGroup->id = $id;
 		if (!$this->ExpenseGroup->exists()) {
-			throw new NotFoundException(__('Invalid expense group'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->ExpenseGroup->save($this->request->data)) {
-				$this->Session->setFlash(__('O grupo de gastos foi alterado.'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O grupo de gastos não pode ser alterado. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			$this->request->data = $this->ExpenseGroup->read(null, $id);
@@ -80,18 +74,20 @@ class ExpenseGroupsController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('action' => 'index'));
 		}
 		$this->ExpenseGroup->id = $id;
 		if (!$this->ExpenseGroup->exists()) {
-			throw new NotFoundException(__('Grupo de gastos inválido'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action' => 'index'));
 		}
 
 		if ($this->ExpenseGroup->delete()) {
-			$this->Session->setFlash(__('Grupo de gastos deletado'));
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);			
+		}else {
+			$this->__getMessage(ERROR_DELETE);
 		}
-		$this->Session->setFlash(__('O grupo de gastos não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

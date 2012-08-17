@@ -6,11 +6,10 @@ App::uses('AppController', 'Controller');
  * @property SolicitationItem $SolicitationItem
  */
 class SolicitationItemsController extends AppController {
-	
+
+	public $layout = "leviatan";
 	public $helpers = array('Utils', 'Fck');
-	var $uses = array('SolicitationItem', 'Solicitation', 'Item', 'User', 'UnitySector', 'Region', 'UnityType', 'HealthDistrict', 'CartItem');
-	var $layout = "leviatan";
-	
+	public $uses = array('SolicitationItem', 'Solicitation', 'Item', 'User', 'UnitySector', 'Region', 'UnityType', 'HealthDistrict', 'CartItem');
 
 /**
  * index method
@@ -116,9 +115,9 @@ class SolicitationItemsController extends AppController {
 			$this->SolicitationItem->id = $id;
 	
 			if($this->SolicitationItem->saveField('status_id', $status, false)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('Item atualizado').'</div>');
+				$this->__getMessage(SUCCESS);
 			}else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('O item não pode ser atualizado').'</div>');
+				$this->__getMessage(ERROR);
 			}
 	
 			$this->redirect($this->referer());

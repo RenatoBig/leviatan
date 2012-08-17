@@ -7,7 +7,8 @@ App::uses('AppController', 'Controller');
  */
 class ItemGroupsController extends AppController {
 
-
+	public $layout = 'leviatan';
+	
 /**
  * index method
  *
@@ -15,21 +16,13 @@ class ItemGroupsController extends AppController {
  */
 	public function index() {
 		$this->ItemGroup->recursive = 0;
+		
+		$options['order'] = array('ItemGroup.name'=>'asc');
+		$options['limit'] = 10;
+		
+		$this->paginate = $options;
+		
 		$this->set('itemGroups', $this->paginate());
-	}
-
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->ItemGroup->id = $id;
-		if (!$this->ItemGroup->exists()) {
-			throw new NotFoundException(__('Item do grupo inválido'));
-		}
-		$this->set('itemGroup', $this->ItemGroup->read(null, $id));
 	}
 
 /**
@@ -41,10 +34,10 @@ class ItemGroupsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->ItemGroup->create();
 			if ($this->ItemGroup->save($this->request->data)) {
-				$this->Session->setFlash(__('O item do grupo foi cadastrado'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O item do grupo foi cadastrado. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		}
 		$inicio = array(''=>'Selecione um item');
@@ -63,14 +56,15 @@ class ItemGroupsController extends AppController {
 	public function edit($id = null) {
 		$this->ItemGroup->id = $id;
 		if (!$this->ItemGroup->exists()) {
-			throw new NotFoundException(__('Item do grupo inválido'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('controller'=>'item_groups', 'action'=>'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->ItemGroup->save($this->request->data)) {
-				$this->Session->setFlash(__('O item do grupo foi alterado'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O item do grupo não pode ser alterado. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			$this->request->data = $this->ItemGroup->read(null, $id);
@@ -89,18 +83,19 @@ class ItemGroupsController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
-		}
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('controller'=>'item_groups', 'action'=>'index'));		}
 		$this->ItemGroup->id = $id;
 		if (!$this->ItemGroup->exists()) {
-			throw new NotFoundException(__('Item do grupo inválido'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('controller'=>'item_groups', 'action'=>'index'));
 		}
 		
 		if ($this->ItemGroup->delete()) {
-			$this->Session->setFlash(__('Grupo do item deletado'));
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else {
+			$this->__getMessage(ERROR_DELETE);
 		}
-		$this->Session->setFlash(__('O grupo do item não não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 	

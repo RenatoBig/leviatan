@@ -1,36 +1,4 @@
-<script>
-$(document).ready(function() {
-
-	//validação de formulário
-	$("#ItemGroupAddForm").validate({ 
-    	rules: { 
-			'data[ItemGroup][group_type_id]':{
-				required: true,
-			},
-			'data[ItemGroup][name]':{
-				required: true
-			},
-			'data[ItemGroup][keycode]':{
-				required: true
-			}
-		},
-		messages: {
-			'data[ItemGroup][group_type_id]':{
-				required: "Este campo é obrigatório"
-			},
-			'data[ItemGroup][name]':{
-				required: "Este campo é obrigatório"
-			},
-			'data[ItemGroup][keycode]':{
-				required: "Este campo é obrigatório"
-			}
-		}
-	}); 
-	
-});
-</script>
-
-<div class="itemGroups form">
+<div class="span9 well">
 <?php echo $this->Form->create('ItemGroup');?>
 	<fieldset>
 		<legend><?php echo __('Adicionar item do grupo'); ?></legend>
@@ -40,14 +8,7 @@ $(document).ready(function() {
 		echo $this->Form->input('name', array('label'=>'Nome'));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Cadastrar'));?>
-</div>
-<div class="actions">
-	<h3><?php echo __('Ações'); ?></h3>
-	<ul>
-
-		<li><?php echo $this->Html->link(__('Listar item do grupo'), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('Listar tipos dos grupos'), array('controller' => 'group_types', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo tipo do grupo'), array('controller' => 'group_types', 'action' => 'add')); ?> </li>
-	</ul>
+	<?php echo $this->Form->button(__('Cadastrar'), array('class'=>'btn btn-primary', 'title'=>__('Cadastrar item do grupo')));?>
+	<?php echo $this->Html->link('Cancelar', array('controller'=>'item_groups', 'action'=>'index'), array('class'=>'btn', 'title'=>'Cancelar'));?>
+<?php echo $this->Form->end();?>
 </div>

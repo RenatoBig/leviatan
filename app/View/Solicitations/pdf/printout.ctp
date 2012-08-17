@@ -11,7 +11,7 @@ echo $data[0]['Solicitation']['description'];
 echo '<br>';
 echo '<b>ITENS SOLICITADOS</b>';
 echo '<br><br>';
-echo '<table border="1">';
+echo '<table class="table table-bordered">';
 	echo '<thead>';
 		echo '<tr>';
 			echo '<th>Código</th>';

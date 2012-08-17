@@ -6,7 +6,8 @@ App::uses('AppController', 'Controller');
  * @property MeasureType $MeasureType
  */
 class MeasureTypesController extends AppController {
-
+	
+	public $layout = 'leviatan';
 
 /**
  * index method
@@ -14,22 +15,12 @@ class MeasureTypesController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->MeasureType->recursive = 0;
+		$this->MeasureType->recursive = -1;
+		
+		$options['order'] = array('MeasureType.name'=>'asc');
+		$options['limit'] = 10;
+		
 		$this->set('measureTypes', $this->paginate());
-	}
-
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->MeasureType->id = $id;
-		if (!$this->MeasureType->exists()) {
-			throw new NotFoundException(__('Inválido tipo de medida'));
-		}
-		$this->set('measureType', $this->MeasureType->read(null, $id));
 	}
 
 /**
@@ -41,10 +32,10 @@ class MeasureTypesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->MeasureType->create();
 			if ($this->MeasureType->save($this->request->data)) {
-				$this->Session->setFlash(__('O tipo de medida foi cadastrado'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('o tipo de medida não pode ser cadastrado. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		}
 	}
@@ -58,14 +49,16 @@ class MeasureTypesController extends AppController {
 	public function edit($id = null) {
 		$this->MeasureType->id = $id;
 		if (!$this->MeasureType->exists()) {
-			throw new NotFoundException(__('Inválido tipo de medida'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action'=>'index'));
 		}
+		
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->MeasureType->save($this->request->data)) {
-				$this->Session->setFlash(__('o tipo de medida foi alterado'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O tipo de medida não pode ser alterado. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			$this->request->data = $this->MeasureType->read(null, $id);
@@ -80,18 +73,20 @@ class MeasureTypesController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('controller'=>'measure_types', 'action'=>'index'));
 		}
 		$this->MeasureType->id = $id;
 		if (!$this->MeasureType->exists()) {
-			throw new NotFoundException(__('Inválido tipo de medida'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('controller'=>'measure_types', 'action'=>'index'));
 		}
 				
 		if ($this->MeasureType->delete()) {
-			$this->Session->setFlash(__('Tipo de medida deletado'));
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else {
+			$this->__getMessage(ERROR_DELETE);
 		}
-		$this->Session->setFlash(__('O tipo de medida não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

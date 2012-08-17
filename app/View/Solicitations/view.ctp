@@ -1,5 +1,3 @@
-<?php echo $this->element('menu'); ?>
-
 <?php 
 if(empty($items)) {	
 	echo "<div class='alert alert-info'>";

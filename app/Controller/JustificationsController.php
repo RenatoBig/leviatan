@@ -15,12 +15,12 @@ class JustificationsController extends AppController {
 	public function add() {
 		
 		if(!$this->request->is('post')) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Requisição inválida').'</div>');
+			$this->__getMessage(BAD_REQUEST);
 			$this->redirect(array('controller'=>'pages', 'action'=>'home'));
 		}
 
 		if(!$this->Justification->save($this->request->data)) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Não foi possível salva a justificativa').'</div>');
+			$this->__getMessage(ERROR);
 			$this->redirect(array('controller'=>'pages', 'action'=>'home'));
 		}
 		
@@ -35,7 +35,7 @@ class JustificationsController extends AppController {
 	public function view($solicitation_item_id) {
 		
 		if(!$this->request->is('ajax')) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Requisição inválida').'</div>');
+			$this->__getMessage(BAD_REQUEST);
 			echo 0;
 		}
 		
@@ -56,9 +56,9 @@ class JustificationsController extends AppController {
 			$this->SolicitationItem->id = $id;
 	
 			if($this->SolicitationItem->saveField('status_id', $status, false)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('Item atualizado').'</div>');
+				$this->__getMessage(SUCCESS);
 			}else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('O item não pode ser atualizado').'</div>');
+				$this->__getMessage(ERROR);
 			}
 	
 			$this->redirect($this->referer());

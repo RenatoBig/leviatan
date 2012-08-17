@@ -13,8 +13,6 @@
 	</div>
 </div>-->
 			
-<?php echo $this->element('menu'); ?>
-
 <div class="span9 well">	
 	<?php 
 	if(empty($items)) {
@@ -68,7 +66,7 @@
 								'Solicitar', 
 								array('controller'=>'cart_items', 'action'=>'add', $item['Item']['id']), 
 								array(
-									'class'=>'btn btn-primary',
+									'class'=>'btn',
 									'title'=>'Solicitar item'
 								)
 						);

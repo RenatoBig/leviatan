@@ -6,7 +6,8 @@ App::uses('AppController', 'Controller');
  * @property Order $Order
  */
 class OrdersController extends AppController {
-
+	
+	public $helpers = array('Utils');
 	public $uses = array('Order', 'OrderItem', 'Solicitation', 'SolicitationItem',
 				'Item');	
 	public $layout = 'leviatan';
@@ -35,13 +36,13 @@ class OrdersController extends AppController {
 	public function view($id) {
 		
 		if(!$this->request->is('POST')) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Requisição inválida').'</div>');
+			$this->__getMessage(BAD_REQUEST);
 			$this->redirect($this->referer());	
 		}
 		
 		$this->Order->id = $id;
 		if (!$this->Order->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Pedido inválido').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		
@@ -63,13 +64,14 @@ class OrdersController extends AppController {
 		);
 		$users = $this->Solicitation->find('all', $optionsUsers);
 		//--------------------------------------------------
-		$this->SolicitationItem->recursive = 0;
+
 		foreach($users as $key=>$user):			
 			//Dados do usuário
 			//---------------------------
 			$q_users = 'SELECT * FROM `users` AS `User`
 						JOIN(`employees` AS `Employee`) ON (`Employee`.`id`=`User`.`employee_id`)
 						JOIN(`unity_sectors` AS `UnitySector`) ON (`UnitySector`.`id`=`Employee`.`unity_sector_id`)
+						JOIN(`sectors` AS `Sector`) ON (`UnitySector`.`sector_id` = `Sector`.`id`)
 						JOIN(`unities` AS `Unity`) ON (`UnitySector`.`unity_id`=`Unity`.`id`)
 						WHERE `User`.`id`='.$user['Solicitation']['user_id'];
 			$employee = $this->User->query($q_users);
@@ -83,12 +85,16 @@ class OrdersController extends AppController {
 			$solicitations = $this->Solicitation->find('all', $op);
 			//-----------------------------------------------------
 			foreach($solicitations AS $solicitation):
-				$options['conditions'] = array(
-					'SolicitationItem.solicitation_id'=>$solicitation['Solicitation']['id'],
-					'Solicitation.user_id'=>$user['Solicitation']['user_id'],
-					'SolicitationItem.status_id'=>APROVADO
-				);
-				$solicitation_items = $this->SolicitationItem->find('all', $options);
+				
+				$q_solicitation_items = 'SELECT * FROM `solicitation_items` as `SolicitationItem`
+											JOIN(`solicitations` as `Solicitation`) ON (`SolicitationItem`.`solicitation_id` = `Solicitation`.`id`)
+											JOIN(`items` as `Item`) ON (`SolicitationItem`.`item_id`=`Item`.`id`)
+											JOIN(`item_classes` as `ItemClass`) ON (`Item`.`item_class_id`=`ItemClass`.`id`) 
+											WHERE(`SolicitationItem`.`solicitation_id` = '.$solicitation['Solicitation']['id']. 
+												' AND `Solicitation`.`user_id` = '.$user['Solicitation']['user_id'].
+												' AND `SolicitationItem`.`status_id` = '.APROVADO.') ORDER BY `SolicitationItem`.`item_id` ASC';
+				$solicitation_items = $this->SolicitationItem->query($q_solicitation_items);
+
 				if(!empty($solicitation_items)):					
 					$data[$key]['solicitations'][] = $solicitation;
 					$data[$key]['solicitation_items'][] = $solicitation_items;
@@ -97,6 +103,33 @@ class OrdersController extends AppController {
 		endforeach;
 		$this->set(compact('data'));
 		
+		$ope['conditions'] = array(
+			'SolicitationItem.solicitation_id' => $id_solicitations	
+		);
+		$ope['fields'] = array('DISTINCT SolicitationItem.item_id', 'Item.*');
+		$ope['order'] = array('Item.id'=>'asc');
+		
+		$distinct_items = $this->SolicitationItem->find('all', $ope);
+		$this->set(compact('distinct_items'));
+		
+		foreach($distinct_items as $d) {			
+			$q_items = 'SELECT * FROM `solicitation_items` AS `SolicitationItem`
+							JOIN(`solicitations` AS `Solicitation`) ON (`SolicitationItem`.`solicitation_id`=`Solicitation`.`id`)
+							JOIN(`users` AS `User`) ON (`Solicitation`.`user_id`=`User`.`id`)
+							JOIN(`employees` AS `Employee`) ON (`User`.`employee_id`=`Employee`.`id`)
+							JOIN(`unity_sectors` AS `UnitySector`) ON (`Employee`.`unity_sector_id`=`UnitySector`.`id`)
+							JOIN(`unities` AS `Unity`) ON (`UnitySector`.`unity_id`=`Unity`.`id`) 
+							WHERE `SolicitationItem`.`solicitation_id` IN(
+								SELECT `OrderItem`.`solicitation_id` FROM `order_items` AS `OrderItem` WHERE `OrderItem`.`order_id`='.$id.'
+							) 
+							AND	`SolicitationItem`.`item_id` = '.$d['Item']['id'];
+			
+			$solicitation_item = $this->SolicitationItem->query($q_items);
+			$t[$d['Item']['id']] = $solicitation_item;
+		}
+		ksort($t);
+		$this->set(compact('t'));	
+			
 		$this->layout = 'print';
 		if(isset($data[0]['solicitations'])){		
 			$params = array(
@@ -137,7 +170,7 @@ class OrdersController extends AppController {
  */
 	public function add() {
 		if(!$this->request->is('post')) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Requisição inválida').'</div>');
+			$this->__getMessage(BAD_REQUEST);
 			$this->redirect($this->referer());
 		}
 
@@ -179,10 +212,11 @@ class OrdersController extends AppController {
 		$status = $this->Solicitation->updateAll($fields, $conditions);
 
 		if(!$status) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Não foi possível concluir o pedido.').'</div>');
+			$this->__getMessage(ERROR);
+			$this->redirect($this->referer());
 		}
-
-		$this->Session->setFlash('<div class="alert alert-success">'.__('Pedido concluído.').'</div>');
+		
+		$this->__getMessage(SUCCESS);
 		$this->redirect(array('controller'=>'orders', 'action'=>'index'));
 	}
 

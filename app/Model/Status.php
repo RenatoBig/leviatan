@@ -47,6 +47,19 @@ class Status extends AppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
+		),
+		'Item' => array(
+				'className' => 'Item',
+				'foreignKey' => 'status_id',
+				'dependent' => false,
+				'conditions' => '',
+				'fields' => '',
+				'order' => '',
+				'limit' => '',
+				'offset' => '',
+				'exclusive' => '',
+				'finderQuery' => '',
+				'counterQuery' => ''
 		)
 	);
 /**
@@ -69,7 +82,7 @@ class Status extends AppModel {
  */
 	public function beforeDelete() {
 		$status = $this->read(null, $this->id);
-		if(!empty($status['Solicitation']) || !empty($status['SolicitationItem'])) {
+		if(!empty($status['Solicitation']) || !empty($status['SolicitationItem']) || !empty($status['Item'])) {
 			return false;
 		}	
 	}

@@ -7,7 +7,8 @@ App::uses('AppController', 'Controller');
  */
 class PngcCodesController extends AppController {
 	
-	var $uses = array('PngcCode', 'Input', 'InputCategory');
+	public $layout = 'leviatan';
+	public $uses = array('PngcCode', 'Input', 'InputCategory');
 
 /**
  * index method
@@ -16,21 +17,13 @@ class PngcCodesController extends AppController {
  */
 	public function index() {
 		$this->PngcCode->recursive = 0;
+		
+		$options['order'] = array('PngcCode.keycode'=>'asc');
+		$options['limit'] = 10;
+		
+		$this->paginate = $options;
+		
 		$this->set('pngcCodes', $this->paginate());
-	}
-
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->PngcCode->id = $id;
-		if (!$this->PngcCode->exists()) {
-			throw new NotFoundException(__('PNGC inválido'));
-		}
-		$this->set('pngcCode', $this->PngcCode->read(null, $id));
 	}
 
 /**
@@ -57,10 +50,10 @@ class PngcCodesController extends AppController {
 			$this->request->data['PngcCode']['input_id'] = $input['Input']['id'];
 			
 			if ($this->PngcCode->save($this->request->data)) {
-				$this->Session->setFlash(__('O PNGC foi cadastrado'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O PNGC não pode ser cadastrado. por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		}
 		$inicio = array(''=>'Selecione um item');
@@ -118,7 +111,8 @@ class PngcCodesController extends AppController {
 	public function edit($id = null) {
 		$this->PngcCode->id = $id;
 		if (!$this->PngcCode->exists()) {
-			throw new NotFoundException(__('PNGC inválido'));
+			$this->Session->setFlash('<div class="alert alert-error">'.__('PNGC inválido').'</div>');
+			$this->redirect(array('controller'=>'pngc_codes', 'action'=>'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			
@@ -137,10 +131,10 @@ class PngcCodesController extends AppController {
 			$this->request->data['PngcCode']['input_id'] = $input['Input']['id'];
 			
 			if ($this->PngcCode->save($this->request->data)) {
-				$this->Session->setFlash(__('O PNGC foi alterado'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O PNGC não pode ser alterado. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			$this->request->data = $this->PngcCode->read(null, $id);
@@ -170,18 +164,20 @@ class PngcCodesController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('controller'=>'pngc_codes', 'action'=>'index'));
 		}
 		$this->PngcCode->id = $id;
 		if (!$this->PngcCode->exists()) {
-			throw new NotFoundException(__('PNGC inválido'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('controller'=>'pngc_codes', 'action'=>'index'));
 		}
 		
 		if ($this->PngcCode->delete()) {
-			$this->Session->setFlash(__('PNGC deletado'));
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else {
+			$this->__getMessage(ERROR_DELETE);
 		}
-		$this->Session->setFlash(__('O PNGC não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 	

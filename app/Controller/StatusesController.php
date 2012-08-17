@@ -7,29 +7,22 @@ App::uses('AppController', 'Controller');
  */
 class StatusesController extends AppController {
 
-
+	public $layout = 'leviatan';
+	
 /**
  * index method
  *
  * @return void
  */
 	public function index() {
-		$this->Status->recursive = 0;
+		$this->Status->recursive = -1;
+		
+		$options['order'] = array('Status.id'=>'asc');
+		$options['limit'] = 10;
+		
+		$this->paginate = $options;
+		
 		$this->set('statuses', $this->paginate());
-	}
-
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->Status->id = $id;
-		if (!$this->Status->exists()) {
-			throw new NotFoundException(__('Status inválido'));
-		}
-		$this->set('status', $this->Status->read(null, $id));
 	}
 
 /**
@@ -41,10 +34,10 @@ class StatusesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Status->create();
 			if ($this->Status->save($this->request->data)) {
-				$this->Session->setFlash(__('O status foi cadastrado'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O status não pode ser cadastrado. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		}
 	}
@@ -58,14 +51,15 @@ class StatusesController extends AppController {
 	public function edit($id = null) {
 		$this->Status->id = $id;
 		if (!$this->Status->exists()) {
-			throw new NotFoundException(__('Status inválido'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('controller'=>'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Status->save($this->request->data)) {
-				$this->Session->setFlash(__('O status foi alterado'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('O status não pode ser alterado. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);				
 			}
 		} else {
 			$this->request->data = $this->Status->read(null, $id);
@@ -80,17 +74,19 @@ class StatusesController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('action'=>'index'));
 		}
 		$this->Status->id = $id;
 		if (!$this->Status->exists()) {
-			throw new NotFoundException(__('Status inválido'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Status->delete()) {
-			$this->Session->setFlash(__('Status deletado'));
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else {
+			$this->__getMessage(ERROR_DELETE);
 		}
-		$this->Session->setFlash(__('O status não pode ser deletado. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

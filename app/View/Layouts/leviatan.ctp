@@ -114,7 +114,8 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 				<?php echo $this->Session->flash(); ?>
 				<?php echo $this->Session->flash('auth'); ?>
 			</div>	
-			<div class="row-fluid wrapper">  	
+			<div class="row-fluid wrapper">  
+				<?php echo $this->element('menu'); ?>					
 				<?php echo $this->fetch('content'); ?>
 			</div> 
 			<div id="page-heaer">

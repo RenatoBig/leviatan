@@ -7,29 +7,22 @@ App::uses('AppController', 'Controller');
  */
 class FunctionalUnitsController extends AppController {
 
-
+	public $layout = 'leviatan';
+	
 /**
  * index method
  *
  * @return void
  */
 	public function index() {
-		$this->FunctionalUnit->recursive = 0;
+		$this->FunctionalUnit->recursive = -1;
+		
+		$options['order'] = array('FunctionalUnit.name'=>'asc');
+		$options['limit'] = 10;
+		
+		$this->paginate = $options;
+		
 		$this->set('functionalUnits', $this->paginate());
-	}
-
-/**
- * view method
- *
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		$this->FunctionalUnit->id = $id;
-		if (!$this->FunctionalUnit->exists()) {
-			throw new NotFoundException(__('Unidade funcional inválida'));
-		}
-		$this->set('functionalUnit', $this->FunctionalUnit->read(null, $id));
 	}
 
 /**
@@ -41,10 +34,10 @@ class FunctionalUnitsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->FunctionalUnit->create();
 			if ($this->FunctionalUnit->save($this->request->data)) {
-				$this->Session->setFlash(__('A unidade funcional foi cadastrada'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('A unidade funcional não pode ser cadastrada. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		}
 	}
@@ -58,14 +51,15 @@ class FunctionalUnitsController extends AppController {
 	public function edit($id = null) {
 		$this->FunctionalUnit->id = $id;
 		if (!$this->FunctionalUnit->exists()) {
-			throw new NotFoundException(__('Unidade funcional inválida'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->FunctionalUnit->save($this->request->data)) {
-				$this->Session->setFlash(__('A unidade funcional foi alterada'));
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('A unidade funcional não pode ser alterada. Por favor, tente novamente.'));
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			$this->request->data = $this->FunctionalUnit->read(null, $id);
@@ -80,18 +74,20 @@ class FunctionalUnitsController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->referer(array('action'=>'index'));
 		}
 		$this->FunctionalUnit->id = $id;
 		if (!$this->FunctionalUnit->exists()) {
-			throw new NotFoundException(__('Unidade funcional inválida'));
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action' => 'index'));
 		}
 		
 		if ($this->FunctionalUnit->delete()) {
-			$this->Session->setFlash(__('A unidade funcional foi deletada'));
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else {
+			$this->__getMessage(ERROR_DELETE);
 		}
-		$this->Session->setFlash(__('A unidade não pode ser deletada. Possivelmente o registro está cadastrado em outra tabela.'));
 		$this->redirect(array('action' => 'index'));
 	}
 }

@@ -163,5 +163,12 @@ define("NDC_A", "6");
 define("NDC_B", "7");
 define("DIRETOR", "9");
 
+//Constantes definidas para as mensagens
+define("SUCCESS", 1);
+define("ERROR", 2);
+define("ERROR_DELETE", 3);
+define("INVALID_RECORD", 4);
+define("BAD_REQUEST", 5);
+
 
 

@@ -1,30 +1,4 @@
-<script type="text/javascript">
-$(document).ready(function() {
-
-	//validação de formulário
-	$("#InputSubcategoryEditForm").validate({ 
-    	rules: { 			
-			'data[InputSubcategory][name]':{
-				required: true
-			},
-			'data[InputSubcategory][description]':{
-				required: true
-			}
-		},
-		messages: {
-			'data[InputSubcategory][name]':{
-				required: "Campo obrigatório"
-			},
-			'data[InputSubcategory][description]':{
-				required: "Campo obrigatório"
-			}
-		}
-	}); 
-	
-});
-</script>
-
-<div class="inputSubcategories form">
+<div class="span9 well">
 <?php echo $this->Form->create('InputSubcategory');?>
 	<fieldset>
 		<legend><?php echo __('Editar subcategoria de insumo'); ?></legend>
@@ -34,15 +8,7 @@ $(document).ready(function() {
 		echo $this->Form->input('description', array('label'=>__('Descrição')));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Alterar'));?>
-</div>
-<div class="actions">
-	<h3><?php echo __('Ações'); ?></h3>
-	<ul>
-
-		<li><?php echo $this->Form->postLink(__('Deletar subcategoria'), array('action' => 'delete', $this->Form->value('InputSubcategory.id')), null, __('Deseja realmente deletar a subcategoria #%s?', $this->Form->value('InputSubcategory.name'))); ?></li>
-		<li><?php echo $this->Html->link(__('Listar subcategorias'), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('Listar insumos'), array('controller' => 'inputs', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('Novo insumo'), array('controller' => 'inputs', 'action' => 'add')); ?> </li>
-	</ul>
+	<?php echo $this->Form->button(__('Alterar'), array('class'=>'btn btn-primary', 'title'=>__('Alterar subcategoria')));?>
+	<?php echo $this->Html->link(__('Cancelar'), array('controller'=>'input_subcategories', 'action'=>'index'), array('class'=>'btn', 'title'=>__('Cancelar')))?>
+<?php echo $this->Form->end();?>
 </div>

@@ -1,9 +1,7 @@
-<?php echo $this->element('menu'); ?>
-
 <div class="span9 well">
 	<?php 
 	if(empty($items)) {
-		echo "<div class='span4 alert alert-info'>";
+		echo "<div class='alert alert-info'>";
 		echo "<h3>Não há items</h3>";
 		echo "</div>";	
 	} else{?>
@@ -44,7 +42,7 @@
 				<?php echo $this->Html->link($item['PngcCode']['keycode'], array('controller' => 'pngc_codes', 'action' => 'view', $item['PngcCode']['id'])); ?>
 			</td>			
 			<td class="actions">
-				<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $item['Item']['id']), array('class'=>'btn  btn-primary', 'title'=>'Editar o item')); ?>
+				<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $item['Item']['id']), array('class'=>'btn', 'title'=>'Editar o item')); ?>
 				<?php echo $this->Form->postLink(__('Deletar'), array('action' => 'delete', $item['Item']['id']), array('class'=>'btn  btn-danger', 'title'=>'Deletar o item'), __('Deseja realmente deletar o item #%s?', $item['Item']['name'])); ?>
 			</td>
 		</tr>		

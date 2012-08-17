@@ -2,10 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 	<head>
 		<?php echo $this->Html->charset(); ?>
-		<?php
-			echo $this->fetch('css');	
-			echo $this->Html->css(array('bootstrap'));	
-		?>		
+		<link type="text/css" rel="stylesheet" href="css/print.css">		
 	</head>
 	<body>	
 		<div class="container">				

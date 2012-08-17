@@ -7,7 +7,8 @@ App::uses('AppController', 'Controller');
  */
 class EmployeesController extends AppController {
 	
-	var $layout = 'leviatan';
+	public $layout = 'leviatan';
+	public $helpers = array('Time');
 	
 /**
  * index method
@@ -17,7 +18,9 @@ class EmployeesController extends AppController {
 	public function index() {
 		$this->Employee->recursive = 0;
 		
-		$options['limit'] = 5;
+		$options['order'] = array('Employee.name');
+		$options['limit'] = 10;
+		
 		$this->paginate = $options;
 		
 		$this->set('employees', $this->paginate());
@@ -32,7 +35,7 @@ class EmployeesController extends AppController {
 	public function view($id = null) {
 		$this->Employee->id = $id;
 		if (!$this->Employee->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('FUncionário inválido').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('employee', $this->Employee->read(null, $id));
@@ -48,14 +51,14 @@ class EmployeesController extends AppController {
 			
 			$this->Employee->create();
 			if ($this->Employee->save($this->request->data)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('O funcionário foi cadastrado.').'</div>');
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('O funcionário não pode ser cadastrado. Por favor, tente novamente.').'</div>');
+				$this->__getMessage(ERROR);
 			}
 		}
 		
-		$inicial = array(''=>'Selecione um item');
+		$inicial = array(''=>__('Selecione um item'));
 		$unities = $this->Employee->UnitySector->Unity->find('list');
 		
 		$unities = $inicial + $unities;
@@ -72,15 +75,15 @@ class EmployeesController extends AppController {
 	public function edit($id = null) {
 		$this->Employee->id = $id;
 		if (!$this->Employee->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('Funcionário inválido').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->request->is('post') || $this->request->is('put')) {
 			if ($this->Employee->save($this->request->data)) {
-				$this->Session->setFlash('<div class="alert alert-success">'.__('O funcionário foi alterado.').'</div>');
+				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash('<div class="alert alert-error">'.__('O funcionário não pode ser cadastrado. Por favor, tente novamente.').'</div>');
+				$this->__getMessage(ERROR);
 			}
 		} else {
 			//Recupera o registro do funcionário para edição
@@ -97,7 +100,7 @@ class EmployeesController extends AppController {
 	 */
 	private function __getInformationEdit() {
 		
-		$inicial = array(''=>'Selecione um item');
+		$inicial = array(''=>__('Selecione um item'));
 		//recupera as unidades
 		$unities = $this->Employee->UnitySector->Unity->find('list');
 		//Recupera os setores da unidade associados ao funcuinário selecionado
@@ -130,19 +133,21 @@ class EmployeesController extends AppController {
  */
 	public function delete($id = null) {
 		if (!$this->request->is('post')) {
-			throw new MethodNotAllowedException();
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect(array('action'=>'index'));
 		}
 		$this->Employee->id = $id;
 		if (!$this->Employee->exists()) {
-			$this->Session->setFlash('<div class="alert alert-error">'.__('FUncionário inválido').'</div>');
+			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
 		
 		if ($this->Employee->delete()) {
-			$this->Session->setFlash('<div class="alert alert-success">'.__('Funcionário deletado.').'</div>');
-			$this->redirect(array('action' => 'index'));
+			$this->__getMessage(SUCCESS);
+		}else {
+			$this->__getMessage(ERROR_DELETE);
 		}
-		$this->Session->setFlash('<div class="alert alert-error">'.__('Não foi possível deletar o funcionário. Possivelmente o registro está cadastrado em outra tabela.').'</div>');
+
 		$this->redirect(array('action' => 'index'));
 	}
 }

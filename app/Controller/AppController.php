@@ -157,16 +157,21 @@ class AppController extends Controller {
     	if($this->Auth->user() == null) {
     		$menus[] = array('name'=>'Itens', 'link'=>array('controller'=>'pages', 'action'=>'home'));
     	}else {
+    		if($this->Auth->user('group_id') == ADMIN) {
+    			$menus[] = array('name'=>'Área administrativa', 'link'=>array('controller'=>'admin', 'action'=>'index'));
+    		}
+    		
     		$menus[] = array('name'=>'Minhas solicitações', 'link'=>array('controller'=>'solicitations', 'action'=>'index'));
     		$menus[] = array('name'=>'Fazer solicitação', 'link'=>array('controller'=>'solicitation_items', 'action'=>'index'));
     		$menus[] = array('name'=>'Meu carrinho', 'link'=>array('controller'=>'cart_items', 'action'=>'index'));
-    
+    		
     		if($this->Auth->user('group_id') == NDE_A || $this->Auth->user('group_id') == ADMIN) {
     			$menus[] = array('name'=>'Solicitações pendentes', 'link'=>array('controller'=>'solicitations', 'action'=>'all'));
     			$menus[] = array('name'=>'Pedidos', 'link'=>array('controller'=>'orders', 'action'=>'index'));
     			$menus[] = array('name'=>'Itens', 'link'=>array('controller'=>'items', 'action'=>'index'));    		
     			$menus[] = array('name'=>'Adicionar Item', 'link'=>array('controller'=>'items', 'action'=>'add'));
     		}
+    		
     	}
     
     	return $menus;
@@ -203,4 +208,33 @@ class AppController extends Controller {
     	
     	return $pending;
     }
+    
+/**
+ * 
+ */
+    protected function __getMessage($type) {
+    	
+    	$value = '';
+    	
+    	switch($type){
+    		case SUCCESS:
+    			$value = $this->Session->setFlash('<div class="alert alert-success">'.__('Operação realizada com sucesso.').'</div>');
+    			break;
+    		case ERROR:
+    			$value = $this->Session->setFlash('<div class="alert alert-error">'.__('Operação não realizada. Favor entrar em contato com o administrador do sistema').'</div>');
+    			break; 
+    		case ERROR_DELETE:
+    			$value = $this->Session->setFlash('<div class="alert alert-error">'.__('Operação não realizada. Provavelmente o registro está associado a outra tabela').'</div>');
+    			break;
+    		case INVALID_RECORD:
+    			$value = $this->Session->setFlash('<div class="alert alert-error">'.__('Registro inválido').'</div>');
+    			break;
+    		case BAD_REQUEST:
+    			$value = $this->Session->setFlash('<div class="alert alert-error">'.__('Requisição inválida.').'</div>');
+    			break;    		
+    	}
+    	
+    	return $value;
+    }
+    
 }

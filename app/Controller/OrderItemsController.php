@@ -10,16 +10,6 @@ class OrderItemsController extends AppController {
 	public $layout = 'leviatan';
 
 /**
- * index method
- *
- * @return void
- */
-	public function index() {
-		$this->OrderItem->recursive = 0;
-		$this->set('orderItems', $this->paginate());
-	}
-
-/**
  *
  * 
  */

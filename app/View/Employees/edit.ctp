@@ -1,14 +1,5 @@
-<div class="span2 actions">	
-	<ul class="nav nav-list">
-		<li class="nav-header"><h3><?php echo __('Ações'); ?></h3></li>
-		<li><?php echo $this->Html->link(__('Funcionários'), array('action' => 'index'), array('class'=>'btn')); ?></li>
-		<li><?php echo $this->Html->link(__('Usuários'), array('controller' => 'users', 'action' => 'index'), array('class'=>'btn')); ?> </li>
-		<li><?php echo $this->Html->link(__('Unidades setores'), array('controller' => 'unity_sectors', 'action' => 'index'), array('class'=>'btn')); ?> </li>
-	</ul>
-</div>
-
-<div class="span4 form">
-<?php echo $this->Form->create('Employee', array('class'=>'well'));?>
+<div class="span9 well">
+<?php echo $this->Form->create('Employee');?>
 	<fieldset>
 		<legend><?php echo __('Editar funcionário'); ?></legend>
 	<?php
@@ -42,7 +33,7 @@
 		echo $this->Form->input('unity_sector_id', array('label'=>__('Setor'),'id'=>'sector','options'=>$sectors, 'value'=>$this->request->data['UnitySector']['id']));
 		echo $this->Form->input('name', array('label'=>__('Nome')));
 		echo $this->Form->input('surname', array('label'=>__('Sobrenome')));
-		echo $this->Form->input('birth_date', array('label'=>__('Data de Nascimento'), 'class'=>'calendario input-small', 'type'=>'text'));
+		echo $this->Form->input('birth_date', array('label'=>__('Data de Nascimento'), 'class'=>'calendario input-small', 'type'=>'text', 'value'=>$this->Time->format('d/m/Y', $this->request->data['Employee']['birth_date'])));
 		echo $this->Form->input('email', array('label'=>__('Email')));
 		echo $this->Form->input('phone', array('label'=>__('Telefone')));
 		echo $this->Form->input('rg', array('label'=>__('RG')));
@@ -55,5 +46,7 @@
 		echo $this->Form->input('account', array('label'=>__('Conta corrente')));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(array('label'=>__('Alterar'), 'class'=>'btn btn-primary'));?>
+		<?php echo $this->Form->button(__('Alterar'), array('class'=>'btn btn-primary', 'title'=>__('Alterar funcionário')));?>
+	<?php echo $this->Html->link(__('Cancelar'), array('controller'=>'employees', 'action'=>'index'), array('class'=>'btn', 'title'=>__('Cancelar')))?>
+<?php echo $this->Form->end();?>
 </div>

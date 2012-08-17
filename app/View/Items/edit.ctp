@@ -1,5 +1,3 @@
-<?php echo $this->element('menu'); ?>
-
 <div class="span9 well">
 <?php echo $this->Form->create('Item', array('type'=>'file', 'class'=>'well'));?>
 	<fieldset>
@@ -25,5 +23,7 @@
 		
 	?>
 	</fieldset>
-<?php echo $this->Form->end(array('label'=>__('Alterar'), 'class'=>'btn btn-primary'));?>
+	<?php echo $this->Form->button(__('Alterar'), array('class'=>'btn btn-primary', 'title'=>__('Alterar item')));?>
+	<?php echo $this->Html->link('Cancelar', array('controller'=>'items', 'action'=>'index'), array('class'=>'btn', 'title'=>'Cancelar'));?>
+<?php echo $this->Form->end();?>
 </div>
