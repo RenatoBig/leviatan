@@ -72,12 +72,18 @@ class SolicitationsController extends AppController {
 		
 		$this->layout = 'print';
 		
-		$options['conditions'] = array(
-			'SolicitationItem.solicitation_id'=>$id	
-		);
+		$q_solicitations = 'SELECT * FROM `solicitation_items` AS `SolicitationItem`
+								JOIN(`solicitations` AS `Solicitation`) ON (`SolicitationItem`.`solicitation_id`=`Solicitation`.`id`)
+								JOIN(`items` AS `Item`) ON (`SolicitationItem`.`item_id`=`Item`.`id`)
+								JOIN(`users` AS `User`) ON (`Solicitation`.`user_id`=`User`.`id`)
+								JOIN(`employees` AS `Employee`) ON (`User`.`employee_id`=`Employee`.`id`)
+								JOIN(`unity_sectors` AS `UnitySector`) ON (`Employee`.`unity_sector_id`=`UnitySector`.`id`)
+								JOIN(`sectors` AS `Sector`) ON (`UnitySector`.`sector_id` = `Sector`.`id`)
+								JOIN(`unities` AS `Unity`) ON (`UnitySector`.`unity_id`=`Unity`.`id`) 
+								WHERE `SolicitationItem`.`solicitation_id` = '.$id.' ORDER BY `SolicitationItem`.`item_id` ASC';
 		
-		$data = $this->SolicitationItem->find('all', $options);
-
+		$data = $this->SolicitationItem->query($q_solicitations);
+		
 		$this->set(compact('data'));
 		
 		$params = array(

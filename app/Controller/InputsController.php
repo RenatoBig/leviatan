@@ -8,7 +8,7 @@ App::uses('AppController', 'Controller');
 class InputsController extends AppController {
 
 	public $layout = 'leviatan';
-	public $uses = array('Input', 'InputSubcategory');
+	public $uses = array('Input', 'InputCategory','InputSubcategory');
 	
 /**
  * index method
@@ -18,7 +18,7 @@ class InputsController extends AppController {
 	public function index() {
 		$this->Input->recursive = 0;
 		
-		$options['order'] = array('Input.id'=>'asc');
+		$options['order'] = array('InputCategory.name'=>'asc', 'InputSubcategory.name'=>'asc');
 		$options['limit'] = 10;
 		
 		$this->paginate = $options;
@@ -42,13 +42,31 @@ class InputsController extends AppController {
 			}
 		}
 		
-		$inicio = array(''=>__('Selecione um item'));		
-		$inputCategories = $this->Input->InputCategory->find('list');
-		//$inputSubcategories = $this->Input->InputSubcategory->find('list');
-		//-------------
-		$inputCategories = $inicio + $inputCategories;
-		//$inputSubcategories = $inicio + $inputSubcategories;
+		$inputCategories = $this->__getDataSelect('InputCategory');
 		$this->set(compact('inputCategories'));
+	}
+	
+/**
+ * 
+ */
+	private function __getDataSelect($model) {
+		
+		$inicio = array(''=>'-- Nenhum --');
+		
+		$options['fields'] = array(
+				$model.'.id', $model.'.name'
+		);
+		$options['order'] = array($model.'.name'=>'asc');
+		
+		$this->$model->recursive = -1;
+		$values = $this->$model->find('all', $options);
+		foreach($values as $value):
+		$data[$value[$model]['id']] = $value[$model]['name'];
+		endforeach;
+		
+		$data = $inicio + $data;
+		
+		return $data;
 	}
 
 /**
@@ -74,7 +92,7 @@ class InputsController extends AppController {
 			$this->request->data = $this->Input->read(null, $id);
 		}
 		
-		$inicio = array(''=>__('Selecione um item'));
+		$inicio = array(''=>__('-- Nenhum --'));
 		$inputCategories = $this->Input->InputCategory->find('list');
 		//$inputSubcategories = $this->Input->InputSubcategory->find('list');
 		//-------------
@@ -126,7 +144,7 @@ class InputsController extends AppController {
 		if(empty($subcategories)) {
 			$inicio = array(''=>'Não existem subcategorias ou foram todas cadastradas');	
 		}else {
-			$inicio = array(''=>'Selecione um item');
+			$inicio = array(''=>'-- Nenhum --');
 		}
 		$subcategories = $inicio + $subcategories;
 		
@@ -157,5 +175,29 @@ class InputsController extends AppController {
 		}
 		$this->redirect(array('action' => 'index'));
 	}	
-
+	
+/**
+ * 
+ */
+	public function checkEntries() {
+		$this->autoRender = false;
+		if($this->request->is('ajax')) {
+			
+			$input_category_id = $this->request->data['input_category_id'];
+			$input_subcategory_id = $this->request->data['input_subcategory_id'];
+			
+			$options['conditions'] = array(
+				'Input.input_category_id'=>$input_category_id,
+				'Input.input_subcategory_id'=>$input_subcategory_id	
+			);
+			
+			$exist = $this->Input->find('first', $options);
+			
+			if($exist) {
+				echo '-1';
+			}else {
+				echo '1';
+			}
+		}
+	}
 }

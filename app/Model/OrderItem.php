@@ -24,9 +24,9 @@ class OrderItem extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'Solicitation' => array(
-			'className' => 'Solicitation',
-			'foreignKey' => 'solicitation_id',
+		'SolicitationItem' => array(
+			'className' => 'SolicitationItem',
+			'foreignKey' => 'solicitation_item_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''

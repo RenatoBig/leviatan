@@ -24,6 +24,25 @@ class InputCategoriesController extends AppController {
 		
 		$this->set('inputCategories', $this->paginate());
 	}
+	
+/**
+ * view method
+ *
+ * @param integer $id
+ * @return void
+ */
+	public function view($id = null) {
+		$this->InputCategory->id = $id;
+		if (!$this->InputCategory->exists()) {
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action'=>'index'));
+		}
+	
+		$this->InputCategory->recursive = -1;
+		$inputCategory = $this->InputCategory->read(null, $id);
+	
+		$this->set(compact('inputCategory'));
+	}
 
 /**
  * add method
@@ -65,7 +84,7 @@ class InputCategoriesController extends AppController {
 			$this->request->data = $this->InputCategory->read(null, $id);
 		}
 	}
-
+	
 /**
  * delete method
  *

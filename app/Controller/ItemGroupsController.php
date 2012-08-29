@@ -17,12 +17,30 @@ class ItemGroupsController extends AppController {
 	public function index() {
 		$this->ItemGroup->recursive = 0;
 		
-		$options['order'] = array('ItemGroup.name'=>'asc');
+		$options['order'] = array('ItemGroup.keycode'=>'asc');
 		$options['limit'] = 10;
 		
 		$this->paginate = $options;
 		
 		$this->set('itemGroups', $this->paginate());
+	}
+	
+/**
+ * view method
+ *
+ * @return void
+ */
+	public function view($id = null) {
+		$this->ItemGroup->id = $id;
+		if (!$this->ItemGroup->exists()) {
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action'=>'index'));
+		}
+		
+		$this->ItemGroup->recursive = 0;
+		$itemGroup= $this->ItemGroup->read(null, $id);
+
+		$this->set(compact('itemGroup'));
 	}
 
 /**

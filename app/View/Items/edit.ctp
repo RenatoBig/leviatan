@@ -4,8 +4,9 @@
 		<legend><?php echo __('Editar Item'); ?></legend>
 	<?php
 		echo $this->Form->input('id');
-		echo $this->Form->input('item_class_id', array('label'=>__('Classe do item')));
-		echo $this->Form->input('pngc_code_id', array('label'=>__('PNGC')));
+		echo $this->Form->input('item_group_id', array('label'=>__('Grupo do item'), 'class'=>'input-xxlarge', 'value'=>$this->request->data['ItemClass']['item_group_id']));
+		echo $this->Form->input('item_class_id', array('label'=>__('Classe do item'), 'class'=>'input-xxlarge', 'options'=>$itemClasses, 'value'=>$this->request->data['ItemClass']['id']));		
+		echo $this->Form->input('pngc_code_id', array('label'=>__('PNGC'), 'class'=>'input-xxlarge'));
 		echo $this->Form->input('keycode', array('label'=>__('Código'), 'class'=>'input-small'));
 		echo $this->Form->input('name', array('label'=>__('Nome')));
 		echo $this->Form->input('description', array('label'=>__('Descrição')));
@@ -14,10 +15,10 @@
 		echo $this->Fck->load('ItemSpecification');
 		echo $this->Form->input('image_path', array('label'=>__('Imagem'), 'type'=>'file'));
 		echo '<p>Imagem atual: </p>';
-		if(empty($item['Item']['image_path'])){
+		if(empty($this->request->data['Item']['image_path'])){
 			echo $this->Html->image('no-image.gif');
 		} else {
-			echo $this->Html->image('items'.DS.$item['Item']['image_path']);
+			echo $this->Html->image('items'.DS.$this->request->data['Item']['image_path']);
 		}
 		echo $this->Form->input('prev_image', array('type'=>'hidden', 'value'=>$this->request->data['Item']['image_path']));
 		

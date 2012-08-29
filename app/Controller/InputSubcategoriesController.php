@@ -26,6 +26,26 @@ class InputSubcategoriesController extends AppController {
 		
 		$this->set('inputSubcategories', $this->paginate());
 	}
+	
+/**
+ * view method
+ *
+ * @param integer $id
+ * @return void
+ */
+	public function view($id = null) {
+	
+		$this->InputSubcategory->id = $id;
+		if (!$this->InputSubcategory->exists()) {
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action'=>'index'));
+		}
+	
+		$this->InputSubcategory->recursive = -1;
+		$inputSubcategory = $this->InputSubcategory->read(null, $id);
+	
+		$this->set(compact('inputSubcategory'));
+	}
 
 /**
  * add method
@@ -67,7 +87,7 @@ class InputSubcategoriesController extends AppController {
 			$this->request->data = $this->InputSubcategory->read(null, $id);
 		}
 	}
-
+	
 /**
  * delete method
  *
@@ -104,39 +124,31 @@ class InputSubcategoriesController extends AppController {
 			$inputCategoryId = $this->request->data['Input']['input_category_id'];
 			
 			if($inputCategoryId == "") {
-				exit;
-			}
+				$subcategories = array(''=>'Selecione uma categoria');
+				$this->set(compact('subcategories'));
 
-			$db = $this->Input->getDataSource();			
-			$subQuery = $db->buildStatement(
-			    array(
-			        'fields'     => array(' * '),
-			        'table'      => $db->fullTableName($this->Input),
-			        'alias'      => 'Input',
-			        'limit'      => null,
-			        'offset'     => null,
-			        'joins'      => array(),
-			        'conditions' => array(
-			    		'InputSubcategory.id = Input.input_subcategory_id',
-			  			'Input.input_category_id'=>$inputCategoryId
-			    	),
-			        'order'      => null,
-			        'group'      => null
-			    ),
-			    $this->Input
-			);
-			$subQuery = ' NOT EXISTS (' . $subQuery . ') ';
-			$subQueryExpression = $db->expression($subQuery);
-			
-			$conditions[] = $subQueryExpression;
-			$subcategories = $this->InputSubcategory->find('list', compact('conditions'));
-			
-			if(empty($subcategories)) {
-				$inicio = array(''=>'Não existem subcategorias ou foram todas cadastradas');	
-			}else {
-				$inicio = array(''=>'Selecione um item');
+				return;
 			}
-			$subcategories = $inicio + $subcategories;
+			
+			$q_query_subcategories = 'SELECT `InputSubcategory`.`id`, `InputSubcategory`.`name`
+										FROM `input_subcategories` AS `InputSubcategory`
+										WHERE NOT EXISTS (
+											SELECT `Input`.`input_subcategory_id` 
+												FROM `inputs` AS `Input`
+												WHERE `InputSubcategory`.`id`=`Input`.`input_subcategory_id` AND `Input`.`input_category_id`='.$inputCategoryId.')
+									 ORDER BY `InputSubcategory`.`name`';
+			$data = $this->InputSubcategory->query($q_query_subcategories);
+
+			if(empty($data)) {
+				$subcategories = array(''=>'Não existem subcategorias ou foram todas cadastradas');
+			}else {			
+				foreach($data as $value):
+					$subcategories[$value['InputSubcategory']['id']] = $value['InputSubcategory']['name']; 
+				endforeach;
+				
+				$inicio = array(''=>'-- Nenhum --');
+				$subcategories = $inicio + $subcategories;
+			}			
 			
 			$this->set(compact('subcategories'));
 			$this->layout = 'ajax';
@@ -153,40 +165,33 @@ class InputSubcategoriesController extends AppController {
 			$inputCategoryId = $this->request->data['PngcCode']['input_category_id'];
 			
 			if($inputCategoryId == "") {
-				exit;
-			}
-
-			$db = $this->Input->getDataSource();			
-			$subQuery = $db->buildStatement(
-			    array(
-			        'fields'     => array(' * '),
-			        'table'      => $db->fullTableName($this->Input),
-			        'alias'      => 'Input',
-			        'limit'      => null,
-			        'offset'     => null,
-			        'joins'      => array(),
-			        'conditions' => array(
-			    		'InputSubcategory.id = Input.input_subcategory_id',
-			  			'Input.input_category_id'=>$inputCategoryId
-			    	),
-			        'order'      => null,
-			        'group'      => null
-			    ),
-			    $this->Input
-			);
-
-			$subQuery = ' EXISTS (' . $subQuery . ') ';
-			$subQueryExpression = $db->expression($subQuery);			
-			$conditions[] = $subQueryExpression;
-			$subcategories = $this->InputSubcategory->find('list', compact('conditions'));
+				$subcategories = array(''=>'Selecione uma categoria');
+				$this->set(compact('subcategories'));
+				$this->render('getSubcategories', 'ajax');
+				
+				return;
+			}			
+			
+			$q_input_subcategories = 'SELECT `InputSubcategory`.`id`, `InputSubcategory`.`name`
+										FROM `input_subcategories` AS `InputSubcategory`
+										WHERE `InputSubcategory`.`id` IN 
+											(SELECT `Input`.`input_subcategory_id` 
+												FROM `inputs` AS `Input` 
+												WHERE `Input`.`input_category_id`='.$inputCategoryId.') ORDER BY `InputSubcategory`.`name` ASC';
+			$subcategories = $this->InputSubcategory->query($q_input_subcategories);
 			
 			if(empty($subcategories)) {
-				$inicio = array(''=>'Não existem subcategorias ou foram todas cadastradas');	
+				$subcategories = array(''=>'Não existem subcategorias ou foram todas cadastradas');
 			}else {
-				$inicio = array(''=>'Selecione um item');
+				foreach($subcategories as $subcategory):
+					$data[$subcategory['InputSubcategory']['id']] = $subcategory['InputSubcategory']['name'];
+				endforeach;
+				$inicio = array(''=>'-- Nenhum --');
+				$data = $inicio + $data;
+	
+				$subcategories = $data;
 			}
-			$subcategories = $inicio + $subcategories;
-
+			
 			$this->set(compact('subcategories'));
 			$this->render('getSubcategories', 'ajax');
 		}		

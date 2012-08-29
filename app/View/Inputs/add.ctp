@@ -30,10 +30,10 @@
 		//----------------------
 	
 		echo $this->Form->input('input_category_id', array('label'=>__('Categoria')));
-		echo $this->Form->input('input_subcategory_id', array('label'=>__('Subcategoria')));
+		echo $this->Form->input('input_subcategory_id', array('label'=>__('Subcategoria'), 'options'=>array(''=>'Selecione uma categoria')));
 	?>
 	</fieldset>
-	<?php echo $this->Form->button(__('Cadastrar'), array('class'=>'btn btn-primary', 'title'=>__('Cadastrar insumo')));?>
+	<?php echo $this->Form->button(__('Cadastrar'), array('id'=>'submitInput', 'class'=>'btn btn-primary', 'type'=>'button', 'title'=>__('Cadastrar insumo')));?>
 	<?php echo $this->Html->link(__('Cancelar'), array('controller'=>'inputs', 'action'=>'index'), array('class'=>'btn', 'title'=>__('Cancelar')))?>
 <?php echo $this->Form->end();?>
 </div>

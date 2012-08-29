@@ -1,12 +1,12 @@
 <div class="span9 well">
+		
+	<h2><?php echo __('Solicitações');?></h2>
 	<?php 
 	if(empty($solicitations)) {
 		echo "<div class='alert alert-info'>";
 		echo "<h3>Não há solicitações</h3>";
 		echo "</div>";
-	}else {?>	
-		<h2><?php echo __('Solicitações');?></h2>
-		<br>
+	}else {?>		
 		<table cellpadding="0" cellspacing="0" class="table table-striped">
 			<thead>
 				<tr>

@@ -17,3 +17,6 @@
  */
 ?>
 <?php echo $this->fetch('content'); ?>
+
+<?php echo $this->element('sql_dump'); ?>
+<?php if(class_exists('JsHelper') && method_exists($this->Js, 'writeBuffer')) echo $this->Js->writeBuffer(); ?>

@@ -8,6 +8,7 @@ App::uses('AppController', 'Controller');
 class FunctionalUnitsController extends AppController {
 
 	public $layout = 'leviatan';
+	public $helpers = array('Fck');
 	
 /**
  * index method
@@ -17,7 +18,7 @@ class FunctionalUnitsController extends AppController {
 	public function index() {
 		$this->FunctionalUnit->recursive = -1;
 		
-		$options['order'] = array('FunctionalUnit.name'=>'asc');
+		$options['order'] = array('FunctionalUnit.keycode'=>'asc');
 		$options['limit'] = 10;
 		
 		$this->paginate = $options;
@@ -64,6 +65,20 @@ class FunctionalUnitsController extends AppController {
 		} else {
 			$this->request->data = $this->FunctionalUnit->read(null, $id);
 		}
+	}
+	
+/**
+ * view method
+ *
+ * @param integer $id
+ * @return void
+ */
+	public function view($id = null) {
+	
+		$this->FunctionalUnit->recursive = -1;
+		$functionalUnit = $this->FunctionalUnit->read(null, $id);
+	
+		$this->set(compact('functionalUnit'));
 	}
 
 /**

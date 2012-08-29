@@ -6,6 +6,6 @@
 		<?php echo str_replace( '|', '</li><li>', $this->Paginator->numbers()) ?>
 	</li>
 	<li>
-		<?php echo $this->Paginator->next(' Próximo »', null, null, array('class' => 'disabled')) ?>
+		<?php echo $this->Paginator->next(' Próximo »', null, null, array('class' => 'next disabled')) ?>
 	</li>
 </ul>

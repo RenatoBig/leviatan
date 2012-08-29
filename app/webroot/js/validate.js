@@ -334,6 +334,9 @@ $(document).ready(function() {
 			'data[Item][pngc_code_id]':{
 				required: true
 			},
+			'data[Item][keycode]':{
+				required: true
+			},
 			'data[Item][name]':{
 				required: true
 			},
@@ -346,6 +349,9 @@ $(document).ready(function() {
 				required: "Campo obrigatório"
 			},
 			'data[Item][pngc_code_id]':{
+				required: "Campo obrigatório"
+			},
+			'data[Item][keycode]':{
 				required: "Campo obrigatório"
 			},
 			'data[Item][name]':{
@@ -373,15 +379,15 @@ $(document).ready(function() {
 	//--------------------------------------------
 	//PNGC
 	//Combobox
-	$('#PngcCodeAddForm #PngcCodeInputSubcategoryId').parent().hide();
+	//$('#PngcCodeAddForm #PngcCodeInputSubcategoryId').parent().hide();
 	
-	$('#PngcCodeInputCategoryId').change(function() {
+	/*$('#PngcCodeInputCategoryId').change(function() {
 		if($(this).val() == 0) {
 			$('#PngcCodeInputSubcategoryId').parent().hide('slow');
 		}else {
 			$('#PngcCodeInputSubcategoryId').parent().show('slow');
 		}
-	});	
+	});	*/
 
 	//validação de formulário
 	$("#PngcCodeAddForm, #PngcCodeEditForm").validate({ 
@@ -392,15 +398,12 @@ $(document).ready(function() {
 			'data[PngcCode][expense_group_id]':{
 				required: true
 			},
-			'data[PngcCode][functional_unit_id]':{
-				required: true
-			},
 			'data[PngcCode][input_category_id]':{
 				required: true
 			},
-			'data[PngcCode][input_subcategory_id]':{
+		/*	'data[PngcCode][input_subcategory_id]':{
 				required: true
-			},
+			},*/
 			'data[PngcCode][measure_type_id]':{
 				required: true
 			}
@@ -412,15 +415,12 @@ $(document).ready(function() {
 			'data[PngcCode][expense_group_id]':{
 				required: "Este campo é obrigatório"
 			},
-			'data[PngcCode][functional_unit_id]':{
-				required: "Este campo é obrigatório"
-			},
 			'data[PngcCode][input_category_id]':{
 				required: "Este campo é obrigatório"
 			},
-			'data[PngcCode][input_subcategory_id]':{
+			/*'data[PngcCode][input_subcategory_id]':{
 				required: "Este campo é obrigatório"
-			},
+			},*/
 			'data[PngcCode][measure_type_id]':{
 				required: "Este campo é obrigatório"
 			}
@@ -432,6 +432,9 @@ $(document).ready(function() {
 	//validação de formulário
 	$("#MeasureTypeAddForm, #MeasureTypeEditForm").validate({ 
     	rules: { 
+    		/*'data[MeasureType][keycode]':{
+				required: true,
+			},*/
 			'data[MeasureType][name]':{
 				required: true,
 			},
@@ -440,6 +443,9 @@ $(document).ready(function() {
 			}
 		},
 		messages: {
+			/*'data[MeasureType][keycode]':{
+				required: "Campo obrigatório",
+			},*/
 			'data[MeasureType][name]':{
 				required: "Campo obrigatório.",
 			},
@@ -506,7 +512,10 @@ $(document).ready(function() {
 	//InputSubcategory
 	//validação de formulário
 	$("#InputSubcategoryAddForm, #InputSubcategoryEditForm").validate({ 
-    	rules: { 			
+    	rules: { 
+    		/*'data[InputSubcategory][keycode]':{
+				required: true
+			},*/
 			'data[InputSubcategory][name]':{
 				required: true
 			},
@@ -515,6 +524,9 @@ $(document).ready(function() {
 			}
 		},
 		messages: {
+			/*'data[InputSubcategory][keycode]':{
+				required: "Campo obrigatório"
+			},*/
 			'data[InputSubcategory][name]':{
 				required: "Campo obrigatório"
 			},
@@ -527,7 +539,10 @@ $(document).ready(function() {
 	//InputCategory
 	//validação de formulário
 	$("#InputCategoryAddForm, #InputCategoryEditForm").validate({ 
-    	rules: { 			
+    	rules: { 
+    		/*'data[InputCategory][keycode]':{
+				required: true
+			},*/
 			'data[InputCategory][name]':{
 				required: true
 			},
@@ -536,6 +551,9 @@ $(document).ready(function() {
 			}
 		},
 		messages: {
+			/*'data[InputCategory][keycode]':{
+				required: "Campo obrigatório"
+			},*/
 			'data[InputCategory][name]':{
 				required: "Campo obrigatório"
 			},
@@ -547,33 +565,23 @@ $(document).ready(function() {
 	//------------------------------
 	//Input
 	//Combobox
-	$('#InputAddForm #InputInputSubcategoryId').parent().hide();
-	
-	$('#InputInputCategoryId').change(function() {
-		if($(this).val() == 0) {
-			$('#InputInputSubcategoryId').parent().hide('slow');
-		}else {
-			$('#InputInputSubcategoryId').parent().show('slow');
-		}
-	});	
-
 	//validação de formulário
 	$("#InputAddForm, #InputEditForm").validate({ 
     	rules: { 			
 			'data[Input][input_category_id]':{
 				required: true
 			},
-			'data[Input][input_subcategory_id]':{
+			/*'data[Input][input_subcategory_id]':{
 				required: true
-			}
+			}*/
 		},
 		messages: {
 			'data[Input][input_category_id]':{
 				required: "Campo obrigatório"
 			},
-			'data[Input][input_subcategory_id]':{
+			/*'data[Input][input_subcategory_id]':{
 				required: "Campo obrigatório"
-			}
+			}*/
 		}
 	}); 
 	//-------------------
@@ -595,7 +603,10 @@ $(document).ready(function() {
 	//FunctionalUnity
 	//validação de formulário
 	$("#FunctionalUnitAddForm, #FunctionalUnitEditForm").validate({ 
-    	rules: { 
+    	rules: {
+    		'data[FunctionalUnit][keycode]':{
+				required: true,
+			},
 			'data[FunctionalUnit][name]':{
 				required: true,
 			},
@@ -604,6 +615,9 @@ $(document).ready(function() {
 			}
 		},
 		messages: {
+			'data[FunctionalUnit][keycode]':{
+				required: "Campo obrigatório",
+			},
 			'data[FunctionalUnit][name]':{
 				required: "Campo obrigatório.",
 			},
@@ -617,6 +631,9 @@ $(document).ready(function() {
 	//validação de formulário
 	$("#ExpenseGroupAddForm, #ExpenseGroupEditForm").validate({ 
     	rules: { 
+    		/*'data[ExpenseGroup][keycode]':{
+				required: true,
+			},*/
 			'data[ExpenseGroup][name]':{
 				required: true,
 			},
@@ -625,6 +642,9 @@ $(document).ready(function() {
 			}
 		},
 		messages: {
+			/*'data[ExpenseGroup][keycode]':{
+				required: "Campo obrigatório",
+			},*/
 			'data[ExpenseGroup][name]':{
 				required: "Campo obrigatório.",
 			},

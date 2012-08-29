@@ -29,8 +29,7 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 		<script type="text/javascript">
 		   $("#flashMessage, #alert-message").fadeIn();		   
 		   window.setTimeout(escondeMsg, 2500);		   	
-		</script>
-		
+		</script>		
 	</head>
 	<body>
 		<!-- nav-bar -->
@@ -63,7 +62,7 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 							</li>
 							<?php 
 							}	
-							if($countCartItems!= 0) {
+							if($countCartItems != 0) {
 							?>
 							<li class="active">
 								<?php								
@@ -73,7 +72,7 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 									array(
 										'escape'=>false,
 										'title'=>'Você possui Itens no carrinho',
-										'alt'=>'pendencia'
+										'alt'=>'pendencia',
 									)		
 								)
 								?>
@@ -116,7 +115,7 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 			</div>	
 			<div class="row-fluid wrapper">  
 				<?php echo $this->element('menu'); ?>					
-				<?php echo $this->fetch('content'); ?>
+				<?php echo $this->fetch('content'); ?>							
 			</div> 
 			<div id="page-heaer">
 			</div>

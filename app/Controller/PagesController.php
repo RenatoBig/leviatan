@@ -100,7 +100,7 @@ class PagesController extends AppController {
 		);
 		$options['limit'] = 10;
 		$options['order'] = array(
-				'Item.name'=>'asc'
+				'Item.item_class_id'=>'asc'
 		);
 		
 		$this->paginate = $options;

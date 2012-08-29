@@ -42,6 +42,12 @@ class MeasureType extends AppModel {
 	 * @var unknown_type
 	 */
 	var $validate = array(
+	/*	'keycode' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+					'message'=> 'É obrigátorio o código do tipo de medidas.',
+			)
+		),*/
 		'name' => array(
 			'registrationRule1' => array(
 				'rule' => 'notEmpty',

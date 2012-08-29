@@ -17,12 +17,29 @@ class ItemClassesController extends AppController {
 	public function index() {
 		$this->ItemClass->recursive = 0;
 		
-		$options['order'] = array('ItemClass.name'=>'asc');
+		$options['order'] = array('ItemClass.keycode'=>'asc');
 		$options['limit'] = 10;
 		
 		$this->paginate = $options;
 		
 		$this->set('itemClasses', $this->paginate());
+	}
+	
+/**
+ * view method 
+ * 
+ * @return void
+ */
+	public function view($id = null) {
+		$this->ItemClass->id = $id;
+		if (!$this->ItemClass->exists()) {
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action'=>'index'));
+		}
+		
+		$itemClass = $this->ItemClass->read(null, $id);
+		
+		$this->set(compact('itemClass'));		
 	}
 
 /**
@@ -40,9 +57,8 @@ class ItemClassesController extends AppController {
 				$this->__getMessage(ERROR);
 			}
 		}
-		$inicio = array(''=>'Selecione um item');
-		$itemGroups = $this->ItemClass->ItemGroup->find('list');
-		$itemGroups = $inicio + $itemGroups;
+
+		$itemGroups = $this->__getInformationForm();
 		$this->set(compact('itemGroups'));
 	}
 
@@ -98,5 +114,59 @@ class ItemClassesController extends AppController {
 		}
 		
 		$this->redirect(array('action' => 'index'));
+	}
+	
+/**
+ * 
+ */
+	public function get_by_category() {
+		if($this->request->is('ajax')) {
+			$item_group_id = $this->request->data['Item']['item_group_id'];
+
+			$this->ItemClass->recursive = -1;
+			$options['conditions'] = array(
+				'ItemClass.item_group_id'=>$item_group_id
+			);
+			$options['fields'] = array(
+				'ItemClass.id', 'ItemClass.keycode', 'ItemClass.name'	
+			);
+			$options['order'] = array('ItemClass.id'=>'asc');			
+			
+			$itemClasses = $this->ItemClass->find('all', $options);
+			
+			foreach($itemClasses as $ic):
+				$values[$ic['ItemClass']['id']] = $ic['ItemClass']['keycode'].' - '.$ic['ItemClass']['name'];
+			endforeach;
+			
+			$itemClasses = $values;			
+			
+			$inicio = array(''=>'-- Nenhum --');
+			$itemClasses = $inicio + $itemClasses;
+
+			$this->set(compact('itemClasses'));
+		}
+	}
+	
+/**
+ * 
+ */
+	private function __getInformationForm() {
+		
+		$this->ItemClass->ItemGroup->recursive = -1;
+		$options['fields'] = array(
+			'ItemGroup.id', 'ItemGroup.keycode', 'ItemGroup.name'	
+		);
+		$options['order'] = array('ItemGroup.keycode');
+		
+		$values = $this->ItemClass->ItemGroup->find('all', $options);
+		
+		foreach($values as $value):
+			$itemGroups[$value['ItemGroup']['id']] = $value['ItemGroup']['keycode'].' - '.$value['ItemGroup']['name'];
+		endforeach;
+		
+		$inicio = array(''=>'-- Nenhum --');
+		$itemGroups = $inicio + $itemGroups;
+		
+		return $itemGroups;
 	}
 }

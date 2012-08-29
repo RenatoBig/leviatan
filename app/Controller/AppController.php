@@ -218,19 +218,19 @@ class AppController extends Controller {
     	
     	switch($type){
     		case SUCCESS:
-    			$value = $this->Session->setFlash('<div class="alert alert-success">'.__('Operação realizada com sucesso.').'</div>');
+    			$value = $this->Session->setFlash(__("Operação realizada com sucesso"), 'default', array('class'=>'alert alert-success'));
     			break;
     		case ERROR:
-    			$value = $this->Session->setFlash('<div class="alert alert-error">'.__('Operação não realizada. Favor entrar em contato com o administrador do sistema').'</div>');
+    			$value = $this->Session->setFlash(__('Operação não realizada. Favor entrar em contato com o administrador do sistema'), 'default', array('class'=>'alert alert-error'));
     			break; 
     		case ERROR_DELETE:
-    			$value = $this->Session->setFlash('<div class="alert alert-error">'.__('Operação não realizada. Provavelmente o registro está associado a outra tabela').'</div>');
+    			$value = $this->Session->setFlash(__('Operação não realizada. Provavelmente o registro está associado a outra tabela'), 'default', array('class'=>'alert alert-error'));
     			break;
     		case INVALID_RECORD:
-    			$value = $this->Session->setFlash('<div class="alert alert-error">'.__('Registro inválido').'</div>');
+    			$value = $this->Session->setFlash(__('Registro inválido'), 'default', array('class'=>'alert alert-error'));
     			break;
     		case BAD_REQUEST:
-    			$value = $this->Session->setFlash('<div class="alert alert-error">'.__('Requisição inválida.').'</div>');
+    			$value = $this->Session->setFlash(__('Requisição inválida.'), 'default', array('class'=>'alert alert-error'));
     			break;    		
     	}
     	

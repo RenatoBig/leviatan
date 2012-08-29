@@ -20,7 +20,29 @@ class MeasureTypesController extends AppController {
 		$options['order'] = array('MeasureType.name'=>'asc');
 		$options['limit'] = 10;
 		
+		$this->paginate = $options;
+		
 		$this->set('measureTypes', $this->paginate());
+	}
+	
+/**
+ * view method
+ *
+ * @param integer $id
+ * @return void
+ */
+	public function view($id = null) {
+		
+		$this->MeasureType->id = $id;
+		if (!$this->MeasureType->exists()) {
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action'=>'index'));
+		}
+		
+		$this->MeasureType->recursive = -1;
+		$measureType = $this->MeasureType->read(null, $id);
+	
+		$this->set(compact('measureType'));
 	}
 
 /**

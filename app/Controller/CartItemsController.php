@@ -17,19 +17,18 @@ class CartItemsController extends AppController {
 	public function index() {
 		$user_id = $this->Auth->user('id');
 		
-		$options['limit'] = 6;
+		$options['limit'] = 2;
 		$options['conditions'] = array(
 			'CartItem.user_id'=>$user_id
 		);
 		$this->paginate = $options;
 		
 		$items = $this->paginate();
-
+		
 		$this->set(compact('items'));
 			
 		if($this->request->is('ajax')) {
-			$this->layout = 'ajax_js';
-			$this->render('ajax');
+			$this->render('ajax', 'ajax');
 		}	
 	}
 	
@@ -37,22 +36,21 @@ class CartItemsController extends AppController {
  * 
  */
 	public function add($id) {
-		if($this->request->is('post')) {
+		if($this->request->is('ajax')) {
 			
-			$user = $this->Auth->user();
-			$user_id = $user['id'];
+			$user_id = $this->Auth->user('id');
 			
 			$this->CartItem->create();
 			$data['CartItem']['user_id'] = $user_id;
 			$data['CartItem']['item_id'] = $id;
 			
 			if($this->CartItem->save($data)) {
-				$this->__getMessage(SUCCESS);
+				echo 1;
 			}else {
-				$this->__getMessage(ERROR);
+				echo -1;
 			}
 			
-			$this->redirect($this->referer());				
+			$this->autoRender = false;
 		}
 	}
 	
@@ -60,21 +58,27 @@ class CartItemsController extends AppController {
  * 
  * @param unknown_type $id
  */
-	public function delete($id) {
-		if($this->request->is('post')) {
+	public function delete($id) {		
+		$this->autoRender = false;
+		if($this->request->is('ajax')) {
 			$this->CartItem->id = $id;
 			if (!$this->CartItem->exists()) {
-				$this->__getMessage(INVALID_RECORD);
-				$this->redirect(array('action'=>'index'));
+				echo '-1';
 			}
 			
-			if ($this->CartItem->delete()) {
-				$this->__getMessage(SUCCESS);
+			if($this->CartItem->delete()) {
+				$user_id = $this->Auth->user('id');
+				$op['conditions'] = array('CartItem.user_id'=>$user_id);
+				$count = $this->CartItem->find('count', $op);
+
+				if($count == 0) {
+					echo '2';
+				}else {		
+					echo '1';
+				}
 			}else {
-				$this->__getMessage(ERROR_DELETE);
-			}
-			
-			$this->redirect($this->referer());
+				echo '0';
+			}			
 		}
 	}
 	

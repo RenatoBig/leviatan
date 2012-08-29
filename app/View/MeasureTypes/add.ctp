@@ -3,6 +3,7 @@
 	<fieldset>
 		<legend><?php echo __('Adicionar tipo de medida'); ?></legend>
 	<?php
+		//echo $this->Form->input('keycode', array('label'=>__('Código'), 'class'=>'input-mini'));
 		echo $this->Form->input('name', array('label'=>__('Nome')));
 		echo $this->Form->input('description', array('label'=>__('Descrição')));
 	?>

@@ -30,10 +30,10 @@
 		echo $this->Form->input('id');
 		echo $this->Form->input('keycode', array('label'=>'Código'));
 		echo $this->Form->input('expense_group_id', array('label'=>'Grupo de gastos'));
-		echo $this->Form->input('functional_unit_id', array('label'=>'Unidade funcional'));		
-		echo $this->Form->input('measure_type_id', array('label'=>'Tipo de medida'));
+		//echo $this->Form->input('functional_unit_id', array('label'=>'Unidade funcional'));		
 		echo $this->Form->input('input_category_id', array('label'=>__('Categoria de insumo'),'value'=>$this->request->data['Input']['input_category_id']));
 		echo $this->Form->input('input_subcategory_id', array('label'=>__('Subcategoria de insumo'), 'value'=>$this->request->data['Input']['input_subcategory_id']));
+		echo $this->Form->input('measure_type_id', array('label'=>'Tipo de medida'));
 	?>
 	</fieldset>
 	<?php echo $this->Form->button(__('Alterar'), array('class'=>'btn btn-primary', 'title'=>__('Alterar PNGC')));?>

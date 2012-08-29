@@ -29,7 +29,11 @@
 				?>
 			</td>
 			<td>
-				<?php echo $item['ItemClass']['name']; ?>
+				<?php echo $this->Html->link(
+						$item['ItemClass']['keycode'],
+						array('controller'=>'item_classes', 'action'=>'view', $item['ItemClass']['id'])
+						); 
+				?>
 			</td>
 			<td>
 				<?php echo $item['PngcCode']['keycode']; ?>

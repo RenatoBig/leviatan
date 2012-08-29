@@ -42,6 +42,12 @@ class InputSubcategory extends AppModel {
 	 * @var unknown_type
 	 */
 	var $validate = array(
+		/*'keycode' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio um código para a subcategoria.',
+			)
+		),*/
 		'name' => array(
 			'registrationRule1' => array(
 				'rule' => 'notEmpty',

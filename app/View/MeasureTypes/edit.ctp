@@ -4,6 +4,7 @@
 		<legend><?php echo __('Editar tipo de medida'); ?></legend>
 	<?php
 		echo $this->Form->input('id');
+		//echo $this->Form->input('keycode', array('label'=>__('Código'), 'class'=>'input-mini'));
 		echo $this->Form->input('name', array('label'=>__('Nome')));
 		echo $this->Form->input('description', array('label'=>__('Descrição')));
 	?>

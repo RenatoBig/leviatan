@@ -26,13 +26,6 @@ class PngcCode extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'FunctionalUnit' => array(
-			'className' => 'FunctionalUnit',
-			'foreignKey' => 'functional_unit_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),
 		'Input' => array(
 			'className' => 'Input',
 			'foreignKey' => 'input_id',
@@ -88,11 +81,6 @@ class PngcCode extends AppModel {
 				'message'=> 'É obrigátorio a escolha de um grupo de gastos.',
 			)
 		),
-		'functional_unit_id' => array(
-			'validateFunctionalUnity' => array(
-    			'rule' => 'notEmpty',
-    			'message' => 'É obrigatório a escolha de uma unidade.'),
-		),
 		'measure_type_id' => array(
 			'validateMeasureType' => array(
 				'rule' => 'notEmpty',
@@ -105,12 +93,12 @@ class PngcCode extends AppModel {
 				'message' => 'É obrigatório a escolha de uma categoria.'
 			)
 		),
-		'input_subcategory_id' => array(
+		/*'input_subcategory_id' => array(
 			'validateInputSubcateory' => array(
 				'rule' => 'notEmpty',
 				'message' => 'É obrigatório a escolha de uma subcategoria.'
 			)
-		)
+		)*/
 	);
 	
 /**

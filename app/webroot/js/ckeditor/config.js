@@ -13,6 +13,8 @@ CKEDITOR.editorConfig = function( config )
 CKEDITOR.editorConfig = function( config )
 {
 	config.toolbar = 'MyToolbar';
+	
+	config.resize_enabled = false;
 
 	config.toolbar_MyToolbar =
 	[

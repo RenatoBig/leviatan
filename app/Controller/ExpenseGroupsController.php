@@ -8,6 +8,7 @@ App::uses('AppController', 'Controller');
 class ExpenseGroupsController extends AppController {
 	
 	public $layout = 'leviatan';
+	public $helpers = array('Fck');
 
 /**
  * index method
@@ -23,6 +24,26 @@ class ExpenseGroupsController extends AppController {
 		$this->paginate = $options;
 		
 		$this->set('expenseGroups', $this->paginate());
+	}
+	
+/**
+ * view method
+ *
+ * @param integer $id
+ * @return void
+ */
+	public function view($id = null) {
+	
+		$this->ExpenseGroup->id = $id;
+		if (!$this->ExpenseGroup->exists()) {
+			$this->__getMessage(INVALID_RECORD);
+			$this->redirect(array('action'=>'index'));
+		}
+	
+		$this->ExpenseGroup->recursive = -1;
+		$expenseGroup = $this->ExpenseGroup->read(null, $id);
+	
+		$this->set(compact('expenseGroup'));
 	}
 
 /**

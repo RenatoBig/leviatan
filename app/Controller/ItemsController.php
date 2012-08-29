@@ -11,7 +11,7 @@ class ItemsController extends AppController {
 	public $components = array('Upload');
 	public $elements = array('pagination');
 	public $layout = 'leviatan';
-	public $uses = array('Item', 'CartItem', 'SolicitationItem');
+	public $uses = array('Item', 'PngcCode','ItemGroup', 'ItemClass', 'CartItem', 'SolicitationItem', 'InputCategory', 'InputSubcategory');
 	
 	
 /**
@@ -32,10 +32,11 @@ class ItemsController extends AppController {
 		
 		$this->Item->recursive = 0;
 		
-		$options['order'] = array('Item.name'=>'asc');
+		$options['order'] = array('ItemClass.keycode'=>'asc', 'Item.name'=>'asc');
 		$options['limit'] = 10;
 
 		$this->paginate = $options;
+
 		$this->set('items', $this->paginate());
 	}
 
@@ -121,14 +122,62 @@ class ItemsController extends AppController {
  * 
  * Enter description here ...
  */
-	private function __getInformationForm() {
-		$inicio = array(''=>'Selecione um item');
-		$itemClasses = $this->Item->ItemClass->find('list');
-		$pngcCodes = $this->Item->PngcCode->find('list', array('fields'=>array('PngcCode.id', 'PngcCode.keycode')));
+	private function __getInformationForm($id = null) {
+		$inicio = array(''=>'-- Nenhum --');
+		$this->ItemGroup->recursive = -1;
+		$this->InputCategory->recursive = -1;
+		$this->InputSubcategory->recursive = -1;
 		
-		$itemClasses = $inicio + $itemClasses;
+		$options['fields'] = array(
+			'ItemGroup.id', 'ItemGroup.keycode', 'ItemGroup.name'	
+		);		
+		$itemGroups = $this->ItemGroup->find('all', $options);
+		
+		foreach($itemGroups as $ig):
+			$values[$ig['ItemGroup']['id']]= $ig['ItemGroup']['keycode'].' - '.$ig['ItemGroup']['name'];
+		endforeach;
+		$itemGroups = $values;
+		
+		$op['order'] = array('PngcCode.keycode'=>'asc');
+		$pngcCodes = $this->PngcCode->find('all', $op);
+		
+		foreach($pngcCodes as $key=>$pc):
+			$input_category = $this->InputCategory->read(null, $pc['Input']['input_category_id']);
+			if($pc['Input']['input_subcategory_id'] != null) {
+				$input_subcategory = $this->InputSubcategory->read(null, $pc['Input']['input_subcategory_id']);
+			}else {
+				$input_subcategory['InputSubcategory'] = '';
+			}
+			
+			if($input_subcategory['InputSubcategory'] != '') {
+				$valuesPngc[$pc['PngcCode']['id']] = $pc['PngcCode']['keycode'].' - '.$pc['ExpenseGroup']['name'].' - '.$input_category['InputCategory']['name'].' - '.$input_subcategory['InputSubcategory']['name'];
+			}else {
+				$valuesPngc[$pc['PngcCode']['id']] = $pc['PngcCode']['keycode'].' - '.$pc['ExpenseGroup']['name'].' - '.$input_category['InputCategory']['name'];
+			}
+		endforeach;
+		
+		$pngcCodes = $valuesPngc;
+		
+		$itemGroups = $inicio + $itemGroups;
 		$pngcCodes = $inicio + $pngcCodes;
-		$this->set(compact('itemClasses', 'pngcCodes'));
+		
+		//Se id != null então é o formulário de edição. Carrega as classes do item
+		if($id != null) {			
+			$ope['conditions'] = array('ItemClass.item_group_id'=>$id);
+			$ope['order'] = array('ItemClass.keycode'=>'asc');
+			$this->ItemClass->recursive = -1;
+			$itemClasses = $this->ItemClass->find('all', $ope);
+				
+			foreach($itemClasses as $value):
+				$valuesEdit[$value['ItemClass']['id']] = $value['ItemClass']['keycode'].' - '.$value['ItemClass']['name'];
+			endforeach;
+				
+			$itemClasses = $inicio + $valuesEdit;
+		}else {
+			$itemClasses = $inicio;
+		}
+		
+		$this->set(compact('itemClasses', 'itemGroups', 'pngcCodes'));
 	}
 
 /**
@@ -171,9 +220,10 @@ class ItemsController extends AppController {
 			}
 		} else {
 			$this->request->data = $this->Item->read(null, $id);
+			$this->__getInformationForm($this->request->data['ItemClass']['item_group_id']);
 		}
 		
-		$this->__getInformationForm();
+		
 	}
 
 /**
