@@ -8,6 +8,15 @@ App::uses('AppController', 'Controller');
 class ItemClassesController extends AppController {
 	
 	public $layout = 'leviatan';
+	
+/**
+ * (non-PHPdoc)
+ * @see Controller::beforeFilter()
+ */
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow('view');
+	}
 
 /**
  * index method
@@ -39,7 +48,13 @@ class ItemClassesController extends AppController {
 		
 		$itemClass = $this->ItemClass->read(null, $id);
 		
-		$this->set(compact('itemClass'));		
+		$this->set(compact('itemClass'));
+		
+		if($this->Auth->user() == null) {
+			$this->layout = 'login';
+		}else {
+			$this->layout = 'leviatan';
+		}		
 	}
 
 /**

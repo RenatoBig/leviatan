@@ -9,6 +9,15 @@ class PngcCodesController extends AppController {
 	
 	public $layout = 'leviatan';
 	public $uses = array('PngcCode', 'Input', 'InputCategory', 'InputSubcategory', 'ExpenseGroup', 'FunctionalUnit', 'MeasureType');
+	
+/**
+ * (non-PHPdoc)
+ * @see Controller::beforeFilter()
+ */
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow('view');
+	}
 
 /**
  * index method
@@ -60,6 +69,12 @@ class PngcCodesController extends AppController {
 		$inputSubcategory = $this->InputSubcategory->read(null, $pngcCode['Input']['input_subcategory_id']);
 	
 		$this->set(compact('pngcCode', 'inputCategory', 'inputSubcategory'));
+		
+		if($this->Auth->user() == null) {
+			$this->layout = 'login';
+		}else {
+			$this->layout = 'leviatan';
+		}
 	}
 
 /**

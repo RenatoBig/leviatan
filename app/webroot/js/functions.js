@@ -49,17 +49,8 @@ $(document).ready(function() {
 		
 		var id = $(this).val();
 		
-		var caminho = '/items/changeStatus/'+id;
+		var url = '/items/changeStatus/'+id;
 
-		// pega a url atual
-		url = location.href;
-		// pega o tamanho da string até leviatan/
-		var tamanho = url.indexOf("leviatan") + "leviatan".length;
-		// pega a url até gerenciador/
-		var aux = url.substr(0, tamanho);
-		// concatena com o controller/action/id
-		url = aux + caminho;
-		
 		$.ajax({
 			url : url,
 			success : function(retorno) {
@@ -99,16 +90,7 @@ $(document).ready(function() {
 			return;
 		}
 				
-		var caminho = '/cart_items/checkout';
-	
-		// pega a url atual
-		url = location.href;
-		// pega o tamanho da string até leviatan/
-		var tamanho = url.indexOf("leviatan") + "leviatan".length;
-		// pega a url até leviatan/
-		var aux = url.substr(0, tamanho);
-		// concatena com o controller/action/
-		url = aux + caminho;
+		var url = '/cart_items/checkout';
 	
 		$.ajax({
 			type: 'post',
@@ -116,9 +98,8 @@ $(document).ready(function() {
 		    url:url,
 		    success: function(retorno){
 		    	if(retorno == 1) {
-			    	var caminho = '/solicitations/index';
-					url = aux + caminho;
-					location.href = url;
+			    	var newUrl = '/solicitations/index';
+					location.href = newUrl;
 		    	}else if(retorno == 0) {
 					location.reload();
 		    	}
@@ -132,17 +113,8 @@ $(document).ready(function() {
 
 		var id = $(this).attr('value');
 		
-		var caminho = '/justifications/view/'+id;
+		var url = '/justifications/view/'+id;
 		
-		// pega a url atual
-		url = location.href;
-		// pega o tamanho da string até leviatan/
-		var tamanho = url.indexOf("leviatan") + "leviatan".length;
-		// pega a url até gerenciador/
-		var aux = url.substr(0, tamanho);
-		// concatena com o controller/action/id
-		url = aux + caminho;
-
 		$.ajax({
 			url : url,
 			success : function(data) {
@@ -170,16 +142,7 @@ $(document).ready(function() {
 		var input_category_id = $('#PngcCodeInputCategoryId').val();
 		var input_subcategory_id = $('#PngcCodeInputSubcategoryId').val();
 
-		var caminho = '/pngc_codes/checkEntries/';
-
-		// pega a url atual
-		url = location.href;
-		// pega o tamanho da string até leviatan/
-		var tamanho = url.indexOf("leviatan") + "leviatan".length;
-		// pega a url até gerenciador/
-		var aux = url.substr(0, tamanho);
-		// concatena com o controller/action/id
-		url = aux + caminho;
+		var url = '/pngc_codes/checkEntries/';
 		
 		$.ajax({
 			type: 'POST',
@@ -210,17 +173,8 @@ $(document).ready(function() {
 		var input_category_id = $('#InputInputCategoryId').val();
 		var input_subcategory_id = $('#InputInputSubcategoryId').val();
 		
-		var caminho = '/inputs/checkEntries/';
+		var url = '/inputs/checkEntries/';
 
-		// pega a url atual
-		url = location.href;
-		// pega o tamanho da string até leviatan/
-		var tamanho = url.indexOf("leviatan") + "leviatan".length;
-		// pega a url até gerenciador/
-		var aux = url.substr(0, tamanho);
-		// concatena com o controller/action/id
-		url = aux + caminho;
-		
 		$.ajax({
 			type: 'POST',
 			url : url,
@@ -246,17 +200,7 @@ $(document).ready(function() {
 		var item_class_id = $('#SolicitationItemItemClassId').val();
 		var pngc_code_id = $('#SolicitationItemPngcCodeId').val();
 
-		var caminho = '/solicitation_items/index/';
-
-		// pega a url atual
-		url = location.href;
-		// pega o tamanho da string até leviatan/
-		var tamanho = url.indexOf("leviatan") + "leviatan".length;
-		// pega a url até gerenciador/
-		var aux = url.substr(0, tamanho);
-		// concatena com o controller/action/id
-		url = aux + caminho;
-
+		var url = '/solicitation_items/index/';
 
 		$('#html').load(url, {'item_group_id': item_group_id, 'item_class_id': item_class_id, 'pngc_code_id': pngc_code_id});
 		
@@ -267,15 +211,7 @@ $(document).ready(function() {
 		var id = $(this).val();
 		var element = $(this).parent().parent();
 
-		var caminho = '/cart_items/add/'+id;
-		// pega a url atual
-		url = location.href;
-		// pega o tamanho da string até leviatan/
-		var tamanho = url.indexOf("leviatan") + "leviatan".length;
-		// pega a url até gerenciador/
-		var aux = url.substr(0, tamanho);
-		// concatena com o controller/action/id
-		url = aux + caminho;
+		var url = '/cart_items/add/'+id;
 		
 		$.ajax({
 			type: 'POST',
@@ -298,16 +234,7 @@ $(document).ready(function() {
 		
 		var id = $(this).val();
 		
-		var caminho = '/cart_items/delete/'+id;
-
-		// pega a url atual
-		url = location.href;
-		// pega o tamanho da string até leviatan/
-		var tamanho = url.indexOf("leviatan") + "leviatan".length;
-		// pega a url até gerenciador/
-		var aux = url.substr(0, tamanho);
-		// concatena com o controller/action/id
-		url = aux + caminho;
+		var url = '/cart_items/delete/'+id;
 
 		$.ajax({
 			type: 'POST',
@@ -328,9 +255,108 @@ $(document).ready(function() {
 			complete: function() {
 				window.setTimeout(escondeMsg, 2500);
 			}
+		});		
+	});	
+	//Aprova um item
+	$('.approved-item').click(function(){
+		
+		var element = $(this).parent();
+		var value = $(this).val();
+		var index = value.indexOf("-");
+
+		var id = value.substring(0, index);
+		var status = value.substring(index+1, value.length);
+
+		var url = '/solicitation_items/changeStatus/'+id+'/'+status;
+
+		$.ajax({
+			url : url,
+			success : function(retorno) {
+				if(retorno == -1) {
+					$("#alert-message").html('<div class="alert alert-error">Não foi possível aprovar o item</div>');					
+				}else if(retorno == 1){
+					element.html('<i title="Item aprovado" class="icon-thumbs-up"></i>');
+				}	
+				$("#alert-message").show();
+			},
+			complete: function() {
+				window.setTimeout(escondeMsg, 2500);
+			}
+		});
+	});
+	//Aprova um itens selecionados
+	$('.approved-selected').click(function(){
+		
+		var ids = new Array();
+		$('input:checked').each(function(){
+			ids.push($(this).val());
 		});
 		
+		if(ids.length == 0) {
+			alert('Selecione algum item');
+			return false;
+		}
+
+		if($('#selectAll').attr('checked') == 'checked') {
+			//Retira o primeiro select, o que seleciona todos
+			ids.shift();
+		}
+		
+		var url = '/solicitation_items/approvedAll/';
+
+		$.ajax({
+			type: 'POST',
+			url: url,
+			data: {'ids':ids},			
+			success: function(retorno) {
+				if(retorno == -1) {
+					$("#alert-message").html('<div class="alert alert-error">Não foi possível aprovar os itens</div>');					
+				}else if(retorno == 1){
+					$('input:checked').each(function(){
+						$(this).attr('checked', false);
+						$('#'+$(this).val()).html('<i title="Item aprovado" class="icon-thumbs-up"></i>');
+					});
+				}	
+				$("#alert-message").show();
+			},
+			complete: function() {
+				window.setTimeout(escondeMsg, 2500);
+			}
+		});		
+	});
+	//Seleciona todos os checkbox dos itens em pendência
+	$('#selectAll').click(function(){
+		
+		if($(this).attr('checked')) {
+			$('input:unchecked').each(function(){
+				$(this).attr('checked', true);
+			});
+		}else {
+			$('input:checked').each(function(){
+				$(this).attr('checked', false);
+			});
+		}		
 	});	
+	//Muda checkbox de todos os itens selecionados
+	$('.check-items').click(function(){
+		//Se todos os itens estão marcados e vc desmarcar algum, também desmarca a caixa que seleciona todos
+		if($(this).attr('checked') != 'checked' && $('#selectAll').attr('checked') == 'checked') {
+			$('#selectAll').attr('checked', false);
+		}
+		//Se vocẽ marcar algum item, e ele for o último que esteja desmarcado, então marca a caixa de seleção de todos os itens
+		if($(this).attr('checked') == 'checked') {
+			var all = $('.check-items').length;
+			var selecteds =  0;
+			
+			$('input:checked').each(function(){
+				selecteds += 1;
+			});
+			
+			if(all == selecteds) {
+				$('#selectAll').attr('checked', true);
+			}
+		}		
+	}); 
 });
 
 //-----------------------------------

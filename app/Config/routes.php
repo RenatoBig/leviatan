@@ -38,11 +38,29 @@
 	);
 	
 	Router::parseExtensions('pdf');
+
+	Router::connect(
+			'/item/:titulo-:id.html',
+			array('controller' => 'items', 'action' => 'view'),
+			array(
+				'pass' => array('id'),
+				'id' => '[0-9]+'
+			)
+	);
+	
+	Router::connect(
+			'/item/:titulo-:id.html',
+			array('controller' => 'pages', 'action' => 'home'),
+			array(
+					'pass' => array('id'),
+					'id' => '[0-9]+'
+			)
+	);
 	
 /**
  * ...and connect the rest of 'Pages' controller's urls.
  */
-	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
+	//Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 
 /**
  * Load all plugin routes.  See the CakePlugin documentation on 
@@ -55,3 +73,5 @@
  * the built-in default routes.
  */
 	require CAKE . 'Config' . DS . 'routes.php';
+	
+

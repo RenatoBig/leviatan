@@ -17,6 +17,7 @@
 	<table cellpadding="0" cellspacing="0" class="table">
 		<thead>
 			<tr>
+				<th><?php echo $this->Form->checkbox('selectAll', array('id'=>'selectAll'))?></th>
 				<th><?php echo __('Item');?></th>
 				<th><?php echo __('Quantidade');?></th>
 				<th><?php echo __('Situação')?></th>
@@ -27,10 +28,11 @@
 		foreach ($solicitationItems as $key=>$item): ?>
 			<tr>
 				<td>
-					<?php echo $this->Html->link(
-							$item['Item']['name'],
-							array('controller'=>'items', 'action'=>'view', $item['Item']['id'])
-						);
+					<?php echo $this->Form->checkbox('checkItem', array('value'=>$item['SolicitationItem']['id'], 'class'=>'check-items'));?>
+				</td>
+				<td>
+					<?php 
+					echo $this->Form->postLink($item['Item']['name'], array('controller'=>'items', 'action'=>'view', 'titulo'=>strtolower(Inflector::slug($item['Item']['name'], '-')), 'id'=>$item['Item']['id']));
 					?>
 					&nbsp;
 				</td>		
@@ -38,10 +40,17 @@
 					<?php echo h($item['SolicitationItem']['quantity'])?>
 					&nbsp;
 				</td>
-				<td>
+				<td id=<?php echo $item['SolicitationItem']['id'];?>>
 				<?php 
 				if($item['SolicitationItem']['status_id'] == PENDENTE) {
-					echo $this->Form->postLink('Aprovar', array('controller'=>'solicitation_items', 'action'=>'changeStatus', $item['SolicitationItem']['id'], APROVADO), array('class'=>'btn btn-primary', 'title'=>'Aprova o item'));
+					echo $this->Form->input('Aprovar', array(
+							'div'=>false,
+							'label'=>'',
+							'type'=>'button',
+							'class'=>'btn btn-primary approved-item',
+							'value'=>$item['SolicitationItem']['id'].'-'.APROVADO
+						)
+					);
 					echo '&nbsp';					
 					echo $this->Html->link('Negar', '#', array('class'=>'btn btn-danger deny', 'title'=>'Negar o item', 'value'=>$item['SolicitationItem']['id']));
 				}else if($item['SolicitationItem']['status_id'] == APROVADO) {
@@ -66,7 +75,8 @@
 		</tbody>
 	</table>
 	<?php
-		echo $this->Html->link('Voltar', array('controller'=>'solicitations', 'action'=>'all'), array('class'=>'btn btn-primary'));
+		echo $this->Form->input('Aprovar selecionados', array('label'=>'', 'class'=>'btn btn-primary approved-selected', 'type'=>'button'));
+		//echo $this->Html->link('Voltar', array('controller'=>'solicitations', 'action'=>'all'), array('class'=>'btn btn-primary'));
 		echo $this->element('pagination');
 	}	
 	?>

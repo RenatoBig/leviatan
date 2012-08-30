@@ -212,17 +212,32 @@ class SolicitationItemsController extends AppController {
  * Muda o status do item da solicitação
  */
 	public function changeStatus($id, $status) {
-		if($this->request->is('post')) {
+		$this->autoRender = false;
+		if($this->request->is('ajax')) {
 			$this->SolicitationItem->id = $id;
 	
 			if($this->SolicitationItem->saveField('status_id', $status, false)) {
-				$this->__getMessage(SUCCESS);
+				echo '1';
 			}else {
-				$this->__getMessage(ERROR);
+				echo '-1';
 			}
-	
-			$this->redirect($this->referer());
 		}
+	}
+	
+	public function approvedAll() {
+		$this->autoRender = false;
+		if($this->request->is('ajax')) {
+			
+			$ids = $this->request->data['ids'];
+			
+			$fields = array('SolicitationItem.status_id'=>APROVADO);
+			$conditions = array('SolicitationItem.id'=>$ids);
+			if($this->SolicitationItem->updateAll($fields, $conditions)) {
+				echo '1';
+			}else {
+				echo '-1';
+			}
+		}		
 	}
 		
 }

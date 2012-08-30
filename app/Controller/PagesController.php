@@ -95,6 +95,7 @@ class PagesController extends AppController {
  * 
  */
 	public function home() {
+		
 		$options['conditions'] = array(
 				'Item.status_id'=>ATIVO
 		);
@@ -107,6 +108,7 @@ class PagesController extends AppController {
 		$items = $this->paginate();
 		
 		$this->set(compact('items'));
+
 		if($this->Auth->user() == null) {
 			$this->layout = 'login';
 		}else {

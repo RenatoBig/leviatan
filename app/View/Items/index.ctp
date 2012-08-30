@@ -28,11 +28,8 @@
 			<tr>
 				<td><input title="Habilita/desabilita item para solicitação" type="checkbox" class="enable" <?php echo $checked;?> <?php echo $disabled;?> value="<?php echo $item['Item']['id'] ?>" /></td>
 				<td>
-					<?php echo $this->Html->link(
-							h($item['Item']['name']), 
-							array('action' => 'view', $item['Item']['id']),
-							array('title'=>'Clique para ver detalhes do item')
-						); 
+					<?php 
+					echo $this->Form->postLink($item['Item']['name'], array('controller'=>'items', 'action'=>'view', 'titulo'=>strtolower(Inflector::slug($item['Item']['name'], '-')), 'id'=>$item['Item']['id']));
 					?>
 				</td>
 				<td>

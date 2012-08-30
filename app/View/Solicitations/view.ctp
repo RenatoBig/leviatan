@@ -46,7 +46,8 @@ if(empty($items)) {
 							array(
 								'controller'=>'items',
 								'action'=>'view',
-								$item['Item']['id']
+								'titulo'=>strtolower(Inflector::slug($item['Item']['name'], '-')), 
+								'id'=>$item['Item']['id']
 							),
 							array(
 								'title'=>'Clique para ver detalhes sobre o item'

@@ -65,8 +65,9 @@
 									h($item['Item']['name']),
 									array(
 										'controller'=>'items',
-										'action'=>'detail',
-										$item['Item']['id']
+										'action'=>'view',
+										'titulo'=>strtolower(Inflector::slug($item['Item']['name'], '-')), 
+										'id'=>$item['Item']['id']
 									),
 									array(
 										'title'=>'Clique para ver detalhes do item'		

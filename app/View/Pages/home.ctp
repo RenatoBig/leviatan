@@ -22,10 +22,8 @@
 		<tr>
 			<td><?php echo $item['Item']['keycode']?></td>
 			<td>
-				<?php echo $this->Html->link(
-						h($item['Item']['name']), 
-						array('controller'=>'items', 'action' => 'view', $item['Item']['id'])
-					); 
+				<?php 
+				echo $this->Form->postLink($item['Item']['name'], array('action'=>'home', 'titulo'=>strtolower(Inflector::slug($item['Item']['name'], '-')), 'id'=>$item['Item']['id']));
 				?>
 			</td>
 			<td>
@@ -36,7 +34,10 @@
 				?>
 			</td>
 			<td>
-				<?php echo $item['PngcCode']['keycode']; ?>
+				<?php echo $this->Html->link(
+						$item['PngcCode']['keycode'],
+						array('controller'=>'pngc_codes', 'action'=>'view', $item['PngcCode']['id'])
+						);  ?>
 			</td>			
 		</tr>		
 	<?php endforeach; ?>

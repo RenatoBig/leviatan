@@ -65,24 +65,6 @@ class ItemsController extends AppController {
 	}
 	
 /**
- * 
- * @param unknown_type $id
- */
-	public function detail($id = null) {
-		$this->Item->id = $id;
-		if (!$this->Item->exists()) {
-			$this->__getMessage(INVALID_RECORD);
-			$this->redirect(array('action'=>'index'));
-		}
-		
-		$item = $this->Item->read(null, $id);
-		$cart_items = $this->__getCartItems();
-		$solicitation_items = $this->__getSolicitationItems();
-		
-		$this->set(compact('item', 'cart_items', 'solicitation_items'));		
-	}
-
-/**
  * add method
  *
  * @return void
@@ -103,7 +85,7 @@ class ItemsController extends AppController {
 				$imagem = '';
 				$this->request->data['Item']['image_path'] = '';
 			}
-
+			
 			if ($this->Item->save($this->request->data)) {	
 				$this->__getMessage(SUCCESS);			
 				$this->redirect(array('action' => 'index'));

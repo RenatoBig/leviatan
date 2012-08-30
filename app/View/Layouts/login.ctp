@@ -48,7 +48,7 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 					<div class="nav-collapse">
 						<ul class="nav pull-right">							
 							<li>
-								<form id="UserLoginForm" accept-charset="utf-8" method="post" action="/leviatan/users/login" class="form-inline">
+								<form id="UserLoginForm" accept-charset="utf-8" method="post" action="/users/login" class="form-inline">
 									<input type="text" class="input-small" placeholder="Login" name="data[User][username]">
 									<input type="password" class="input-small" placeholder="Senha" name="data[User][password]">
 									<button type="submit" class="btn">Entrar</button>
