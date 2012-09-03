@@ -90,7 +90,7 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 								?>							
 								<ul class="dropdown-menu">
 									<li>
-										<?php echo $this->Html->link('Meu perfil', array('controller'=>'users', 'action'=>'view', $user['User']['id']));?>
+										<?php echo $this->Html->link('Meu perfil', array('controller'=>'users', 'action'=>'profile', $user['User']['id']));?>
 									</li>
 									<li class="divider"></li>
 									<li>

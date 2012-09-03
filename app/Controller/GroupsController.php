@@ -84,6 +84,11 @@ class GroupsController extends AppController {
 			$this->redirect(array('action'=>'index'));
 		}
 		
+		if($id == ADMIN) {
+			$this->Session->setFlash('Grupo administrador não pode ser excluído', 'default', array('class'=>'alert alert-error'));
+			$this->redirect($this->referer());
+		}
+		
 		if ($this->Group->delete()) {
 			$this->__getMessage(SUCCESS);
 		}else {

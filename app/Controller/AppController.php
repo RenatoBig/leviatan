@@ -161,15 +161,20 @@ class AppController extends Controller {
     			$menus[] = array('name'=>'Área administrativa', 'link'=>array('controller'=>'admin', 'action'=>'index'));
     		}
     		
-    		$menus[] = array('name'=>'Minhas solicitações', 'link'=>array('controller'=>'solicitations', 'action'=>'index'));
-    		$menus[] = array('name'=>'Fazer solicitação', 'link'=>array('controller'=>'solicitation_items', 'action'=>'index'));
-    		$menus[] = array('name'=>'Meu carrinho', 'link'=>array('controller'=>'cart_items', 'action'=>'index'));
+    		if($this->Auth->user('group_id') == DIRETOR || $this->Auth->user('group_id') == ADMIN) {
+    			$menus[] = array('name'=>'Minhas solicitações', 'link'=>array('controller'=>'solicitations', 'action'=>'index'));
+    			$menus[] = array('name'=>'Fazer solicitação', 'link'=>array('controller'=>'solicitation_items', 'action'=>'index'));
+    			$menus[] = array('name'=>'Meu carrinho', 'link'=>array('controller'=>'cart_items', 'action'=>'index'));
+    		}
     		
-    		if($this->Auth->user('group_id') == NDE_A || $this->Auth->user('group_id') == ADMIN) {
+    		if($this->Auth->user('group_id') == HOMOLOGADOR || $this->Auth->user('group_id') == ADMIN) {
     			$menus[] = array('name'=>'Solicitações pendentes', 'link'=>array('controller'=>'solicitations', 'action'=>'all'));
     			$menus[] = array('name'=>'Pedidos', 'link'=>array('controller'=>'orders', 'action'=>'index'));
-    			$menus[] = array('name'=>'Itens', 'link'=>array('controller'=>'items', 'action'=>'index'));    		
-    			$menus[] = array('name'=>'Adicionar Item', 'link'=>array('controller'=>'items', 'action'=>'add'));
+    		}
+    		
+    		if($this->Auth->user('group_id') == CADASTRADOR || $this->Auth->user('group_id') == ADMIN) {
+    			$menus[] = array('name'=>'Itens', 'link'=>array('controller'=>'items', 'action'=>'index'));
+    			$menus[] = array('name'=>'Adicionar Itens', 'link'=>array('controller'=>'items', 'action'=>'add'));
     		}
     		
     	}

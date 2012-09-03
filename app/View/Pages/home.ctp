@@ -23,21 +23,42 @@
 			<td><?php echo $item['Item']['keycode']?></td>
 			<td>
 				<?php 
-				echo $this->Form->postLink($item['Item']['name'], array('action'=>'home', 'titulo'=>strtolower(Inflector::slug($item['Item']['name'], '-')), 'id'=>$item['Item']['id']));
+				echo $this->Form->postLink(
+					$item['Item']['name'], 
+					array(
+						'controller'=>'items',
+						'action'=>'view', 
+						'id'=>$item['Item']['id'],
+						'titulo'=>strtolower(Inflector::slug($item['Item']['name'], '-'))
+					)
+				);
 				?>
 			</td>
 			<td>
-				<?php echo $this->Html->link(
-						$item['ItemClass']['keycode'],
-						array('controller'=>'item_classes', 'action'=>'view', $item['ItemClass']['id'])
-						); 
+				<?php 
+				echo $this->Form->postLink(
+					$item['ItemClass']['keycode'],
+					array(
+						'controller'=>'item_classes', 
+						'action'=>'view', 
+						'id'=>$item['ItemClass']['id'],
+						'titulo'=>strtolower(Inflector::slug($item['ItemClass']['name'], '-'))
+					)
+				); 
 				?>
 			</td>
 			<td>
-				<?php echo $this->Html->link(
-						$item['PngcCode']['keycode'],
-						array('controller'=>'pngc_codes', 'action'=>'view', $item['PngcCode']['id'])
-						);  ?>
+				<?php 
+				echo $this->Form->postLink(
+					$item['PngcCode']['keycode'],
+					array(
+						'controller'=>'pngc_codes', 
+						'action'=>'view', 
+						'id'=>$item['PngcCode']['id'],
+						'titulo'=>$item['PngcCode']['keycode']
+					)
+				);  
+				?>
 			</td>			
 		</tr>		
 	<?php endforeach; ?>

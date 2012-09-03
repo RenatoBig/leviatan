@@ -27,11 +27,15 @@
 			)
 		);		
 		//----------------------
-		echo $this->Form->input('registration', array('label'=>__('Matrícula')));
-		echo $this->Form->input('Unity', array('label'=>__('Unidades'), 'id'=>'unity_id'));
+		echo $this->Form->input('Unity', array('label'=>__('Unidade'), 'id'=>'unity_id', ));
+		echo $this->Form->input('registration', array('label'=>__('Matrícula'), 'class'=>'span2'));
 		echo $this->Form->input('unity_sector_id', array('label'=>__('Setor'),'id'=>'sector'));
+		
+		echo '<div class="controls controls-row">';
 		echo $this->Form->input('name', array('label'=>__('Nome')));
 		echo $this->Form->input('surname', array('label'=>__('Sobrenome')));
+		echo '</div>';
+		
 		echo $this->Form->input('birth_date', array('label'=>__('Data de Nascimento'), 'class'=>'calendario input-small', 'type'=>'text'));
 		echo $this->Form->input('email', array('label'=>__('Email')));
 		echo $this->Form->input('phone', array('label'=>__('Telefone')));

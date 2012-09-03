@@ -7,10 +7,10 @@ App::uses('AppController', 'Controller');
  */
 class OrdersController extends AppController {
 	
+	public $layout = 'leviatan';
 	public $helpers = array('Utils');
 	public $uses = array('Order', 'OrderItem', 'Solicitation', 'SolicitationItem',
 				'Item');	
-	public $layout = 'leviatan';
 
 /**
  * index method
@@ -21,7 +21,7 @@ class OrdersController extends AppController {
 		$this->Order->recursive = 0;
 
 		$options['limit'] = 10;
-		$options['order'] = array('Order.created'=>'desc');
+		$options['order'] = array('Order.keycode'=>'asc');
 
 		$this->paginate = $options;
 
@@ -100,8 +100,17 @@ class OrdersController extends AppController {
 		endforeach;
 		
 		foreach($itemsForClasses as $value):
+			//---
+			$count = $this->Order->find('count');
+			$keycode = $count + 1;
+			if($count < 10) {
+				$keycode = '00'.$keycode;
+			}else if($count >= 10 && $count < 100) {
+				$keycode = '0'.$keycode;
+			}		
+			//---
 			$this->Order->create();
-			$data['Order']['keycode'] = $this->__getRandomKeycode();
+			$data['Order']['keycode'] = $keycode;
 			foreach($value as $v):
 				$solicitation_item_ids[] = $v;
 				$this->OrderItem->create();

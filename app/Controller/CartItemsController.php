@@ -121,7 +121,15 @@ class CartItemsController extends AppController {
 			
 			$items = $this->CartItem->find('all', $options);
 			
-			$keycode = $this->__getRandomKeycode();
+			//---
+			$count = $this->Solicitation->find('count');
+			$keycode = $count + 1;
+			if($count < 10) {
+				$keycode = '00'.$keycode;
+			}else if($count >= 10 && $count < 100) {
+				$keycode = '0'.$keycode;
+			}
+			//---
 
 			$this->Solicitation->create();
 			$data['Solicitation']['keycode'] = $keycode;

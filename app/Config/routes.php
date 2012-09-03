@@ -38,23 +38,54 @@
 	);
 	
 	Router::parseExtensions('pdf');
-
-	Router::connect(
-			'/item/:titulo-:id.html',
-			array('controller' => 'items', 'action' => 'view'),
-			array(
-				'pass' => array('id'),
-				'id' => '[0-9]+'
-			)
-	);
 	
+	//URLs AMIGÁVEIS
 	Router::connect(
-			'/item/:titulo-:id.html',
-			array('controller' => 'pages', 'action' => 'home'),
-			array(
-					'pass' => array('id'),
-					'id' => '[0-9]+'
-			)
+		'/item/:titulo-:id.html',
+		array('controller'=>'items', 'action'=>'view'),
+		array(
+			'pass'=>array('id'),
+			'id'=>'[0-9]+'
+		)
+	);		
+	//------
+	Router::connect(
+		'/itens/classe/:titulo-:id.html',
+		array('controller'=>'item_classes', 'action'=>'view'),
+		array(
+			'pass'=>array('id'),
+			'id'=>'[0-9]+'
+		)
+	);
+	//-----
+	Router::connect(
+		'/itens/pngc/:titulo-:id.html',
+		array('controller'=>'pngc_codes', 'action'=>'view'),
+		array(
+			'pass'=>array('id'),
+			'id'=>'[0-9]+'
+		)
+	);
+	//-----
+	Router::connect(
+		'/itens/grupo/:titulo-:id.html',
+		array('controller'=>'item_groups', 'action'=>'view'),
+		array(
+			'pass'=>array('id'),
+			'id'=>'[0-9]+'
+		)
+	);
+	//-----
+	Router::connect(
+		'/pedidos',
+		array('controller'=>'orders', 'action'=>'index'),
+		array()			
+	);
+	//-----
+	Router::connect(
+			'/itens',
+			array('controller'=>'items', 'action'=>'index'),
+			array()
 	);
 	
 /**

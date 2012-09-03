@@ -43,10 +43,16 @@ if(empty($items)) {
 					&nbsp;
 				</td>		
 				<td>
-					<?php echo $this->Html->link(
-								$item['ItemClass']['keycode'],
-								array('controller'=>'item_classes', 'action'=>'view', $item['Item']['item_class_id'])
-							);
+					<?php 
+					echo $this->Form->postLink(
+						$item['ItemClass']['keycode'],
+						array(
+							'controller'=>'item_classes', 
+							'action'=>'view',
+							'id'=>$item['Item']['item_class_id'],
+							'titulo'=>$item['Item']['name']	
+						)
+					);
 					?>
 				</td>
 				<td>

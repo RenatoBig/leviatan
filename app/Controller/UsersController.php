@@ -27,7 +27,7 @@ class UsersController extends AppController {
 	public function index() {
 		$this->User->recursive = 0;
 		
-		$options['order'] = array('User.id'=>'asc');
+		$options['order'] = array('Employee.name'=>'asc');
 		$options['limit'] = 10;
 		
 		$this->paginate = $options;
@@ -121,12 +121,30 @@ class UsersController extends AppController {
 			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
+		
+		if($this->User->data['Group']['id'] == ADMIN) {
+			$this->Session->setFlash('Usuário administrador não pode ser excluído', 'default', array('class'=>'alert alert-error'));
+			$this->redirect($this->referer());
+		}
+		
+		debug($this->User->data['Group']['id']);exit;
+		if($this->Auth->user('group_id') == ADMIN) {
+			
+		}
+		
 		if ($this->User->delete()) {
 			$this->__getMessage(SUCCESS);
 		}else {
 			$this->__getMessage(ERROR_DELETE);
 		}
 		$this->redirect(array('action' => 'index'));
+	}
+	
+/**
+ * 
+ */
+	public function profile($id = null) {
+		
 	}
 	
 /**

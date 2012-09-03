@@ -50,7 +50,7 @@ class ItemsController extends AppController {
 		$this->Item->id = $id;
 		if (!$this->Item->exists()) {
 			$this->__getMessage(INVALID_RECORD);
-			$this->redirect(array('action'=>'index'));
+			$this->redirect($this->referer());
 		}
 		
 		$item = $this->Item->read(null, $id);
@@ -172,7 +172,7 @@ class ItemsController extends AppController {
 		$this->Item->id = $id;
 		if (!$this->Item->exists()) {
 			$this->__getMessage(INVALID_RECORD);
-			$this->redirect(array('action'=>'index'));
+			$this->redirect($this->referer());
 		}
 		
 		if ($this->request->is('post') || $this->request->is('put')) {

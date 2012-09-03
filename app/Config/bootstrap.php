@@ -152,16 +152,10 @@ define("CONCLUIDO", '8');
 
 //Constantes dos Grupos de usuários
 define("ADMIN", "1");
-//Coordenação de desenvolvimento institucional
-define("CDI_A", "2");
-define("CDI_B", "3");
-//Núcleo de equipamentos
-define("NDE_A", "4");
-define("NDE_B", "5");
-//Núcleo de custos
-define("NDC_A", "6");
-define("NDC_B", "7");
-define("DIRETOR", "9");
+define("GERENCIADOR", "2");
+define("DIRETOR", "3");
+define("HOMOLOGADOR", "4");
+define("CADASTRADOR", "5");
 
 //Constantes definidas para as mensagens
 define("SUCCESS", 1);

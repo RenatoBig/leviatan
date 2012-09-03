@@ -33,10 +33,30 @@
 					?>
 				</td>
 				<td>
-					<?php echo $this->Html->link($item['ItemClass']['keycode'], array('controller' => 'item_classes', 'action' => 'view', $item['ItemClass']['id'])); ?>
+					<?php 
+					echo $this->Form->postLink(
+						$item['ItemClass']['keycode'],
+						array(
+							'controller'=>'item_classes', 
+							'action'=>'view', 
+							'id'=>$item['ItemClass']['id'],
+							'titulo'=>strtolower(Inflector::slug($item['ItemClass']['name'], '-'))
+						)
+					); 
+					?>
 				</td>
 				<td>
-					<?php echo $this->Html->link($item['PngcCode']['keycode'], array('controller' => 'pngc_codes', 'action' => 'view', $item['PngcCode']['id'])); ?>
+					<?php 
+					echo $this->Form->postLink(
+						$item['PngcCode']['keycode'],
+						array(
+							'controller'=>'pngc_codes', 
+							'action'=>'view', 
+							'id'=>$item['PngcCode']['id'],
+							'titulo'=>$item['PngcCode']['keycode']
+						)
+					);  
+					?>
 				</td>			
 				<td class="actions">
 					<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $item['Item']['id']), array('class'=>'btn', 'title'=>'Editar o item')); ?>

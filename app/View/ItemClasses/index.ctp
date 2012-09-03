@@ -21,7 +21,19 @@
 			<tr>
 				<td><?php echo h($itemClass['ItemClass']['keycode']); ?>&nbsp;</td>
 				<td><?php echo h($itemClass['ItemClass']['name']); ?>&nbsp;</td>
-				<td><?php echo $this->Html->link($itemClass['ItemGroup']['name'], array('controller' => 'item_groups', 'action' => 'view', $itemClass['ItemGroup']['id'])); ?></td>
+				<td>
+				<?php 
+				echo $this->Form->postLink(
+					$itemClass['ItemGroup']['name'], 
+					array(
+						'controller' => 'item_groups', 
+						'action' => 'view', 
+						'id'=>$itemClass['ItemGroup']['id'],
+						'titulo'=>strtolower(Inflector::slug($itemClass['ItemGroup']['name'], '_'))
+					)
+				); 
+				?>
+				</td>
 				<td>
 					<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $itemClass['ItemClass']['id']), array('class'=>'btn', 'title'=>__('Alterar a classe do item'))); ?>
 					<?php echo $this->Form->postLink(__('Deletar'), array('action' => 'delete', $itemClass['ItemClass']['id']), array('class'=>'btn btn-danger', 'title'=>'Deletar a classe do item'), __('Deseja realmente delear o item da classe #%s?', $itemClass['ItemClass']['name'])); ?>

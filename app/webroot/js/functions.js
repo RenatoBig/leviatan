@@ -33,15 +33,15 @@ $(document).ready(function() {
 	
 	//---------------------------------------------
 	//Autocomplete
-//	$("#autoComplete").autocomplete("items/autoComplete",
-//	{
-//		minChars: 2,
-//		cacheLength: 10,
-//		onItemSelect: selectItem,
-//		onFindValue: findValue,
-//		formatItem: formatItem,
-// 		autoFill: false
-// 	});
+	$("#autoComplete").autocomplete("items/autoComplete",
+	{
+		minChars: 2,
+		cacheLength: 10,
+		onItemSelect: selectItem,
+		onFindValue: findValue,
+		formatItem: formatItem,
+ 		autoFill: false
+ 	});
 	
 	//Habilitar ou desabilitar status do item
 	//---------------------
@@ -245,10 +245,10 @@ $(document).ready(function() {
 				}else if(retorno == 0){
 					$("#alert-message").html('<div class="alert alert-error">Não foi possível deletar o item do carrinho</div>');
 				}else if(retorno == 1){
-					var newUrl = aux + '/cart_items/index/';
+					var newUrl = '/cart_items/index/';
 					$("#items").load(newUrl);
 				}else if(retorno == 2) {
-					window.location.href = aux + '/cart_items/index/';
+					window.location.href = '/cart_items/';
 				}
 				$("#alert-message").show();
 			},
