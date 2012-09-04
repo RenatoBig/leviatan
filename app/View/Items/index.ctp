@@ -21,7 +21,7 @@
 		foreach ($items as $item):
 			$checked = $item['Item']['status_id'] != INATIVO ? 'checked="true"' : "";
 			$disabled = 'disabled="disabled"';
-			if($user['Group']['id'] == ADMIN || $user['Group']['id'] == NDE_A) {
+			if($user['Group']['id'] == ADMIN || $user['Group']['id'] == HOMOLOGADOR) {
 				$disabled = "";
 			}
 		?>

@@ -10,6 +10,15 @@ class ItemGroupsController extends AppController {
 	public $layout = 'leviatan';
 	
 /**
+ * (non-PHPdoc)
+ * @see Controller::beforeFilter()
+ */
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow('view');
+	}
+	
+/**
  * index method
  *
  * @return void

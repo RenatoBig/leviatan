@@ -168,6 +168,8 @@ class AppController extends Controller {
     		}
     		
     		if($this->Auth->user('group_id') == HOMOLOGADOR || $this->Auth->user('group_id') == ADMIN) {
+    			$menus[] = array('name'=>'Itens', 'link'=>array('controller'=>'items', 'action'=>'index'));
+    			$menus[] = array('name'=>'Adicionar item', 'link'=>array('controller'=>'items', 'action'=>'add'));
     			$menus[] = array('name'=>'Solicitações pendentes', 'link'=>array('controller'=>'solicitations', 'action'=>'all'));
     			$menus[] = array('name'=>'Pedidos', 'link'=>array('controller'=>'orders', 'action'=>'index'));
     		}
@@ -175,6 +177,10 @@ class AppController extends Controller {
     		if($this->Auth->user('group_id') == CADASTRADOR || $this->Auth->user('group_id') == ADMIN) {
     			$menus[] = array('name'=>'Itens', 'link'=>array('controller'=>'items', 'action'=>'index'));
     			$menus[] = array('name'=>'Adicionar Itens', 'link'=>array('controller'=>'items', 'action'=>'add'));
+    		}
+    		
+    		if($this->Auth->user('group_id') == GERENCIADOR || $this->Auth->user('group_id') == ADMIN) {
+    		    $menus[] = array('name'=>'Usuários', 'link'=>array('controller'=>'users', 'action'=>'index'));			
     		}
     		
     	}

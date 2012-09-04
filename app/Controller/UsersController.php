@@ -121,15 +121,13 @@ class UsersController extends AppController {
 			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
+
+		$this->User->recursive = -1;
+		$user = $this->User->read(null, $id);
 		
-		if($this->User->data['Group']['id'] == ADMIN) {
+		if($user['User']['group_id'] == ADMIN) {
 			$this->Session->setFlash('Usuário administrador não pode ser excluído', 'default', array('class'=>'alert alert-error'));
 			$this->redirect($this->referer());
-		}
-		
-		debug($this->User->data['Group']['id']);exit;
-		if($this->Auth->user('group_id') == ADMIN) {
-			
 		}
 		
 		if ($this->User->delete()) {
