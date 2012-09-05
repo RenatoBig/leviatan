@@ -69,7 +69,6 @@ Configure :: write('acl.check_act_as_requester', true);
  * Add the ACL plugin 'locale' folder to your application locales' folders
  */
 App :: build(array('locales' => App :: pluginPath('Acl') . DS . 'locale'));
-
 /*
  * Indicates whether the roles permissions page must load through Ajax
  */

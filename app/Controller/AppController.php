@@ -74,6 +74,14 @@ class AppController extends Controller {
     }
     
 /**
+ * (non-PHPdoc)
+ * @see Controller::beforeRender()
+ */
+    public function beforeRender() {
+    	$this->set('base_url', 'http://'.$_SERVER['SERVER_NAME'].Router::url('/'));
+    }
+    
+/**
  * Gera seis números aleatórios seguido de /ano corrente
  */
     protected function __getRandomKeycode() {

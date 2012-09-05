@@ -49,7 +49,7 @@ $(document).ready(function() {
 		
 		var id = $(this).val();
 		
-		var url = 'items/changeStatus/'+id;
+		var url = forUrl('/items/changeStatus/'+id);
 
 		$.ajax({
 			url : url,
@@ -90,7 +90,7 @@ $(document).ready(function() {
 			return;
 		}
 				
-		var url = 'cart_items/checkout';
+		var url = forUrl('/cart_items/checkout');
 	
 		$.ajax({
 			type: 'post',
@@ -98,7 +98,7 @@ $(document).ready(function() {
 		    url:url,
 		    success: function(retorno){
 		    	if(retorno == 1) {
-			    	var newUrl = 'solicitations/index';
+			    	var newUrl = forUrl('/solicitations/index');
 					location.href = newUrl;
 		    	}else if(retorno == 0) {
 					location.reload();
@@ -113,7 +113,7 @@ $(document).ready(function() {
 
 		var id = $(this).attr('value');
 		
-		var url = 'justifications/view/'+id;
+		var url = forUrl('/justifications/view/'+id);
 		
 		$.ajax({
 			url : url,
@@ -142,7 +142,7 @@ $(document).ready(function() {
 		var input_category_id = $('#PngcCodeInputCategoryId').val();
 		var input_subcategory_id = $('#PngcCodeInputSubcategoryId').val();
 
-		var url = 'pngc_codes/checkEntries/';
+		var url = forUrl('/pngc_codes/checkEntries/');
 		
 		$.ajax({
 			type: 'POST',
@@ -173,7 +173,7 @@ $(document).ready(function() {
 		var input_category_id = $('#InputInputCategoryId').val();
 		var input_subcategory_id = $('#InputInputSubcategoryId').val();
 		
-		var url = 'inputs/checkEntries/';
+		var url = forUrl('/inputs/checkEntries/');
 
 		$.ajax({
 			type: 'POST',
@@ -200,7 +200,7 @@ $(document).ready(function() {
 		var item_class_id = $('#SolicitationItemItemClassId').val();
 		var pngc_code_id = $('#SolicitationItemPngcCodeId').val();
 
-		var url = 'solicitation_items/index/';
+		var url = forUrl('/solicitation_items/index/');
 
 		$('#html').load(url, {'item_group_id': item_group_id, 'item_class_id': item_class_id, 'pngc_code_id': pngc_code_id});
 		
@@ -211,7 +211,7 @@ $(document).ready(function() {
 		var id = $(this).val();
 		var element = $(this).parent().parent();
 
-		var url = 'cart_items/add/'+id;
+		var url = forUrl('/cart_items/add/'+id);
 		
 		$.ajax({
 			type: 'POST',
@@ -234,7 +234,7 @@ $(document).ready(function() {
 		
 		var id = $(this).val();
 		
-		var url = 'cart_items/delete/'+id;
+		var url = forUrl('/cart_items/delete/'+id);
 
 		$.ajax({
 			type: 'POST',
@@ -245,10 +245,10 @@ $(document).ready(function() {
 				}else if(retorno == 0){
 					$("#alert-message").html('<div class="alert alert-error">Não foi possível deletar o item do carrinho</div>');
 				}else if(retorno == 1){
-					var newUrl = 'cart_items/index/';
+					var newUrl = forUrl('/cart_items/index/');
 					$("#items").load(newUrl);
 				}else if(retorno == 2) {
-					window.location.href = '/cart_items/';
+					window.location.href = forUrl('/cart_items/');
 				}
 				$("#alert-message").show();
 			},
@@ -267,7 +267,7 @@ $(document).ready(function() {
 		var id = value.substring(0, index);
 		var status = value.substring(index+1, value.length);
 
-		var url = 'solicitation_items/changeStatus/'+id+'/'+status;
+		var url = forUrl('/solicitation_items/changeStatus/'+id+'/'+status);
 
 		$.ajax({
 			url : url,
@@ -302,7 +302,7 @@ $(document).ready(function() {
 			ids.shift();
 		}
 		
-		var url = 'solicitation_items/approvedAll/';
+		var url = forUrl('/solicitation_items/approvedAll/');
 
 		$.ajax({
 			type: 'POST',
@@ -392,5 +392,9 @@ function formatItem(row) {
 
 function escondeMsg() {   		
 	$("#flashMessage, #alert-message").fadeOut();
+}
+
+forUrl = function(url) {
+    return $('base').attr('href')+url.substr(1);
 }
 	
