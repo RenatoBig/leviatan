@@ -1,5 +1,5 @@
 <div class="span9 well">
-	<?php echo $this->Form->create('User', array('class'=>'well'));?>
+	<?php echo $this->Form->create('User');?>
 		<fieldset>
 			<legend><?php echo __('Editar Usuário'); ?></legend>
 			<?php

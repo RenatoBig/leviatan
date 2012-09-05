@@ -161,25 +161,25 @@ class AppController extends Controller {
     			$menus[] = array('name'=>'Área administrativa', 'link'=>array('controller'=>'admin', 'action'=>'index'));
     		}
     		
-    		if($this->Auth->user('group_id') == DIRETOR || $this->Auth->user('group_id') == ADMIN) {
+    		if($this->Auth->user('group_id') == DIRETOR) {
     			$menus[] = array('name'=>'Minhas solicitações', 'link'=>array('controller'=>'solicitations', 'action'=>'index'));
     			$menus[] = array('name'=>'Fazer solicitação', 'link'=>array('controller'=>'solicitation_items', 'action'=>'index'));
     			$menus[] = array('name'=>'Meu carrinho', 'link'=>array('controller'=>'cart_items', 'action'=>'index'));
     		}
     		
-    		if($this->Auth->user('group_id') == HOMOLOGADOR || $this->Auth->user('group_id') == ADMIN) {
+    		if($this->Auth->user('group_id') == HOMOLOGADOR) {
     			$menus[] = array('name'=>'Itens', 'link'=>array('controller'=>'items', 'action'=>'index'));
     			$menus[] = array('name'=>'Adicionar item', 'link'=>array('controller'=>'items', 'action'=>'add'));
     			$menus[] = array('name'=>'Solicitações pendentes', 'link'=>array('controller'=>'solicitations', 'action'=>'all'));
     			$menus[] = array('name'=>'Pedidos', 'link'=>array('controller'=>'orders', 'action'=>'index'));
     		}
     		
-    		if($this->Auth->user('group_id') == CADASTRADOR || $this->Auth->user('group_id') == ADMIN) {
+    		if($this->Auth->user('group_id') == CADASTRADOR) {
     			$menus[] = array('name'=>'Itens', 'link'=>array('controller'=>'items', 'action'=>'index'));
     			$menus[] = array('name'=>'Adicionar Itens', 'link'=>array('controller'=>'items', 'action'=>'add'));
     		}
     		
-    		if($this->Auth->user('group_id') == GERENCIADOR || $this->Auth->user('group_id') == ADMIN) {
+    		if($this->Auth->user('group_id') == GERENCIADOR) {
     		    $menus[] = array('name'=>'Usuários', 'link'=>array('controller'=>'users', 'action'=>'index'));			
     		}
     		

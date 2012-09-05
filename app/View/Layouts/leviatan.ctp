@@ -21,7 +21,7 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 			echo $this->Html->script(array('jquery-1.7.2', 'jquery-ui-1.8.21.custom.min', 
 							'jquery.validate', 'bootstrap', 'bootstrap.min', 
 							'bootstrap-modal', 'bootstrap-tab', 'bootstrap-dropdown', 'autocomplete', 
-							'validate', 'functions', 'ckeditor/ckeditor'
+							'validate', 'functions', 'ckeditor/ckeditor', 'jquery.maskedinput-1.3.min'
 						)
 					);
 		?>

@@ -59,7 +59,7 @@
 	);
 	//-----
 	Router::connect(
-		'/itens/pngc/:titulo-:id.html',
+		'/item/pngc/:titulo-:id.html',
 		array('controller'=>'pngc_codes', 'action'=>'view'),
 		array(
 			'pass'=>array('id'),
@@ -68,7 +68,7 @@
 	);
 	//-----
 	Router::connect(
-		'/itens/grupo/:titulo-:id.html',
+		'/item/grupo/:titulo-:id.html',
 		array('controller'=>'item_groups', 'action'=>'view'),
 		array(
 			'pass'=>array('id'),

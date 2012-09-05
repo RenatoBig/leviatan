@@ -132,7 +132,7 @@ class CartItemsController extends AppController {
 			//---
 
 			$this->Solicitation->create();
-			$data['Solicitation']['keycode'] = $keycode;
+			$data['Solicitation']['keycode'] = $keycode.'/'.date('y');
 			$data['Solicitation']['memo_number'] = $this->request->data['memo_number'];
 			$data['Solicitation']['description'] = $this->request->data['description'];
 			$data['Solicitation']['user_id'] = $user_id;

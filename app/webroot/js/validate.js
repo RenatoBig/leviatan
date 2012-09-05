@@ -1,5 +1,34 @@
 $(document).ready(function() {
 	
+	$('.mask-date').mask('99/99/9999', {placeholder:" "}); //data
+	$('.mask-phone').mask('(99)9999-9999', {placeholder:" ", completed:function(){$('.mask-phone').unmask()}}); //telefone
+	//Profile form
+	//-----------------
+	$("#ProfileProfileForm").validate({ 
+    	rules: { 			
+			'data[Profile][confirm_password]':{
+				equalTo: "#ProfilePassword"
+			},
+			'data[Profile][password]':{
+				minlength: 6
+			},
+			'data[Profile][email]':{
+				email: true
+			}
+		},
+		messages: {
+			'data[Profile][confirm_password]':{
+				equalTo: "Senhas não conferem"
+			},
+			'data[Profile][password]':{
+				minlength: "Quantidade de caractéres mínima é 6"
+			},
+			'data[Profile][email]':{
+				email: "Email inválido"
+			}
+		}
+	});
+	
 	//Group
 	//-----------------------------------------
 	//validação de formulário
@@ -27,7 +56,8 @@ $(document).ready(function() {
 				required: true
 			},
 			'data[User][password]':{
-				required: true
+				required: true,
+				minlength: 6
 			},
 			'data[User][confirm_password]':{
 				required: true,
@@ -42,7 +72,8 @@ $(document).ready(function() {
 				required: "Campo obrigatório"
 			},
 			'data[User][password]':{
-				required: "Campo obrigatório"
+				required: "Campo obrigatório",
+				minlength: "Mínimo de 6 caracteres"
 			},
 			'data[User][confirm_password]':{
 				required: "Campo obrigatório",
@@ -293,6 +324,10 @@ $(document).ready(function() {
 				number: true,
 				minlength: 6
 			},
+			'data[Employee][email]':{
+				required: true,
+				email: true
+			},
 			'data[Employee][Unity]':{
 				required: true
 			},
@@ -309,6 +344,10 @@ $(document).ready(function() {
 				required: "Este campo é obrigatório.",
 				minlength: "Quantidade mínima de dígitos é 6.",
 				number: "Apenas números são permitidos."					
+			},
+			'data[Employee][email]':{
+				required: "Campo obrigatório",
+				email: "Email inválido"
 			},
 			'data[Employee][Unity]':{
 				required: "Selecione uma unidade."

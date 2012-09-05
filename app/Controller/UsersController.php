@@ -8,6 +8,7 @@ App::uses('AppController', 'Controller');
 class UsersController extends AppController {
 	
 	public $layout = 'leviatan';
+	public $helpers = array('Time');
 	
 	
 /**
@@ -55,6 +56,15 @@ class UsersController extends AppController {
 			$registration = $registration['Employee']['registration'];
 			//Atribui a matrícula ao nome de usuário para ser salvo na tabela de usuários			
 			$this->request->data['User']['username'] = $registration;
+			
+			//Checa se usuário ja existe
+			$options['conditions'] = array('User.username'=>$registration);
+			$exist = $this->User->find('first', $options);
+			if($exist) {
+				$this->Session->setFlash('Usuário ja está cadastrado', 'default', array('class'=>'alert alert-error'));
+				$this->redirect($this->referer());
+			}
+			//---------
 			
 			$this->User->create();			
 			if ($this->User->save($this->request->data)) {
@@ -143,6 +153,27 @@ class UsersController extends AppController {
  */
 	public function profile($id = null) {
 		
+		if($this->request->is('post')) {
+			$this->User->id = $this->data['Profile']['user_id'];
+			$this->Employee->id = $this->data['Profile']['employee_id'];
+			if(!empty($this->request->data['Profile']['password'])) {
+				$this->User->saveField('password', $this->request->data['Profile']['password']);
+			}
+			if(!empty($this->request->data['Profile']['birth_date'])) {
+				$this->Employee->saveField('birth_date', $this->request->data['Profile']['birth_date']);
+			}
+			if(!empty($this->request->data['Profile']['phone'])) {
+				$this->Employee->saveField('phone', $this->request->data['Profile']['phone']);
+			}
+			if(!empty($this->request->data['Profile']['email'])) {
+				$this->Employee->saveField('email', $this->request->data['Profile']['email']);
+			}
+			
+			$this->Session->setFlash('ALterado com sucesso', 'default', array('class'=>'alert alert-success'));
+		}
+		
+		$user = $this->User->read(null, $id);		
+		$this->set(compact('user'));
 	}
 	
 /**

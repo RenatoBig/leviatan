@@ -102,7 +102,7 @@ class User extends AppModel {
 				'rule' => 'notEmpty',
 				'message'=> 'É obrigátorio escolher um funcionário.',
 			)
-		),
+		),		
 		'password' => array(
 			'registrationRule1' => array(
 				'rule' => 'notEmpty',

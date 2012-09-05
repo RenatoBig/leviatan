@@ -110,7 +110,7 @@ class OrdersController extends AppController {
 			}		
 			//---
 			$this->Order->create();
-			$data['Order']['keycode'] = $keycode;
+			$data['Order']['keycode'] = $keycode.'/'.date('y');
 			foreach($value as $v):
 				$solicitation_item_ids[] = $v;
 				$this->OrderItem->create();

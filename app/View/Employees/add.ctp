@@ -36,9 +36,9 @@
 		echo $this->Form->input('surname', array('label'=>__('Sobrenome')));
 		echo '</div>';
 		
-		echo $this->Form->input('birth_date', array('label'=>__('Data de Nascimento'), 'class'=>'calendario input-small', 'type'=>'text'));
+		echo $this->Form->input('birth_date', array('label'=>__('Data de Nascimento'), 'class'=>'calendario input-small mask-date', 'type'=>'text'));
 		echo $this->Form->input('email', array('label'=>__('Email')));
-		echo $this->Form->input('phone', array('label'=>__('Telefone')));
+		echo $this->Form->input('phone', array('label'=>__('Telefone'), 'class'=>'mask-phone'));
 		echo $this->Form->input('rg', array('label'=>__('RG')));
 		echo $this->Form->input('cpf', array('label'=>__('CPF')));
 		echo $this->Form->input('voter_card', array('label'=>__('Título de eleitor')));

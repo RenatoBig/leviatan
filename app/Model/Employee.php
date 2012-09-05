@@ -83,6 +83,16 @@ class Employee extends AppModel {
 				'message'=> 'É obrigátorio o nome do funcionário.',
 			)
 		),
+		'email' => array(
+			'registrationRule1' => array(
+				'rule' => 'notEmpty',
+				'message'=> 'É obrigátorio o nome do funcionário.',
+			),
+			'registrationRule1' => array(
+				'rule' => 'email',
+				'message'=> 'Email inválido',
+			)
+		),
 		'Unity' => array(
 			'validateUnity' => array(
     			'rule' => 'notEmpty',
@@ -112,17 +122,29 @@ class Employee extends AppModel {
  * @see lib/Cake/Model/Model::beforeSave()
  */
 	public function beforeSave($options = null) {
-		$data = $this->data['Employee']['birth_date'];
 		
+		if(isset($this->data['Employee']['birth_date'])) {
+			$data = $this->data['Employee']['birth_date'];		
 		
-		if(strpos($data,"/" ) == false) {
-			return;			
+			if(strpos($data,"/") == false) {
+				return;			
+			}
+			
+			$dI = explode("/", $data);				
+			$data = $dI[2].'-'.$dI[1].'-'.$dI[0];
+			
+			$this->data['Employee']['birth_date'] = $data;
 		}
-		
-		$dI = explode("/", $data);				
-		$data = $dI[2].'-'.$dI[1].'-'.$dI[0];
-		
-		$this->data['Employee']['birth_date'] = $data;
+
+		if(isset($this->data['Employee']['phone'])) {
+			if(stripos($this->data['Employee']['phone'], '(') >= 0) {
+				$data = str_replace('(', '', $this->data['Employee']['phone']);
+				$data = str_replace(')', '', $data);
+				$data = str_replace('-', '', $data);
+				
+				$this->data['Employee']['phone'] = $data;
+			}
+		}
 	}
 
 }
