@@ -4,7 +4,8 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 	<head>
-		<base href="<?php echo $base_url ?>" />
+		<base href="<?php echo $this->Html->url('/', true);?>" />
+		
 		<?php echo $this->Html->charset(); ?>
 		<title>
 			<?php echo $leviatanDescription ?>:
