@@ -10,10 +10,9 @@ if(empty($unities)) {
 	<table cellpadding="0" cellspacing="0" class="table">
 		<thead>
 			<tr>
-				<th><?php echo $this->Paginator->sort('cnes', 'CNES');?></th>
-				<th><?php echo $this->Paginator->sort('name', 'Nome');?></th>
-				<th><?php echo $this->Paginator->sort('region_id', 'Região');?></th>
-				<th><?php echo $this->Paginator->sort('health_district_id', 'Distrito sanitário');?></th>
+				<th><?php echo __('CNES');?></th>
+				<th><?php echo __('Nome');?></th>
+				<th><?php echo __('Endereço');?></th>
 				<th><?php echo __('Ações');?></th>
 			</tr>
 		</thead>
@@ -24,10 +23,14 @@ if(empty($unities)) {
 			<td><?php echo h($unity['Unity']['cnes']); ?></td>
 			<td><?php echo $this->Html->link($unity['Unity']['name'], array('controller'=>'unities', 'action'=>'view', $unity['Unity']['id']), array('title'=>__('Visualizar dados da unidade'))); ?></td>
 			<td>
-				<?php echo $this->Html->link($unity['Region']['id'], array('controller' => 'regions', 'action' => 'view', $unity['Region']['id'])); ?>
-			</td>
-			<td>
-				<?php echo $this->Html->link($unity['HealthDistrict']['name'], array('controller' => 'health_districts', 'action' => 'view', $unity['HealthDistrict']['id'])); ?>
+				<?php
+				if($unity['Unity']['number'] == '') {
+					$unity['Unity']['number'] = 'S/N';
+				}
+				echo $this->Form->postLink($unity['Address']['name'], array('controller'=>'addresses', 'action'=>'view', $unity['Address']['id'])).
+				' - '.
+				$unity['Unity']['number'];
+				?>
 			</td>
 			<td>
 				<?php echo $this->Html->link(__('Editar'), array('action' => 'edit', $unity['Unity']['id']), array('class'=>'btn', 'title'=>__('Editar unidade'))); ?>

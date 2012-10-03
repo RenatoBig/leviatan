@@ -32,7 +32,7 @@ class ItemsController extends AppController {
 		
 		$this->Item->recursive = 0;
 		
-		$options['order'] = array('ItemClass.keycode'=>'asc', 'Item.name'=>'asc');
+		$options['order'] = array('ItemClass.keycode'=>'asc');
 		$options['limit'] = 10;
 
 		$this->paginate = $options;
@@ -85,7 +85,16 @@ class ItemsController extends AppController {
 				$imagem = '';
 				$this->request->data['Item']['image_path'] = '';
 			}
+			//gerando o código do item
+			$options['conditions'] = array(
+					'Item.item_class_id'=>$this->request->data['Item']['item_class_id']
+			);			
+			$qtde_item_classes = $this->Item->find('count', $options);
 			
+			$this->ItemClass->recursive = -1;
+			$item_class = $this->ItemClass->read(null, $this->request->data['Item']['item_class_id']);
+			$this->request->data['Item']['keycode'] = (string)($item_class['ItemClass']['keycode']).'-'.($qtde_item_classes+1);
+			//---------
 			if ($this->Item->save($this->request->data)) {	
 				$this->__getMessage(SUCCESS);			
 				$this->redirect(array('action' => 'index'));
@@ -156,7 +165,7 @@ class ItemsController extends AppController {
 				
 			$itemClasses = $inicio + $valuesEdit;
 		}else {
-			$itemClasses = $inicio;
+			$itemClasses = array(''=>'-- Selecione um grupo --');
 		}
 		
 		$this->set(compact('itemClasses', 'itemGroups', 'pngcCodes'));

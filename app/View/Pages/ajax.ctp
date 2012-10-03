@@ -1,0 +1,1 @@
+<?php echo $this->element('pages_home_ajax');?>

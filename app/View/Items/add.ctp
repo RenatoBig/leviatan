@@ -3,10 +3,9 @@
 		<fieldset>
 			<legend><?php echo __('Adicionar Item'); ?></legend>
 		<?php
-			echo $this->Form->input('item_group_id', array('label'=>__('Grupo do item'), 'class'=>'input-xxlarge'));
-			echo $this->Form->input('item_class_id', array('label'=>__('Classe do item'), 'class'=>'input-xxlarge'));
+			echo $this->Form->input('item_group_id', array('label'=>__('Grupo do item'), 'class'=>'input-xxlarge', 'onChange'=>'selectFill("item_classes", "get_categories", options[selectedIndex].value)'));
+			echo $this->Form->input('item_class_id', array('label'=>__('Classe do item'), 'class'=>'input-xxlarge', 'id'=>'select_child'));
 			echo $this->Form->input('pngc_code_id', array('label'=>__('PNGC'), 'class'=>'input-xxlarge'));
-			echo $this->Form->input('keycode', array('label'=>__('Código'), 'class'=>'input-small'));
 			echo $this->Form->input('name', array('label'=>__('Nome')));		
 			echo $this->Form->input('description', array('label'=>__('Descrição')));
 			echo $this->Fck->load('ItemDescription');
@@ -19,30 +18,3 @@
 		<?php echo $this->Html->link('Cancelar', array('controller'=>'items', 'action'=>'index'), array('class'=>'btn', 'title'=>'Cancelar'));?>
 	<?php echo $this->Form->end();?>
 </div>
-
-<?php 
-//requisição feita quando se muda a o grupo do item. Como resposta ele popula o select
-//das classes 
-//-------------------
-$this->Js->get('#ItemItemGroupId')->event('change',
-	$this->Js->request(
-		array(
-			'controller'=>'ItemClasses',
-			'action'=>'get_by_category'
-		),
-		array(
-			'update'=>'#ItemItemClassId',
-			'async' => true,
-			'method' => 'post',
-			'dataExpression'=>true,
-			'data'=> $this->Js->serializeForm(
-				array(
-					'isForm' => true,
-					'inline' => true
-				)
-			),
-		)
-	)
-);
-//----------------------
-?>

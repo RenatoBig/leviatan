@@ -25,24 +25,33 @@ class InputsController extends AppController {
 		
 		$this->set('inputs', $this->paginate());
 	}
-
+	
 /**
- * add method
- *
- * @return void
+ * 
  */
 	public function add() {
-		if ($this->request->is('post')) {
+		
+		if($this->request->is('post')) {
+
+			$category = $this->request->data['Input']['input_category_id'];
+			$subcategories = $this->request->data['Input']['input_subcategory_id'];
+			
+			foreach($subcategories as $value):
+				$data[] = array('input_category_id'=>$category, 'input_subcategory_id'=>$value);
+			endforeach;
+
 			$this->Input->create();
-			if ($this->Input->save($this->request->data)) {
-				$this->__getMessage(SUCCESS);
-				$this->redirect(array('action' => 'index'));
-			} else {
+			if($this->Input->saveMany($data)) {
+				$this->__getMessage(SUCCESS);				
+			}else {
 				$this->__getMessage(ERROR);
 			}
+			$this->redirect(array('action'=>'index'));
 		}
 		
-		$inputCategories = $this->__getDataSelect('InputCategory');
+		$options['order'] = array('InputCategory.name'=>'asc');
+		$inputCategories = array(''=>'-- Nenhum --') + $this->InputCategory->find('list', $options);
+
 		$this->set(compact('inputCategories'));
 	}
 	
@@ -61,7 +70,7 @@ class InputsController extends AppController {
 		$this->$model->recursive = -1;
 		$values = $this->$model->find('all', $options);
 		foreach($values as $value):
-		$data[$value[$model]['id']] = $value[$model]['name'];
+			$data[$value[$model]['id']] = $value[$model]['name'];
 		endforeach;
 		
 		$data = $inicio + $data;
@@ -180,24 +189,11 @@ class InputsController extends AppController {
  * 
  */
 	public function checkEntries() {
-		$this->autoRender = false;
-		if($this->request->is('ajax')) {
-			
-			$input_category_id = $this->request->data['input_category_id'];
-			$input_subcategory_id = $this->request->data['input_subcategory_id'];
-			
-			$options['conditions'] = array(
-				'Input.input_category_id'=>$input_category_id,
-				'Input.input_subcategory_id'=>$input_subcategory_id	
-			);
-			
-			$exist = $this->Input->find('first', $options);
-			
-			if($exist) {
-				echo '-1';
-			}else {
-				echo '1';
-			}
-		}
+		$model_integrator = 'Input';
+		$model_parent = 'InputCategory';
+		$model_child = 'InputSubcategory';
+		$values = $this->request->data['values'];
+		parent::checkEntries($model_integrator, $model_parent, $model_child, $values);
 	}
+	
 }

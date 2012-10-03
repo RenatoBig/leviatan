@@ -11,29 +11,36 @@ class SolicitationItemsController extends AppController {
 	public $helpers = array('Utils', 'Fck');
 	public $uses = array('SolicitationItem', 'Solicitation', 'Item', 'ItemGroup', 'ItemClass', 'User', 'UnitySector', 'Region', 'UnityType', 'HealthDistrict', 'CartItem', 'PngcCode');
 
+	
+/**
+ * (non-PHPdoc)
+ * @see Controller::beforeFilter()
+ */
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Auth->allow('get_classes');
+	}
+	
 /**
  * index method
  *
  * @return void
  */
 	public function index() {
-		
-		if($this->request->is('ajax') && $this->request->data) {
-			$item_group_id = $this->request->data['item_group_id'];
-			$item_class_id = $this->request->data['item_class_id'];
-			$pngc_code_id = $this->request->data['pngc_code_id']; 
-			
-			$options = array();
-			if($item_group_id != '') {
-				$options['conditions'][] = array('ItemClass.item_group_id'=>$item_group_id);
-			}
-			if($item_class_id != '') {
-				$options['conditions'][] = array('Item.item_class_id'=>$item_class_id);
-			}
-			if($pngc_code_id != '') {
-				$options['conditions'][] = array('Item.pngc_code_id'=>$pngc_code_id);
-			}	
-			$this->Session->write('options', $options);
+		if($this->request->is('ajax')) {			
+			if($this->request->data) {
+				$item_class_id = $this->request->data['item_class_id'];
+				$item_name = $this->request->data['item_name'];
+
+				$options = array();
+				if($item_class_id != '') {
+					$options['conditions'][] = array('Item.item_class_id'=>$item_class_id);
+				}
+				if($item_name != '') {
+					$options['conditions'][] = array('Item.name'=>$item_name);
+				}
+				$this->Session->write('options', $options);
+			}			
 		}
 
 		if($this->request->is('ajax') && $this->Session->read('options')) {
@@ -46,7 +53,7 @@ class SolicitationItemsController extends AppController {
 				'Item.status_id'=>ATIVO,
 		);
 		$options['order'] = array('ItemClass.keycode'=>'asc');
-		$options['limit'] = '3';
+		$options['limit'] = '6';
 		
 		$this->paginate = $options;
 		
@@ -56,10 +63,12 @@ class SolicitationItemsController extends AppController {
 		
 		$this->__getDataFilter();
 		
-		$this->set(compact('items', 'cart_items', 'solicitation_items'));
+		$this->set(compact('items', 'cart_items', 'solicitation_items', 'ajax'));
+
 		if($this->request->is('ajax')) {
 			$this->render('ajax', 'ajax');
 		}
+		
 	}
 	
 /**
@@ -106,9 +115,8 @@ class SolicitationItemsController extends AppController {
 		endforeach;
 		$pngcs = $inicio + $vPngcs;
 		
-		$classes = array(''=>'-- Selecione um grupo --');
 								
-		$this->set(compact('groups', 'pngcs', 'classes'));
+		$this->set(compact('groups', 'pngcs'));
 		
 	}
 	
@@ -118,15 +126,21 @@ class SolicitationItemsController extends AppController {
 	public function get_classes() {
 		if($this->request->is('ajax')) {
 			
+			if(isset($this->request->data['SolicitationItem'])) {
+				$item_group_id = $this->request->data['SolicitationItem']['item_group_id'];
+			}elseif(isset($this->request->data['Pages'])) {
+				$item_group_id = $this->request->data['Pages']['item_group_id'];
+			}
+			
 			$inicio = array(''=>'-- Nenhum --');
 			
 			$this->Item->recursive = 0;
 			$options['fields'] = array('ItemClass.*');
 			$options['order'] = array('ItemClass.keycode');
 			$options['conditions'] = array(
-				'ItemClass.item_group_id'=>$this->request->data['SolicitationItem']['item_group_id'],
+				'ItemClass.item_group_id'=>$item_group_id,
 			);
-			var_dump($this->request->data['SolicitationItem']['item_group_id']);
+
 			$items = $this->Item->find('all', $options);
 			
 			if(empty($items)) {
@@ -238,6 +252,54 @@ class SolicitationItemsController extends AppController {
 				echo '-1';
 			}
 		}		
+	}
+	
+/**
+ * Itens que estão no carrinho do usuário atual
+ */
+	protected function __getCartItems() {
+	
+		$user_id = $this->Auth->user('id');
+	
+		$options['conditions'] = array(
+				'CartItem.user_id'=>$user_id
+		);
+		$options['fields'] = array(
+				'CartItem.item_id'
+		);
+		$cart_items = $this->CartItem->find('list', $options);
+	
+		$idItems = array();
+		foreach($cart_items as $item):
+		$idItems[] = $item;
+		endforeach;
+	
+		return $idItems;
+	}
+	
+/**
+ * Itens que estão em algum processo de pendência
+ */
+	protected function __getSolicitationItems($status=null) {
+		$user_id = $this->Auth->user('id');
+	
+		$options['conditions'] = array(
+				'Solicitation.user_id'=>$user_id,
+				'Solicitation.status_id'=>PENDENTE
+		);
+		 
+		$options['fields'] = array(
+				'SolicitationItem.item_id',
+		);
+	
+		$solicitationItems = $this->SolicitationItem->find('all', $options);
+	
+		$items = array();
+		foreach($solicitationItems as $value):
+		$items[] = $value['SolicitationItem']['item_id'];
+		endforeach;
+	
+		return $items;
 	}
 		
 }

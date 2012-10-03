@@ -4,6 +4,8 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
+		<base href="<?php echo $this->Html->url('/', true);?>" />
+		
 		<?php echo $this->Html->charset(); ?>
 		<title>
 			<?php echo $leviatanDescription ?>:
@@ -16,14 +18,34 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 			echo $this->fetch('css');
 			echo $this->fetch('script');
 			
-			echo $this->Html->css(array('autocomplete', 'jquery-ui-1.8.21.custom', 'bootstrap', 'bootstrap-responsive', 'leviatan'));
+				//css jquery
+			echo $this->Html->css(array(
+					'jquery-ui-1.8.23.custom'
+				)
+			);
+			//css bootstrap
+			echo $this->Html->css(array('bootstrap', 'bootstrap-responsive'));
+			//Outros css
+			echo $this->Html->css(array('leviatan'));
 			
-			echo $this->Html->script(array('jquery-1.7.2', 'jquery-ui-1.8.21.custom.min', 
-							'jquery.validate', 'bootstrap', 'bootstrap.min', 
-							'bootstrap-modal', 'bootstrap-tab', 'bootstrap-dropdown', 'autocomplete', 
-							'validate', 'functions', 'ckeditor/ckeditor'
-						)
-					);		
+			//JS jquery
+			echo $this->Html->script(array(
+					'jquery-1.8.0.min', 'jquery-ui-1.8.23.custom.min','jquery.ui.autocomplete.min', 
+					'jquery.ui.core.min', 'jquery.ui.datepicker.min', 'jquery.ui.position.min', 
+					'jquery.ui.widget.min', 'jquery.validate', 'jquery.maskedinput-1.3.min'		
+				)
+			);
+			//JS bootstrap
+			echo $this->Html->script(array( 
+					'bootstrap', 'bootstrap.min', 'bootstrap-modal', 
+					'bootstrap-tab', 'bootstrap-dropdown'							 
+				)
+			);
+			//Outros JS
+			echo $this->Html->script(array(
+					'functions', 'ckeditor/ckeditor'
+				)
+			);
 			?>	
 		 <script type="text/javascript">
 	   	 	$("#flashMessage, #authMessage").fadeIn();
@@ -48,11 +70,11 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 					<div class="nav-collapse">
 						<ul class="nav pull-right">							
 							<li>
-								<form id="UserLoginForm" accept-charset="utf-8" method="post" action="/users/login" class="form-inline">
-									<input type="text" class="input-small" placeholder="Login" name="data[User][username]">
-									<input type="password" class="input-small" placeholder="Senha" name="data[User][password]">
-									<button type="submit" class="btn">Entrar</button>
-								</form>							
+								<?php echo $this->Form->create('User', array('url'=>'/users/login','class'=>'form-horizontal'));?>
+									<?php echo $this->Form->input('username', array('label'=>false, 'class'=>'input-small', 'div'=>false))?>
+									<?php echo $this->Form->input('password', array('label'=>false, 'class'=>'input-small', 'div'=>false))?>
+									<?php echo $this->Form->Button('Entrar', array('class'=>'btn'));?>									
+								<?php echo $this->Form->end();?>
 							</li>
 						</ul>
 					<!-- nav-collapse -->

@@ -13,10 +13,10 @@
 		</dd>
 		<dt><?php echo __('Nome'); ?></dt>
 		<dd>
-			<?php echo h($employee['Employee']['name']); ?>
+			<?php echo h($employee['Employee']['name'].' '.$employee['Employee']['surname']); ?>
 			&nbsp;
-		</dd>
-		<dt><?php echo __('Data de aniversário'); ?></dt>
+		</dd>		
+		<dt><?php echo __('Nascimento'); ?></dt>
 		<dd>
 			<?php echo $this->Time->format('d/m/Y', $employee['Employee']['birth_date']); ?>
 			&nbsp;
@@ -66,9 +66,13 @@
 			<?php echo h($employee['Employee']['account']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Unidade_Setor'); ?></dt>
+		<dt><?php echo __('Unidade-Setor'); ?></dt>
 		<dd>
-			<?php echo $this->Html->link($employee['UnitySector']['id'], array('controller' => 'unity_sectors', 'action' => 'view', $employee['UnitySector']['id'])); ?>
+			<?php 
+			echo $this->Form->postLink($unity['Unity']['name'], array('controller'=>'unities', 'action'=>'view', $unity['Unity']['id'])).
+					   ' - '.
+			           $sector['Sector']['name']; 
+			?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Criado'); ?></dt>

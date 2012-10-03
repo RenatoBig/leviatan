@@ -24,9 +24,9 @@ class Unity extends AppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'Region' => array(
-			'className' => 'Region',
-			'foreignKey' => 'region_id',
+		'Address' => array(
+			'className' => 'Address',
+			'foreignKey' => 'address_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
@@ -90,17 +90,41 @@ class Unity extends AppModel {
 			'validateUnity' => array(
     			'rule' => 'notEmpty',
     			'message' => 'É obrigatório o nome da unidade.'),
-		),
-		'city_id' => array(
-			'validateCity' => array(
+		),		
+		'cep' => array(
+			'validateCEP' => array(
 				'rule' => 'notEmpty',
-				'message' => 'É obrigatório a escolha de uma cidade.'
+				'message' => 'É obrigatório a escolha de um cep.'
 			)
 		),
-		'region_id' => array(
-			'validateRegion' => array(
+		'state' => array(
+			'validateState' => array(
 				'rule' => 'notEmpty',
-				'message' => 'É obrigatório a escolha de uma área.'
+				'message' => 'É obrigatório a escolha de um estado.'
+			)
+		),
+			'city' => array(
+					'validateCity' => array(
+							'rule' => 'notEmpty',
+							'message' => 'É obrigatório a escolha de um cidade.'
+					)
+			),
+			'district' => array(
+					'validateDistrict' => array(
+							'rule' => 'notEmpty',
+							'message' => 'É obrigatório a escolha de um bairro.'
+					)
+			),
+			'address' => array(
+					'validateAddress' => array(
+							'rule' => 'notEmpty',
+							'message' => 'É obrigatório a escolha de um endereço.'
+					)
+			),
+		'address_id' => array(
+			'validateAddress' => array(
+				'rule' => 'notEmpty',
+				'message' => 'É obrigatório a escolha de um cep.'
 			)
 		),
 		'health_district_id' => array(

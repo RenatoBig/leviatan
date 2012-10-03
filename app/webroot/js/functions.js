@@ -1,5 +1,7 @@
 $(document).ready(function() {
 	
+	requestItem();
+	
 	//Calendário
 	$(function(){
 		$(".calendario").datepicker({
@@ -29,19 +31,64 @@ $(document).ready(function() {
 
 		});
 	});
+
+	//Função que chama o formulário de adição formulário que possuem tabela de integração
+	//------------------------------------------
+	$('.btnCallFormAdd').click(function(){	
+		var controller = $(this).val();
+		callFormAdd(controller);		
+	});	
 	
+	//Adiciona um novo select de uma subcategoria na tela de add dos insumos
+	//-----------------------------------------
+	$('#newSelectInput').live('click', function(){
+		
+		var model_integrator = 'Input';
+		var model_parent = 'InputCategory';
+		var model_child = 'InputSubcategory';
+		var table_child = 'input_subcategories';
+		var name = 'Subcategoria';		
+		
+		newSelect(model_integrator, model_parent, model_child, table_child, name);
+		
+	});	
+	//-----------------------------------------
 	
-	//---------------------------------------------
-	//Autocomplete
-	$("#autoComplete").autocomplete("items/autoComplete",
-	{
-		minChars: 2,
-		cacheLength: 10,
-		onItemSelect: selectItem,
-		onFindValue: findValue,
-		formatItem: formatItem,
- 		autoFill: false
- 	});
+	//Adiciona um novo select de uma área na tela de add das regiões
+	//-----------------------------------------
+	$('#newSelectArea').live('click', function(){
+		
+		var model_integrator = 'Region';
+		var model_parent = 'City';
+		var model_child = 'Area';
+		var table_child = 'areas';
+		var name = 'Área';		
+		
+		newSelect(model_integrator, model_parent, model_child, table_child, name);
+	});	
+	//-----------------------------------------
+	
+	//Adiciona um novo select de um setor na tela de add de uma unidade setor
+	//-----------------------------------------
+	$('#newSelectUnitySector').live('click', function(){
+		
+		var model_integrator = 'UnitySector';
+		var model_parent = 'Unity';
+		var model_child = 'Sector';
+		var table_child = 'sectors';
+		var name = 'Setor';		
+		
+		newSelect(model_integrator, model_parent, model_child, table_child, name);
+	});	
+	//-----------------------------------------
+	
+	//Função que remove um select
+	//-----------------------------------------
+	$('.remove-select').live('click', function(){		
+		$(this).parent().remove();
+		return false;
+	})
+	//------------------------------------------
 	
 	//Habilitar ou desabilitar status do item
 	//---------------------
@@ -163,72 +210,69 @@ $(document).ready(function() {
 			}
 		});		
 	});
-	//-----------------------------------
-	//verificação antes de submitar o formulário de Input
-	$('#submitInput').click(function(){
-		if($("#InputAddForm").valid() == false) {
-			return;
+	
+	//Evita submit ao aperar ENTER
+	$('#PagesHomeForm, #SolicitationItemIndexForm').submit(function(e){
+		return false;
+	})
+	//unbind
+	$('#filter').unbind('click');
+	//Função do filtro na solicitação dos itens, e na pagina inicial
+	$('#filter').click(function() {			
+		var url = '';
+		
+		var idGroup = '';
+		var idClass = '';
+		var idPngc = '';
+		var idName = '';
+		if($(this).val() == 'solicitation_items') {
+			url = '/' + $(this).val() + '/index/';
+		}else if($(this).val() == 'pages') {
+			url = '/' + $(this).val() + '/home/';
 		}
 		
-		var input_category_id = $('#InputInputCategoryId').val();
-		var input_subcategory_id = $('#InputInputSubcategoryId').val();
-		
-		var url = forUrl('/inputs/checkEntries/');
+		var item_group_id = $('#item-group-id').val();
+		var item_class_id = $('#item-class-id').val();
+		var name = $('#search-item').val();
 
-		$.ajax({
-			type: 'POST',
-			url : url,
-			data: {'input_category_id': input_category_id, 'input_subcategory_id':input_subcategory_id},
-			success : function(retorno) {
-				if(retorno == -1) {
-					$("#alert-message").html('<div class="alert alert-error">Combinação de categoria e subcategoria já está cadastrada</div>');					
-				}else if(retorno == 1) {
-					$('#InputAddForm').submit();
-				}	
-				$("#alert-message").show();
-			},
-			complete: function() {
-				window.setTimeout(escondeMsg, 2500);
-			}
-		});		
+		var url = forUrl(url);
+		$('#html').load(
+			url, 
+			{'item_group_id': item_group_id, 'item_class_id': item_class_id, 'item_name': name}
+		);
 	});	
 	
-	//Função do filtro na solicitação dos itens
-	$('#filter').click(function() {
-
-		var item_group_id = $('#SolicitationItemItemGroupId').val();
-		var item_class_id = $('#SolicitationItemItemClassId').val();
-		var pngc_code_id = $('#SolicitationItemPngcCodeId').val();
-
-		var url = forUrl('/solicitation_items/index/');
-
-		$('#html').load(url, {'item_group_id': item_group_id, 'item_class_id': item_class_id, 'pngc_code_id': pngc_code_id});
+	//-------------------------------------
+	$('.change-quantity').click(function(e){
 		
-	});	
-	
-	//Solicitação de um item via ajax
-	$('.request').click(function(){
+		e.preventDefault();
 		var id = $(this).val();
-		var element = $(this).parent().parent();
-
-		var url = forUrl('/cart_items/add/'+id);
+		var data = $(this).parent('form').serialize();
+		
+		var url = forUrl('/cart_items/edit/'+id);
 		
 		$.ajax({
 			type: 'POST',
-			url : url,
-			success : function(retorno) {
-				if(retorno == -1) {
-					$("#alert-message").html('<div class="alert alert-error">Não foi possível adicionar ao carrinho</div>');					
-				}else if(retorno == 1) {
-					element.html('<i title="Item está na lista de solicitados" alt="Item está na lista de solicitados" class="icon-shopping-cart center"></i>');
-				}	
+			data: data,
+			url: url,
+			beforeSend: function() {
+
+			},
+			success: function(retorno) {
+				if(retorno == 1) {
+					$("#alert-message").html('<div class="alert alert-success">Quantidade alterada com sucesso</div>');
+				}else if(retorno == -1) {
+					$("#alert-message").html('<div class="alert alert-error">Não foi possível alterar a quantidade. Contacte o administrador do sistema.</div>');
+				}
 				$("#alert-message").show();
 			},
 			complete: function() {
 				window.setTimeout(escondeMsg, 2500);
 			}
-		});		
+		});
+		
 	});
+	//------------------------------------
 	//Deleta um item do carrinho via ajax
 	$('.delete_cart').click(function() {
 		
@@ -356,39 +400,101 @@ $(document).ready(function() {
 				$('#selectAll').attr('checked', true);
 			}
 		}		
-	}); 
+	});
+	//autocomplete nome do item
+	$("#search-item").autocomplete({		
+		minLength: 3,
+		source: function(request, response) { 
+			$.ajax({
+				url: "/pages/autocomplete",
+			   	dataType: "json",
+			   	type: 'POST',
+			   	data:{
+				   	item_class_id: $('#item-class-id').val(),
+			   		limit : 15,
+			   		term : request.term
+			   	},
+			   	success: function(data) {
+					response(data);
+				}	
+			})
+		}
+	});	
+	//autocomplete do endereço
+	$(".search-address").autocomplete({		
+		minLength: 3,
+		source: function(request, response) { 
+			$.ajax({
+				url: "/unities/autocomplete",
+			   	dataType: "json",
+			   	type: 'POST',
+			   	data:{
+				   	cep: $('#input-cep').val(),
+				   	model: 'Address',
+			   		limit : 15,
+			   		term : request.term
+			   	},
+			   	success: function(data) {
+					response(data);
+				}	
+			})
+		}
+	});	 
+	//-----------------
+	//Ajax verificação do CEP
+	$('#search-cep').click(function(){
+		
+		$('#UnityState').val('').attr('disabled', 'disabled');
+		$('#UnityCity').attr('readonly', true).attr('value', '');
+		$('#UnityDistrict').attr('readonly', true).attr('value', '');
+		$('#UnityAddress').attr('readonly', true).attr('value', '');
+		
+		var cep = $("#input-cep").val();
+		quantity = cep.length;
+		
+		if(quantity == 8) {
+			
+			$("#input-cep").css('background-position', 'right center');
+			
+			var url = forUrl('/unities/search_cep');
+			
+			$.ajax({
+				type: 'POST',
+				dataType: 'json',
+				url: url,
+				data: {'cep':cep},				
+				success: function(result) {
+					
+					$('#UnityCodResponse').val(result.response);
+					if(result.response == 0) {						
+						$('#UnityState').removeAttr('disabled');
+						$('#UnityCity').attr('readonly', false);
+						$('#UnityDistrict').attr('readonly', false);
+						$('#UnityAddress').attr('readonly', false);
+					}else {
+						
+						$('#UnityStateHidden').val(result.state);
+						$('#UnityState').val(result.state);
+						$('#UnityCity').val(result.city);
+						
+						if(result.response == 1 || result.response == 3) {
+							$('#UnityDistrict').val(result.district);
+							$('#UnityAddress').val(result.address);
+						}else if(result.response == 2) {
+							$('#UnityDistrict').val(result.district);
+							$('#UnityAddress').attr('readonly', false);
+						}
+												
+					}
+				},
+				complete: function() {						
+					$("#input-cep").css('background-position', '-40px -40px');
+				}
+			});			
+		}
+	});
+	
 });
-
-//-----------------------------------
-//Autocomplete
-function selectItem(li) {
-    findValue(li);
-}
- 
-function findValue(li) {
-
-    if( li == null ) 
-        return alert("No match!");
- 
-	// if coming from an AJAX call, let's use the product id as the value
-    if(!!li.extra ) { 
-        var sValue = li.extra[0];
-    } else {// otherwise, let's just display the value in the text box 
-        var sValue = li.selectValue;
-    }
-
-}
- 
-function formatItem(row) {
-    /*if(row[1] == undefined) {
-        return row[0];
-    }
-    else {
-        return row[0] + " (id: " + row[1] + ")";
-    }*/
-    return row[0];
-}
-//------------------------------------------
 
 function escondeMsg() {   		
 	$("#flashMessage, #alert-message").fadeOut();
@@ -397,4 +503,188 @@ function escondeMsg() {
 forUrl = function(url) {
     return $('base').attr('href')+url.substr(1);
 }
+
+function submit(model, table) {
+	if($('#'+model+'AddForm').valid() == false) {
+		return;
+	}
+	;
+	var values = new Array();
+	var cont = 0;
+	$('select').each(function(){
+		values[cont] = $(this).val();
+		cont++;
+	});
 	
+	var url = forUrl('/'+table+'/checkEntries/');
+
+	$.ajax({
+		type: 'POST',
+		data: 'values='+values,
+		url : url,
+		success : function(retorno) {
+			if(retorno == 0) {
+				$("#alert-message").html('<div class="alert alert-error">Entrada duplicada</div>');					
+			}else if(retorno == -1) {
+				$("#alert-message").html('<div class="alert alert-error">Combinação já está cadastrada</div>');					
+			}else if(retorno == 1) {
+				$('#'+model+'AddForm').submit();
+			}	
+			$("#alert-message").show();
+		},
+		complete: function() {
+			window.setTimeout(escondeMsg, 2500);
+		}
+	});		
+}
+
+function callFormAdd(controller) {
+	var url = forUrl('/'+controller+'/add');
+
+	$.ajax({
+		url: url,
+		success: function(retorno){
+			$('.modal-body').html(retorno);
+			$('#modal-category').modal();
+		}
+	});
+}
+
+function newSelect(model_integrator, model_parent, model_child, table_child, name) {
+	
+	var indice = $('.newselect').length + 1;
+	var element_parent = model_integrator+model_parent+'Id';
+	var forLabel = model_integrator+model_child+'Id';
+	var idSelect = forLabel+'-'+indice;
+	var nameSelect = getNameSelect(model_integrator, indice);
+	
+	if($('#'+element_parent).val() == '') {
+		if(model_integrator == 'Input') {
+			alert('Selecione uma categoria');
+		}else if(model_integrator == 'Region') {
+			alert('Selecione uma cidade');
+		}else if(model_integrator == 'UnitySector'){
+			alert('Selecione uma unidade');
+		}
+		
+		return false;
+	}		
+	
+	var values = new Array();
+	var cont = 0;
+	$('select').each(function(){
+		values[cont] = $(this).val();
+		cont++;
+	});	
+			
+    var url = forUrl('/'+table_child+'/get_children/');
+    
+    $.ajax({
+    	type: 'POST',
+    	dataType: 'json',
+    	url: url,
+    	data: 'values='+values,
+    	success: function(result) {
+    		
+    		var options = "";    		
+    		$.each(result, function(key, val) {
+    			options += '<option value="' + key + '">' + val + '</option>';
+    		});
+    		
+    		if(options) {
+    			//Adicionado no final do elemento ( #boxFields) os campos
+    			var div = $(document.createElement('div')).attr('class', 'input select newselect').attr('id', 'select-'+indice);
+    			var label = $(document.createElement('label')).attr('for', forLabel).html(name);
+    			var select = $(document.createElement('select')).attr('id', idSelect).attr('name', nameSelect);
+    			var link = $(document.createElement('a')).attr('class', 'remove-select').attr('href', 'javascript:void(0)');
+    			var img = $(document.createElement('img')).attr('alt', 'Remover select').attr('src', '/img/remove.png');
+    			img.appendTo(link);
+    			label.appendTo(div);
+    			select.appendTo(div);
+    			link.appendTo(div);
+    			
+    			div.appendTo("#boxFields");    			
+    			
+    			$('#'+idSelect).html(options);
+    		}else {
+    			alert('Não existem mais opções');
+    		}
+    	}
+    });
+    
+    
+    return false
+}
+
+function getNameSelect(model_integrator, indice) {
+	
+	var name = '';
+	
+	switch(model_integrator) {
+		case "Input":
+			name = 'data[Input][input_subcategory_id]['+indice+']';
+			break;
+		case "Region":
+			name = 'data[Region][area_id]['+indice+']';
+			break;
+		case "UnitySector":
+			name = 'data[UnitySector][sector_id]['+indice+']';
+			break;
+	}
+	
+	return name;
+}
+
+function selectFill(controller, action, value, id) {
+	
+	var url = forUrl('/'+controller+'/'+action);
+	
+	$.ajax({
+    	type: 'POST',
+    	dataType: 'json',
+    	url: url,
+    	data: {'parent_id':value},
+    	success: function(result) {
+
+    		var options = "";    		
+    		$.each(result, function(key, val) {
+    			options += '<option value="' + key + '">' + val + '</option>';
+    		});
+    		
+    		var id_element = 'select_child';
+    		
+    		if(typeof(id) != "undefined") {
+    			id_element = id;
+    		}
+    		
+    		$('#'+id_element).html(options);
+    	}
+    });
+}
+
+function requestItem() {
+	//Solicitação de um item via ajax
+	$('.request').click(function(e){		
+		e.preventDefault();
+		var id = $(this).val();
+		var element = $(this).parent().parent();
+
+		var url = forUrl('/cart_items/add/'+id);
+		
+		$.ajax({
+			type: 'POST',
+			url : url,
+			success : function(retorno) {
+				if(retorno == -1) {
+					$("#alert-message").html('<div class="alert alert-error">Não foi possível adicionar ao carrinho</div>');					
+				}else if(retorno == 1) {
+					element.html('<i title="Item está na lista de solicitados" alt="Item está na lista de solicitados" class="icon-shopping-cart center"></i>');
+				}	
+				$("#alert-message").show();
+			},
+			complete: function() {
+				window.setTimeout(escondeMsg, 2500);
+			}
+		});		
+	});
+}

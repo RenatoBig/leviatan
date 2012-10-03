@@ -3,33 +3,9 @@
 	<fieldset>
 		<legend><?php echo __('Editar Região'); ?></legend>
 	<?php
-		//requisição feita quando se muda a cidade. Como resposta ele popula o select
-		//das regiões com as que ainda não foram cadastradas 
-		//-------------------
-		$this->Js->get('#RegionCityId')->event('change', 
-			$this->Js->request(
-				array(
-					'controller'=>'Areas',
-					'action'=>'getAreas'
-				), 
-				array(
-					'update'=>'#RegionAreaId',
-					'async' => true,
-					'method' => 'post',
-					'dataExpression'=>true,
-					'data'=> $this->Js->serializeForm(
-						array(
-							'isForm' => true,
-							'inline' => true
-						)
-					)
-				)
-			)
-		);		
-		//----------------------
 		echo $this->Form->input('id');
-		echo $this->Form->input('city_id', array('label'=>__('Cidade')));
-		echo $this->Form->input('area_id', array('label'=>__('Área')));
+		echo $this->Form->input('city_id', array('label'=>__('Cidade'), 'onChange'=>'selectFill("areas", "get_areas", options[selectedIndex].value)'));
+		echo $this->Form->input('area_id', array('label'=>__('Área'), 'id'=>'select_child'));
 	?>
 	</fieldset>
 	<?php echo $this->Form->button(__('Alterar'), array('class'=>'btn btn-primary', 'title'=>__('Alterar região')));?>

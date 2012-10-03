@@ -41,19 +41,11 @@
 							<td><?php echo h($item['Item']['name']); ?></td>
 							<td>
 								<?php echo $this->Form->create('CartItem'); ?>
-								<?php echo $this->Form->input('', array('maxLength'=>'4', 'class'=>'input-mini', 'name'=>'data[CartItem][quantity]', 'value'=>$item['CartItem']['quantity'] ,'type'=>'text', 'label'=>''));?>
-								<?php echo $this->Js->submit('Alterar', array(
-											'url'=>array(
-													'controller'=>'cart_items',
-													'action'=>'edit',
-													$item['CartItem']['id']
-												),
-											'update'=>'#alert-message'
-										)
-									);
-								?>
+									<?php echo $this->Form->input('', array('maxLength'=>'4', 'class'=>'input-mini', 'name'=>'data[CartItem][quantity]', 'value'=>$item['CartItem']['quantity'] ,'type'=>'text', 'label'=>''));?>
+									<?php echo $this->Form->button('Alterar', array('type'=>'button', 'class'=>'change-quantity', 'value'=>$item['CartItem']['id']));?>
 								<?php echo $this->Form->end();?>
-							</td>
+								<div id="busy-indicator">Loading ...</div>
+							</td>							
 							<td>
 								<?php 
 								echo $this->Form->input('Remover', 

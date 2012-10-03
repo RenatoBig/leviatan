@@ -4,8 +4,8 @@
 		<legend><?php echo __('Editar unidade_setor'); ?></legend>
 	<?php
 		echo $this->Form->input('id');
-		echo $this->Form->input('unity_id', array('label'=>__('Unidade')));
-		echo $this->Form->input('sector_id', array('label'=>__('Setor')));
+		echo $this->Form->input('unity_id', array('label'=>__('Unidade'), 'onChange'=>'selectFill("sectors", "get_sectors", options[selectedIndex].value)'));
+		echo $this->Form->input('sector_id', array('label'=>__('Setor'), 'id'=>'select_child'));
 	?>
 	</fieldset>
 	<?php echo $this->Form->button(__('Alterar'), array('class'=>'btn btn-primary', 'title'=>__('Alterar dados da unidade setor')));?>

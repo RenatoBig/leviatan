@@ -74,71 +74,6 @@ class AppController extends Controller {
     }
     
 /**
- * Gera seis números aleatórios seguido de /ano corrente
- */
-    protected function __getRandomKeycode() {
-    
-    	$i = 0;
-    	$random = '';
-    	while($i < 3) {
-    		$random .= rand(10, 99);
-    		$i++;
-    	}
-    
-    	$random = $random.'/'.date('y');
-    
-    	return $random;
-    }
-    
-/**
- * Itens que estão no carrinho do usuário atual
- */
-    protected function __getCartItems() {
-    
-    	$user_id = $this->Auth->user('id');
-    
-    	$options['conditions'] = array(
-    			'CartItem.user_id'=>$user_id
-    	);
-    	$options['fields'] = array(
-    			'CartItem.item_id'
-    	);
-    	$cart_items = $this->CartItem->find('list', $options);
-    
-    	$idItems = array();
-    	foreach($cart_items as $item):
-    		$idItems[] = $item;
-    	endforeach;
-    
-    	return $idItems;
-    }
-    
-/**
- * Itens que estão em algum processo de pendência
- */
-    protected function __getSolicitationItems($status=null) {
-    	$user_id = $this->Auth->user('id');
-    
-    	$options['conditions'] = array(
-    			'Solicitation.user_id'=>$user_id,
-    			'Solicitation.status_id'=>PENDENTE
-    	);
-    	
-    	$options['fields'] = array(
-    			'SolicitationItem.item_id',
-    	);
-    
-    	$solicitationItems = $this->SolicitationItem->find('all', $options);
-
-    	$items = array();
-    	foreach($solicitationItems as $value):
-    		$items[] = $value['SolicitationItem']['item_id'];
-    	endforeach;
-    
-    	return $items;
-    }
-    
-/**
  * retorna os dados da tabela passada como parâmetro
  */
     protected function __getTable($model, $id) {
@@ -158,7 +93,7 @@ class AppController extends Controller {
     		$menus[] = array('name'=>'Itens', 'link'=>array('controller'=>'pages', 'action'=>'home'));
     	}else {
     		if($this->Auth->user('group_id') == ADMIN) {
-    			$menus[] = array('name'=>'Área administrativa', 'link'=>array('controller'=>'admin', 'action'=>'index'));
+    			$menus[] = array('name'=>'Área administrativa', 'link'=>array('controller'=>'manager', 'action'=>'index'));
     		}
     		
     		if($this->Auth->user('group_id') == DIRETOR) {
@@ -246,6 +181,93 @@ class AppController extends Controller {
     	}
     	
     	return $value;
+    }
+    
+/**
+ * Função usada para povoar os selects das tabelas integradoras
+ * Input, Region, UnitySector
+ */
+    protected function get_children($model_integrator, $model_parent, $model_child, $values) {
+    	$this->autoRender = false;
+    	if($this->request->is('ajax')) {
+    		$ids = explode(',', $values);
+    		$id_parent = $ids[0];
+    		unset($ids[0]);
+    		$id_children = $ids;
+    		
+    		$table_child = Inflector::tableize($model_child);
+    		$table_parent = Inflector::tableize($model_parent);
+    		$table_integrator = Inflector::tableize($model_integrator);
+    		$field_child_id = Inflector::singularize($table_child).'_id';
+    		$field_parent_id = Inflector::singularize($table_parent).'_id';
+    
+    		$query = 'SELECT `'.$model_child.'`.`id`, '.$model_child.'.`name`
+							    		FROM `'.$table_child.'` AS `'.$model_child.'`
+							    		WHERE NOT EXISTS (
+								    		SELECT `'.$model_integrator.'`.`'.$field_child_id.'`
+								    		FROM `'.$table_integrator.'` AS `'.$model_integrator.'`
+								    		WHERE `'.$model_child.'`.`id`=`'.$model_integrator.'`.`'.$field_child_id.'` AND `'.$model_integrator.'`.`'.$field_parent_id.'`='.$id_parent.')
+							    		ORDER BY `'.$model_child.'`.`name`';
+    		$data = $this->$model_child->query($query);
+    		
+    		foreach($data as $value):
+    			$children[$value[$model_child]['id']] = $value[$model_child]['name'];
+    		endforeach;
+    
+    		foreach($id_children as $id):
+    			unset($children[$id]);
+    		endforeach;
+    		
+    		echo json_encode($children);
+    	}
+    }
+    
+/**
+ * Função que verifica se os valores dos selects não estão cadastrados ou são iguais
+ */
+    protected function checkEntries($model_integrator, $model_parent, $model_child, $values) {
+    	$this->autoRender = false;
+    	if($this->request->is('ajax')) {
+    			
+    		$ids = explode(',', $values);
+    		$id_parent = $ids[0];
+    		unset($ids[0]);
+    		$id_children = $ids;
+    			
+    		$result = array_unique($id_children);
+    			
+    		if(count($id_children) != count($result)) {
+    			echo '0';
+    			return;
+    		}
+    		
+    		$table_child = Inflector::tableize($model_child);
+    		$table_parent = Inflector::tableize($model_parent);
+    		$table_integrator = Inflector::tableize($model_integrator);
+    		$field_child_id = Inflector::singularize($table_child).'_id';
+    		$field_parent_id = Inflector::singularize($table_parent).'_id';
+    			
+    		$exist = false;
+    		$this->$model_integrator->recursive = -1;
+    			
+    		foreach($ids as $value):
+	    		$op['conditions'] = array(
+    				$model_integrator.'.'.$field_parent_id=>$id_parent,
+    				$model_integrator.'.'.$field_child_id=>$value
+	    		);
+	    		$register = $this->$model_integrator->find('first', $op);
+	    		if($register) {
+	    			$exist = true;
+	    			break;
+	    		}
+    		endforeach;
+    			
+    		if($exist) {
+    			echo '-1';
+    		}else {
+    			echo '1';
+    		}
+    	}
     }
     
 }

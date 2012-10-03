@@ -38,10 +38,17 @@ class AreasController extends AppController {
 			$this->Area->create();
 			if ($this->Area->save($this->request->data)) {
 				$this->__getMessage(SUCCESS);
-				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->__getMessage(ERROR);
-			}
+			}			
+			$this->redirect(array('controller'=>'regions','action' => 'add'));
+		}
+		
+		if($this->request->is('ajax')) {
+			$this->layout = 'ajax';
+		}else {
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect($this->referer());
 		}
 	}
 
@@ -100,13 +107,17 @@ class AreasController extends AppController {
  * Função que retorna as áreas que ainda não estão 
  * cadastradas na tabela de regiões
  */
-	public function getAreas() {
+	public function get_areas() {
+		$this->autoRender = false;
 		if($this->request->is('ajax')) {
 			//id da unidade			
-			$cityId = $this->request->data['Region']['city_id'];
+			$cityId = $this->request->data['parent_id'];
 
 			if($cityId == "") {
-				exit;
+				$areas = array(''=>"Selecione uma cidade");
+				echo json_encode($areas);
+				
+				return;
 			}
 
 			$db = $this->Region->getDataSource();			
@@ -139,9 +150,16 @@ class AreasController extends AppController {
 			}
 			$areas = $inicio + $areas;
 			
-			$this->set(compact('areas'));
-			$this->layout = 'ajax';
+			echo json_encode($areas);
 		}		
+	}
+	
+/**
+ *
+ */
+	public function get_children() {
+		$values = $this->request->data['values'];
+		parent::get_children('Region', 'City', 'Area', $values);
 	}
 
 }

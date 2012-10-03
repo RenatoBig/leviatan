@@ -169,7 +169,8 @@ class UsersController extends AppController {
 				$this->Employee->saveField('email', $this->request->data['Profile']['email']);
 			}
 			
-			$this->Session->setFlash('ALterado com sucesso', 'default', array('class'=>'alert alert-success'));
+			$this->Session->setFlash('Alterado com sucesso', 'default', array('class'=>'alert alert-success'));
+			$this->redirect(array('controller'=>'pages', 'action'=>'home'));
 		}
 		
 		$user = $this->User->read(null, $id);		

@@ -57,10 +57,17 @@ class InputSubcategoriesController extends AppController {
 			$this->InputSubcategory->create();
 			if ($this->InputSubcategory->save($this->request->data)) {
 				$this->__getMessage(SUCCESS);
-				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->__getMessage(ERROR);
 			}
+			$this->redirect(array('controller'=>'inputs', 'action'=>'add'));
+		}
+		
+		if($this->request->is('ajax')) {
+			$this->layout = 'ajax';
+		}else {
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect($this->referer());
 		}
 	}
 
@@ -118,14 +125,16 @@ class InputSubcategoriesController extends AppController {
  * Função que retorna as subcategorias de insumos que ainda não estão 
  * cadastradas na tabela de insumos
  */
-	public function getSubcategories() {
-		if($this->request->is('ajax')) {
+	public function get_subcategories() {
+		
+		$this->autoRender = false;
+		if($this->request->is('ajax')) {			
 			//id da unidade			
-			$inputCategoryId = $this->request->data['Input']['input_category_id'];
+			$inputCategoryId = $this->request->data['parent_id'];
 			
 			if($inputCategoryId == "") {
 				$subcategories = array(''=>'Selecione uma categoria');
-				$this->set(compact('subcategories'));
+				echo json_encode($subcategories);
 
 				return;
 			}
@@ -150,51 +159,55 @@ class InputSubcategoriesController extends AppController {
 				$subcategories = $inicio + $subcategories;
 			}			
 			
-			$this->set(compact('subcategories'));
-			$this->layout = 'ajax';
+			echo json_encode($subcategories);
 		}		
 	}
 	
 /**
  * 
- * Enter description here ...
  */
-	public function getSubcategoriesPngcCode() {
-		if($this->request->is('ajax')) {
-			//id da unidade			
-			$inputCategoryId = $this->request->data['PngcCode']['input_category_id'];
+	public function get_subcategories_pngc() {
+		$this->autoRender = false;
+		if($this->request->is('AJAX')) {
+			$inputCategoryId = $this->request->data['parent_id'];
 			
 			if($inputCategoryId == "") {
 				$subcategories = array(''=>'Selecione uma categoria');
-				$this->set(compact('subcategories'));
-				$this->render('getSubcategories', 'ajax');
-				
+				echo json_encode($subcategories);
 				return;
-			}			
+			}
 			
 			$q_input_subcategories = 'SELECT `InputSubcategory`.`id`, `InputSubcategory`.`name`
 										FROM `input_subcategories` AS `InputSubcategory`
-										WHERE `InputSubcategory`.`id` IN 
-											(SELECT `Input`.`input_subcategory_id` 
-												FROM `inputs` AS `Input` 
-												WHERE `Input`.`input_category_id`='.$inputCategoryId.') ORDER BY `InputSubcategory`.`name` ASC';
+										WHERE `InputSubcategory`.`id` IN
+											(SELECT `Input`.`input_subcategory_id`
+											FROM `inputs` AS `Input`
+											WHERE `Input`.`input_category_id`='.$inputCategoryId.') 
+										ORDER BY `InputSubcategory`.`name` ASC';
 			$subcategories = $this->InputSubcategory->query($q_input_subcategories);
-			
+				
 			if(empty($subcategories)) {
 				$subcategories = array(''=>'Não existem subcategorias ou foram todas cadastradas');
 			}else {
 				foreach($subcategories as $subcategory):
-					$data[$subcategory['InputSubcategory']['id']] = $subcategory['InputSubcategory']['name'];
+				$data[$subcategory['InputSubcategory']['id']] = $subcategory['InputSubcategory']['name'];
 				endforeach;
 				$inicio = array(''=>'-- Nenhum --');
 				$data = $inicio + $data;
-	
+			
 				$subcategories = $data;
 			}
 			
-			$this->set(compact('subcategories'));
-			$this->render('getSubcategories', 'ajax');
-		}		
+			echo json_encode($subcategories);			
+		}
+	}
+	
+/**
+ *
+ */
+	public function get_children() {
+		$values = $this->request->data['values'];
+		parent::get_children('Input', 'InputCategory', 'InputSubcategory', $values);
 	}
 	
 }

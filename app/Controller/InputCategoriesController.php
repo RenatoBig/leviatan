@@ -53,11 +53,18 @@ class InputCategoriesController extends AppController {
 		if ($this->request->is('post')) {
 			$this->InputCategory->create();
 			if ($this->InputCategory->save($this->request->data)) {
-				$this->__getMessage(SUCCESS);
-				$this->redirect(array('action' => 'index'));
+				$this->__getMessage(SUCCESS);				
 			} else {
 				$this->__getMessage(ERROR);
 			}
+			$this->redirect(array('controller'=>'inputs','action' => 'add'));
+		}
+		
+		if($this->request->is('ajax')) {
+			$this->layout = 'ajax';
+		}else {
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect($this->referer());
 		}
 	}
 

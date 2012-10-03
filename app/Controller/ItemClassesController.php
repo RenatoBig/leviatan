@@ -134,9 +134,15 @@ class ItemClassesController extends AppController {
 /**
  * 
  */
-	public function get_by_category() {
+	public function get_categories() {
+		$this->autoRender = false;
 		if($this->request->is('ajax')) {
-			$item_group_id = $this->request->data['Item']['item_group_id'];
+			$item_group_id = $this->request->data['parent_id'];
+			
+			if($item_group_id == "") {
+				echo json_encode(array(''=>'Selecione um grupo'));
+				return;
+			}
 
 			$this->ItemClass->recursive = -1;
 			$options['conditions'] = array(
@@ -157,8 +163,8 @@ class ItemClassesController extends AppController {
 			
 			$inicio = array(''=>'-- Nenhum --');
 			$itemClasses = $inicio + $itemClasses;
-
-			$this->set(compact('itemClasses'));
+			
+			echo json_encode($itemClasses);
 		}
 	}
 	

@@ -3,34 +3,10 @@
 	<fieldset>
 		<legend><?php echo __('Editar funcionário'); ?></legend>
 	<?php
-		//requisição feita quando se muda a unidade. Como resposta ele popula o select
-		//dos setores de acordo com a unidade escolhida 
-		//-------------------
-		$this->Js->get('#unity_id')->event('change', 
-			$this->Js->request(
-				array(
-					'controller'=>'UnitySectors',
-					'action'=>'getSector'
-				), 
-				array(
-					'update'=>'#sector',
-					'async' => true,
-					'method' => 'post',
-					'dataExpression'=>true,
-					'data'=> $this->Js->serializeForm(
-						array(
-							'isForm' => true,
-							'inline' => true
-						)
-					)
-				)
-			)
-		);		
-		//----------------------
 		echo $this->Form->input('id', array('type' => 'hidden'));
 		echo $this->Form->input('registration', array('label'=>__('Matrícula')));
-		echo $this->Form->input('Unity', array('label'=>__('Unidades'), 'id'=>'unity_id', 'value'=>$this->request->data['UnitySector']['unity_id']));
-		echo $this->Form->input('unity_sector_id', array('label'=>__('Setor'),'id'=>'sector','options'=>$sectors, 'value'=>$this->request->data['UnitySector']['id']));
+		echo $this->Form->input('Unity', array('label'=>__('Unidade'), 'id'=>'select_parent', 'value'=>$this->request->data['UnitySector']['unity_id']));
+		echo $this->Form->input('unity_sector_id', array('label'=>__('Setor'),'id'=>'select_child','options'=>$sectors, 'value'=>$this->request->data['UnitySector']['id']));
 		echo $this->Form->input('name', array('label'=>__('Nome')));
 		echo $this->Form->input('surname', array('label'=>__('Sobrenome')));
 		echo $this->Form->input('birth_date', array('label'=>__('Data de Nascimento'), 'class'=>'calendario mask-date input-small', 'type'=>'text', 'value'=>$this->Time->format('d/m/Y', $this->request->data['Employee']['birth_date'])));

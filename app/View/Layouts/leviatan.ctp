@@ -13,19 +13,40 @@ $leviatanDescription = __d('leviatan_dev', 'Leviatan');
 		</title>
 		<?php
 			echo $this->fetch('meta');
-			echo $this->fetch('css');
 			echo $this->fetch('script');
+			echo $this->fetch('css');
 			
 			echo $this->Html->meta('icon');
 	
-			echo $this->Html->css(array('autocomplete', 'jquery-ui-1.8.21.custom', 'bootstrap', 'bootstrap-responsive', 'leviatan'));
+			//css jquery
+			echo $this->Html->css(array(
+					'jquery-ui-1.8.23.custom', 'jquery.ui.autocomplete', 'jquery.ui.datepicker',
+					'jquery.ui.core' 
+				)
+			);
+			//css bootstrap
+			echo $this->Html->css(array('bootstrap', 'bootstrap-responsive'));
+			//Outros css
+			echo $this->Html->css(array('leviatan'));
 			
-			echo $this->Html->script(array('jquery-1.7.2', 'jquery-ui-1.8.21.custom.min', 
-							'jquery.validate', 'bootstrap', 'bootstrap.min', 
-							'bootstrap-modal', 'bootstrap-tab', 'bootstrap-dropdown', 'autocomplete', 
-							'validate', 'functions', 'ckeditor/ckeditor', 'jquery.maskedinput-1.3.min'
-						)
-					);
+			//JS jquery
+			echo $this->Html->script(array(
+					'jquery-1.8.0.min', 'jquery-ui-1.8.23.custom.min','jquery.ui.autocomplete.min', 
+					'jquery.ui.core.min', 'jquery.ui.datepicker.min', 'jquery.ui.position.min', 
+					'jquery.ui.widget.min', 'jquery.validate', 'jquery.maskedinput-1.3.min'		
+				)
+			);
+			//JS bootstrap
+			echo $this->Html->script(array( 
+					'bootstrap', 'bootstrap.min', 'bootstrap-modal', 
+					'bootstrap-tab', 'bootstrap-dropdown'							 
+				)
+			);
+			//Outros JS
+			echo $this->Html->script(array(
+					'validate', 'functions', 'ckeditor/ckeditor'
+				)
+			);
 		?>
 		
 		<script type="text/javascript">

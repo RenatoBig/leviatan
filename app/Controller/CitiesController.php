@@ -35,10 +35,17 @@ class CitiesController extends AppController {
 			$this->City->create();
 			if ($this->City->save($this->request->data)) {
 				$this->__getMessage(SUCCESS);
-				$this->redirect(array('action' => 'index'));
 			} else {
 				$this->__getMessage(ERROR);
 			}
+			$this->redirect(array('controller'=>'regions','action' => 'add'));
+		}
+		
+		if($this->request->is('ajax')) {
+			$this->layout = 'ajax';
+		}else {
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect($this->referer());
 		}
 	}
 

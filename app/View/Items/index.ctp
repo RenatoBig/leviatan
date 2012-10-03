@@ -10,6 +10,7 @@
 		<thead>
 			<tr>
 				<th><?php echo __('Habilitar');?></th>
+				<th><?php echo __('Código');?></th>
 				<th><?php echo __('Nome');?></th>
 				<th><?php echo __('Classe');?></th>
 				<th><?php echo __('PNGC');?></th>			
@@ -27,6 +28,11 @@
 		?>
 			<tr>
 				<td><input title="Habilita/desabilita item para solicitação" type="checkbox" class="enable" <?php echo $checked;?> <?php echo $disabled;?> value="<?php echo $item['Item']['id'] ?>" /></td>
+				<td>
+					<?php 
+					echo $item['Item']['keycode'];
+					?>
+				</td>
 				<td>
 					<?php 
 					echo $this->Form->postLink($item['Item']['name'], array('controller'=>'items', 'action'=>'view', 'titulo'=>strtolower(Inflector::slug($item['Item']['name'], '-')), 'id'=>$item['Item']['id']));

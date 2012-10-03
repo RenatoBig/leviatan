@@ -36,6 +36,7 @@ class CartItemsController extends AppController {
  * 
  */
 	public function add($id) {
+		$this->autoRender = false;
 		if($this->request->is('ajax')) {
 			
 			$user_id = $this->Auth->user('id');
@@ -50,7 +51,6 @@ class CartItemsController extends AppController {
 				echo -1;
 			}
 			
-			$this->autoRender = false;
 		}
 	}
 	
@@ -89,7 +89,6 @@ class CartItemsController extends AppController {
 	public function edit($id) {
 		if($this->request->is('ajax')) {
 			$this->autoRender = false;
-			
 			$this->CartItem->id = $id;
 			if (!$this->CartItem->exists()) {
 				$this->__getMessage(INVALID_RECORD);
@@ -99,9 +98,9 @@ class CartItemsController extends AppController {
 			$quantity = $this->request->data['CartItem']['quantity'];
 			
 			if ($this->CartItem->saveField('quantity', $quantity)) {				
-				echo '<div class="alert alert-success">'.__('Quantidade alterada com sucesso').'</div>'; 
+				return '1';
 			} else {
-				echo '<div class="alert alert-error">'.__('A quantidade não pode ser alterada.').'</div>';
+				return '-1';
 			}
 		}
 	}

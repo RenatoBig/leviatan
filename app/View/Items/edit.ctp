@@ -4,10 +4,10 @@
 		<legend><?php echo __('Editar Item'); ?></legend>
 	<?php
 		echo $this->Form->input('id');
-		echo $this->Form->input('item_group_id', array('label'=>__('Grupo do item'), 'class'=>'input-xxlarge', 'value'=>$this->request->data['ItemClass']['item_group_id']));
-		echo $this->Form->input('item_class_id', array('label'=>__('Classe do item'), 'class'=>'input-xxlarge', 'options'=>$itemClasses, 'value'=>$this->request->data['ItemClass']['id']));		
+		echo $this->Form->input('item_group_id', array('label'=>__('Grupo do item'), 'class'=>'input-xxlarge', 'value'=>$this->request->data['ItemClass']['item_group_id'], 'onChange'=>'selectFill("item_classes", "get_categories", options[selectedIndex].value)'));
+		echo $this->Form->input('item_class_id', array('label'=>__('Classe do item'), 'class'=>'input-xxlarge', 'options'=>$itemClasses, 'value'=>$this->request->data['ItemClass']['id'], 'id'=>'select_child'));		
 		echo $this->Form->input('pngc_code_id', array('label'=>__('PNGC'), 'class'=>'input-xxlarge'));
-		echo $this->Form->input('keycode', array('label'=>__('Código'), 'class'=>'input-small'));
+		//echo $this->Form->input('keycode', array('label'=>__('Código'), 'class'=>'input-small'));
 		echo $this->Form->input('name', array('label'=>__('Nome')));
 		echo $this->Form->input('description', array('label'=>__('Descrição')));
 		echo $this->Fck->load('ItemDescription');

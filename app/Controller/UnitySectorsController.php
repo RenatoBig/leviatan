@@ -33,8 +33,16 @@ class UnitySectorsController extends AppController {
  */
 	public function add() {
 		if ($this->request->is('post')) {
+
+			$unity = $this->request->data['UnitySector']['unity_id'];
+			$sectors = $this->request->data['UnitySector']['sector_id'];
+				
+			foreach($sectors as $value):
+				$data[] = array('unity_id'=>$unity, 'sector_id'=>$value);
+			endforeach;
+
 			$this->UnitySector->create();
-			if ($this->UnitySector->save($this->request->data)) {
+			if ($this->UnitySector->saveMany($data)) {
 				$this->__getMessage(SUCCESS);
 				$this->redirect(array('action' => 'index'));
 			} else {
@@ -46,6 +54,7 @@ class UnitySectorsController extends AppController {
 		$unities = $this->UnitySector->Unity->find('list');
 		//--------------
 		$unities = $inicio + $unities;
+		$sectors = array(''=>'Selecione uma unidade');
 		$this->set(compact('unities', 'sectors'));
 	}
 
@@ -155,36 +164,43 @@ class UnitySectorsController extends AppController {
 		$this->redirect(array('action' => 'index'));
 	}
 	
-/**
- * 
- * Função que retorna os setores de acordo com a unidade escolhida
- */
-	public function getSector() {
-		if($this->request->is('ajax')) {
-			//id da unidade			
-			$unity_id = $this->request->data['Employee']['Unity'];
-			//Recupera os setores de acordo com a unidade escolhida
-			$sectors = $this->UnitySector->find('all', 
-				array(
-					'conditions' => array(
-							'UnitySector.unity_id' => $unity_id,
-							'UnitySector.sector_id = Sector.id'
-						),					
-					'recursive' => 0,
-					'fields' => array('UnitySector.id', 'Sector.name')
-				)
-			);
+	public function get_sectors() {
+		
+		$this->autoRender = false;
+		if($this->request->is('AJAX')) {
 			
+			$unity_id = $this->request->data['parent_id'];
+			
+			//Recupera os setores de acordo com a unidade escolhida
+			$sectors = $this->UnitySector->find('all',
+					array(
+							'conditions' => array(
+									'UnitySector.unity_id' => $unity_id,
+									'UnitySector.sector_id = Sector.id'
+							),
+							'recursive' => 0,
+							'fields' => array('UnitySector.id', 'Sector.name')
+					)
+			);
+				
 			// organiza o array para colocar no value o id do UnitySector
 			// e coloca no text o nome do setor
 			$newSectors[''] = "Selecione um item";
 			foreach($sectors as $value):
-				$newSectors[$value['UnitySector']['id']] = $value['Sector']['name']; 
+				$newSectors[$value['UnitySector']['id']] = $value['Sector']['name'];
 			endforeach;
-	 		
-			$this->set(compact('newSectors'));
-			$this->layout = 'ajax';
-		}		
+			
+			echo json_encode($newSectors);
+		}
+		
+	}
+	
+	public function checkEntries() {
+		$model_integrator = 'UnitySector';
+		$model_parent = 'Unity';
+		$model_child = 'Sector';
+		$values = $this->request->data['values'];
+		parent::checkEntries($model_integrator, $model_parent, $model_child, $values);
 	}
 	
 }

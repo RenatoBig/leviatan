@@ -2,14 +2,17 @@ $(document).ready(function() {
 	
 	$('.mask-date').mask('99/99/9999', {placeholder:" "}); //data
 	$('.mask-phone').mask('(99)9999-9999', {placeholder:" ", completed:function(){$('.mask-phone').unmask()}}); //telefone
+	
 	//Profile form
 	//-----------------
 	$("#ProfileProfileForm").validate({ 
     	rules: { 			
 			'data[Profile][confirm_password]':{
+				required: true,
 				equalTo: "#ProfilePassword"
 			},
 			'data[Profile][password]':{
+				required: true,
 				minlength: 6
 			},
 			'data[Profile][email]':{
@@ -18,9 +21,11 @@ $(document).ready(function() {
 		},
 		messages: {
 			'data[Profile][confirm_password]':{
+				required: "Campo obrigatório",
 				equalTo: "Senhas não conferem"
 			},
 			'data[Profile][password]':{
+				required: "Campo obrigatório",
 				minlength: "Quantidade de caractéres mínima é 6"
 			},
 			'data[Profile][email]':{
@@ -149,15 +154,15 @@ $(document).ready(function() {
 	}); 
 	
 	//Combobox
-	$('#RegionAddForm #RegionAreaId').parent().hide();
+	//$('#RegionAddForm #RegionAreaId').parent().hide();
 	
-	$('#RegionCityId').change(function() {
+	/*$('#RegionCityId').change(function() {
 		if($(this).val() == 0) {
 			$('#RegionAreaId').parent().hide('slow');
 		}else {
 			$('#RegionAreaId').parent().show('slow');
 		}
-	});	
+	});	*/
 	
 	//UnitiyType
 	//validação de formulário
@@ -194,15 +199,15 @@ $(document).ready(function() {
 	//Unities
 	//---------------------	
 	//Combobox
-	$('#UnityAddForm #UnityRegionId').parent().hide();
+	//$('#UnityAddForm #UnityRegionId').parent().hide();
 	
-	$('#UnityCityId').change(function() {
+	/*$('#UnityCityId').change(function() {
 		if($(this).val() == 0) {
 			$('#UnityRegionId').parent().hide('slow');
 		}else {
 			$('#UnityRegionId').parent().show('slow');
 		}
-	});	
+	});	*/
 
 	//validação de formulário
 	$("#UnityAddForm, #UnityEditForm").validate({ 
@@ -216,11 +221,22 @@ $(document).ready(function() {
 			'data[Unity][name]':{
 				required: true
 			},
-			'data[Unity][city_id]':{
+			'data[Unity][cep]':{
+				minlength: 8,
 				required: true,
+				digits: true
 			},
-			'data[Unity][region_id]':{
-				required: true,
+			'data[Unity][state]':{
+				required: true
+			},
+			'data[Unity][city]':{
+				required: true
+			},
+			'data[Unity][district]':{
+				required: true
+			},
+			'data[Unity][address]':{
+				required: true
 			},
 			'data[Unity][health_district_id]':{
 				required: true,
@@ -239,10 +255,21 @@ $(document).ready(function() {
 			'data[Unity][name]':{
 				required: "Este campo é obrigatório"
 			},
-			'data[Unity][city_id]':{
+			'data[Unity][cep]':{
+				minlength: "O CEP deve ter 8 numeros",
+				required: "Este campo é obrigatório",
+				digits: "Apenas dígitos"
+			},
+			'data[Unity][state]':{
 				required: "Este campo é obrigatório"
 			},
-			'data[Unity][region_id]':{
+			'data[Unity][city]':{
+				required: "Este campo é obrigatório"
+			},
+			'data[Unity][district]':{
+				required: "Este campo é obrigatório"
+			},
+			'data[Unity][address]':{
 				required: "Este campo é obrigatório"
 			},
 			'data[Unity][health_district_id]':{
@@ -262,7 +289,7 @@ $(document).ready(function() {
 			'data[UnitySector][unity_id]':{
 				required: true,
 			},
-			'data[UnitySector][sector_id]':{
+			'data[UnitySector][sector_id][0]':{
 				required: true
 			}
 		},
@@ -270,22 +297,22 @@ $(document).ready(function() {
 			'data[UnitySector][unity_id]':{
 				required: "Este campo é obrigatório"
 			},
-			'data[UnitySector][sector_id]':{
+			'data[UnitySector][sector_id][0]':{
 				required: "Este campo é obrigatório"
 			}
 		}
 	});
 	
 	//Combobox
-	$('#UnitySectorAddForm #UnitySectorSectorId').parent().hide();
+	//$('#UnitySectorAddForm #UnitySectorSectorId').parent().hide();
 	
-	$('#UnitySectorUnityId').change(function() {
+	/*$('#UnitySectorUnityId').change(function() {
 		if($(this).val() == 0) {
 			$('#UnitySectorSectorId').parent().hide('slow');
 		}else {
 			$('#UnitySectorSectorId').parent().show('slow');
 		}
-	});	
+	});	*/
 	
 	//--------------------
 	//Sector
@@ -306,15 +333,15 @@ $(document).ready(function() {
 	//-------------------
 	//Employees
 	//Combobox
-	$('#EmployeeAddForm #sector').parent().hide();
+	//$('#EmployeeAddForm #sector').parent().hide();
 	
-	$('#unity_id').change(function() {
+	/*$('#unity_id').change(function() {
 		if($(this).val() == 0) {
 			$('#sector').parent().hide('slow');
 		}else {
 			$('#sector').parent().show('slow');
 		}
-	});	
+	});	*/
 
 	//validação de formulário
 	$("#EmployeeAddForm, #EmployeeEditForm").validate({ 

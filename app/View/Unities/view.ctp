@@ -1,11 +1,6 @@
 <div class="span9 well">
 	<h2><?php  echo __('Unidade');?></h2>
 	<dl class="dl-horizontal">
-		<dt><?php echo __('ID'); ?></dt>
-		<dd>
-			<?php echo h($unity['Unity']['id']); ?>
-			&nbsp;
-		</dd>
 		<dt><?php echo __('CNES'); ?></dt>
 		<dd>
 			<?php echo h($unity['Unity']['cnes']); ?>
@@ -26,21 +21,20 @@
 			<?php echo h($unity['Unity']['trade_name']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('Endereço'); ?></dt>
-		<dd>
-			<?php echo h($unity['Unity']['address']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Número'); ?></dt>
-		<dd>
-			<?php echo h($unity['Unity']['number']); ?>
-			&nbsp;
-		</dd>
 		<dt><?php echo __('CEP'); ?></dt>
 		<dd>
-			<?php echo h($unity['Unity']['cep']); ?>
+			<?php echo h($unity['Address']['postal_code']); ?>
 			&nbsp;
 		</dd>
+		<dt><?php echo __('Endereço'); ?></dt>
+		<dd>
+			<?php 
+			echo ($this->Form->postLink($unity['Address']['name'], array('controller'=>'addresses', 'action'=>'view', $unity['Address']['id']))).					
+				 ' - '.
+				 ($unity['Unity']['number'] == '' ? 'S/N' : $unity['Unity']['number']); 
+			?>
+			&nbsp;
+		</dd>		
 		<dt><?php echo __('Telefone'); ?></dt>
 		<dd>
 			<?php echo h($unity['Unity']['phone']); ?>
@@ -50,30 +44,15 @@
 		<dd>
 			<?php echo h($unity['Unity']['fax']); ?>
 			&nbsp;
-		</dd>
-		<dt><?php echo __('Região'); ?></dt>
-		<dd>
-			<?php echo $this->Html->link($unity['Region']['id'], array('controller' => 'regions', 'action' => 'view', $unity['Region']['id'])); ?>
-			&nbsp;
-		</dd>
+		</dd>		
 		<dt><?php echo __('Distrito sanitário'); ?></dt>
 		<dd>
-			<?php echo $this->Html->link($unity['HealthDistrict']['name'], array('controller' => 'health_districts', 'action' => 'view', $unity['HealthDistrict']['id'])); ?>
+			<?php echo $unity['HealthDistrict']['name']; ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('Tipo da unidade'); ?></dt>
 		<dd>
-			<?php echo $this->Html->link($unity['UnityType']['name'], array('controller' => 'unity_types', 'action' => 'view', $unity['UnityType']['id'])); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Criado'); ?></dt>
-		<dd>
-			<?php echo h($unity['Unity']['created']); ?>
-			&nbsp;
-		</dd>
-		<dt><?php echo __('Modificado'); ?></dt>
-		<dd>
-			<?php echo h($unity['Unity']['modified']); ?>
+			<?php echo $unity['UnityType']['name']; ?>
 			&nbsp;
 		</dd>
 	</dl>

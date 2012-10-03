@@ -38,7 +38,16 @@ class EmployeesController extends AppController {
 			$this->__getMessage(INVALID_RECORD);
 			$this->redirect(array('action'=>'index'));
 		}
-		$this->set('employee', $this->Employee->read(null, $id));
+		
+		$employee = $this->Employee->read(null, $id);
+		
+		$this->Unity->recursive = -1;
+		$this->Sector->recursive = -1;
+		
+		$unity = $this->Unity->read(null, $employee['UnitySector']['unity_id']);
+		$sector = $this->Sector->read(null, $employee['UnitySector']['sector_id']);
+
+		$this->set(compact('employee', 'unity', 'sector'));
 	}
 
 /**
@@ -60,10 +69,11 @@ class EmployeesController extends AppController {
 		
 		$inicial = array(''=>__('Selecione um item'));
 		$unities = $this->Employee->UnitySector->Unity->find('list');
+		$sectors = array(''=>'Selecione uma unidade');
 		
 		$unities = $inicial + $unities;
 		
-		$this->set(compact('unities'));
+		$this->set(compact('unities', 'sectors'));
 	}
 
 /**

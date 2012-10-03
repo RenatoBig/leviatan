@@ -36,11 +36,18 @@ class SectorsController extends AppController {
 		if ($this->request->is('post')) {
 			$this->Sector->create();
 			if ($this->Sector->save($this->request->data)) {
-				$this->__getMessage(SUCCESS);
-				$this->redirect(array('action' => 'index'));
+				$this->__getMessage(SUCCESS);				
 			} else {
 				$this->__getMessage(ERROR);
 			}
+			$this->redirect(array('controller'=>'unity_sectors', 'action' => 'add'));
+		}
+		
+		if($this->request->is('ajax')) {
+			$this->layout = 'ajax';
+		}else {
+			$this->__getMessage(BAD_REQUEST);
+			$this->redirect($this->referer());
 		}
 	}
 
@@ -97,14 +104,17 @@ class SectorsController extends AppController {
  * Função que retorna os setores que ainda não estão 
  * cadastradas na tabela de unidades setores
  */
-	public function getSectors() {
+	public function get_sectors() {
+		$this->autoRender = false;
 		if($this->request->is('ajax')) {
 			
 			//id da unidade			
-			$unityId = $this->request->data['UnitySector']['unity_id'];
+			$unityId = $this->request->data['parent_id'];
 
 			if($unityId == "") {
-				exit;
+				$sectors = array(''=>'Selecione uma unidade');
+				echo json_encode($sectors);
+				return;
 			}
 
 			$db = $this->UnitySector->getDataSource();			
@@ -137,8 +147,16 @@ class SectorsController extends AppController {
 			}
 			$sectors = $inicio + $sectors;
 			
-			$this->set(compact('sectors'));
-			$this->layout = 'ajax';
+			echo json_encode($sectors);
 		}		
 	}
+	
+/**
+ *
+ */
+	public function get_children() {		
+		$values = $this->request->data['values'];		
+		parent::get_children('UnitySector', 'Unity', 'Sector', $values);
+	}
+	
 }
