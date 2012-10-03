@@ -25,6 +25,6 @@
 	?>
 	</fieldset>
 	<?php echo $this->Form->button(__('Cadastrar'), array('class'=>'btn btn-primary', 'title'=>__('Cadastrar unidade')));?>
-	<?php echo $this->Html->link(__('Cancelar'), array('#'), array('class'=>'btn', 'title'=>__('Cancelar'), 'data-dismiss'=>'modal', 'aria-hidden'=>'true'))?>
+	<?php echo $this->Html->link(__('Cancelar'), 'javascript:void(0)', array('class'=>'btn', 'title'=>__('Cancelar'), 'data-dismiss'=>'modal', 'aria-hidden'=>'true'))?>
 <?php echo $this->Form->end();?>
 </div>
